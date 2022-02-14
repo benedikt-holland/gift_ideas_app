@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:theme="@style/Theme.Geschenkapp">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -15,23 +16,28 @@
         app:layout_constraintTop_toTopOf="parent">
 
 
-
     </androidx.appcompat.widget.Toolbar>
 
     <ImageView
         android:id="@+id/ivProfilepicture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_profile"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        android:contentDescription="@string/profile_picture"
-        app:layout_constrainedHeight="true"
-        app:layout_constraintHeight="80dp"
-        android:scaleType="center"
+        android:layout_width="0dp"
+        android:layout_height="800dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
         android:adjustViewBounds="true"
-        android:cropToPadding="true"/>
+        android:contentDescription="@string/profile_picture"
+        android:cropToPadding="true"
+        android:scaleType="center"
+        android:scaleX="10"
+        android:scaleY="10"
+        android:src="@drawable/ic_profile"
+        app:layout_constrainedHeight="false"
+        app:layout_constraintBottom_toTopOf="@+id/tvName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight="200dp"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <TextView
         android:id="@+id/tvName"
@@ -61,23 +67,32 @@
         app:layout_constraintTop_toTopOf="@+id/tvName" />
 
     <com.google.android.material.tabs.TabLayout
+        android:id="@+id/profileTabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabMode="fixed"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvDateofbirth" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/profileViewPager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvDateofbirth">
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-    </com.google.android.material.tabs.TabLayout>
+        app:layout_constraintTop_toBottomOf="@+id/profileTabLayout" />
 
     <ImageButton
         android:id="@+id/btnAddGift"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
+        android:background="#00FFFFFF"
+        android:scaleX="3"
+        android:scaleY="3"
         android:src="@drawable/ic_add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
