@@ -3,4 +3,7 @@
     <string name="profile_picture">Profilbild</string>
     <string name="share">Teilen</string>
     <string name="back">Zurück</string>
+
+    <!--search-->
+    <string name="search_hint">Suche Geschenkidee</string>
 </resources>
