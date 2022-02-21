@@ -93,5 +93,8 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+    private fun initProfileViewPager() {
+        //var viewPager : ViewPager2 = findViewById(R.id.profileViewPager)
+        //var adapter = ViewPAger
     }
 }

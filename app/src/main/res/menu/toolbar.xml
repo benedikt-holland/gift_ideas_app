@@ -5,7 +5,7 @@
         android:id="@+id/actionBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:icon="@drawable/ic_backArrow"
+        android:icon="@drawable/ic_backarrow"
         app:showAsAction="always"
         android:title="@string/back" />
 
