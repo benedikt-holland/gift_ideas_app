@@ -69,11 +69,6 @@ class MainActivity : AppCompatActivity() {
             initProfileViewPager()
         }
 
-        private fun initProfileViewPager() {
-            var viewPager : ViewPager2 = findViewById(R.id.profileViewPager)
-            //var adapter = ViewPAger
-        }
-
         private fun getListOfTest() {
             val isoCountryCodes = Locale.getISOCountries()
             val countryListWithEmojis = ArrayList<String>()
