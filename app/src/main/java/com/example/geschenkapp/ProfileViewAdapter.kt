@@ -17,7 +17,7 @@ class ProfileViewAdapter : RecyclerView.Adapter<ProfileViewAdapter.ViewHolder>()
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.tvName.text = giftList[position].name
+        holder.tvName.text = giftList[position].title
     }
 
     override fun getItemCount(): Int {
