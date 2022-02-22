@@ -14,18 +14,12 @@ data class User (
     val last_name: String,
     @ColumnInfo(name = "date_of_birth")
     val date_of_birth: Date,
-    @ColumnInfo(name = "friend_ids")
-    val friend_ids: ArrayList<Int>,
-    @ColumnInfo(name = "favourite_ids")
-    val favourite_ids : ArrayList<Int>,
     @ColumnInfo(name = "email")
     val email : String,
-    @ColumnInfo(name = "enabledDarkmode")
-    val enabledDarkmode : Boolean,
     @ColumnInfo(name = "profile_privacy")
     val profile_privacy : Int,
-    @ColumnInfo(name = "post_privacy")
-    val post_privacy : Int,
+    @ColumnInfo(name = "profile_picture")
+    val profile_picture : String,
     @PrimaryKey(autoGenerate = true)
     val id: Int=0
 )
