@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+//Data class with data for the gift comment feed
 @Entity(tableName = "comments")
 data class Comment (
     @ColumnInfo(name= "user_id")

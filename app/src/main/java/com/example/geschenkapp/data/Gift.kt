@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+//Data class with data for the gift feed on the user profile page and the home screen
 @Entity(tableName = "gifts")
 data class Gift (
     @ColumnInfo(name="id")

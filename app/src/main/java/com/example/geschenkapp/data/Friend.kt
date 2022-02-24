@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.*
 
+//Data class with data for the home screen friend feed
 @Entity(tableName = "friends")
 data class Friend (
     @ColumnInfo(name = "id")

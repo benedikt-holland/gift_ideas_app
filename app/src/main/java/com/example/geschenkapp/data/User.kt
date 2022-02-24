@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey
 import java.util.*
 import kotlin.collections.ArrayList
 
+//Data class for settings and profile screen
 @Entity(tableName = "users")
 data class User (
     @ColumnInfo(name = "first_name")

@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+//Data class for member feed on gift screen
 @Entity(tableName = "members")
 data class Member (
     @ColumnInfo(name = "id")
