@@ -1,13 +1,17 @@
 package com.example.geschenkapp
 
 import CustomAdapter
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.MenuItem
 import androidx.appcompat.widget.SearchView
 import androidx.viewpager2.widget.ViewPager2
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.geschenkapp.databinding.ActivityMainBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -16,13 +20,33 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     private lateinit var linearLayoutManager: LinearLayoutManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //setContentView(R.layout.activity_main)
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
 
+        //bottom navigation bar
+        binding.bottomNavigation.setOnItemSelectedListener { item ->
+            Log.d("MainActivity", "item clicked")
+            when (item.itemId) {
+                R.id.ic_bottom_nav_profile -> {
+                    val intent = Intent(this, ProfileActivity::class.java)
+                    startActivity(intent)
+                }
+                R.id.ic_bottom_nav_notifications -> {
+                    Log.d("NotificationActivity", "notification")
+                    val intent = Intent(this, NotificationActivity::class.java)
+                    startActivity(intent)
+                }
+                else -> {
+                    Log.d("MainActivity", "item not found")
+                }
+            }
+            true
+
+        }
         rv = findViewById(R.id.recyclerview)
         rv.layoutManager = LinearLayoutManager(rv.context)
         rv.setHasFixedSize(true)
@@ -62,7 +86,6 @@ class MainActivity : AppCompatActivity() {
         // Setting the Adapter with the recyclerview
         recyclerview.adapter = adapter
         **/
-
         initProfileViewPager()
     }
 
@@ -80,4 +103,5 @@ class MainActivity : AppCompatActivity() {
         //var viewPager : ViewPager2 = findViewById(R.id.profileViewPager)
         //var adapter = ViewPAger
     }
+
 }
