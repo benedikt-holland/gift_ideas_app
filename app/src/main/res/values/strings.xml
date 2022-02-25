@@ -7,7 +7,7 @@
     <!--search-->
     <string name="search_hint">Suche Geschenkidee</string>
 
-	<!-- bottom navigation bar-->
+    <!-- bottom navigation bar-->
     <string name="home">Home</string>
     <string name="profile">Profil</string>
     <string name="notifications">Benachrichtigungen</string>
