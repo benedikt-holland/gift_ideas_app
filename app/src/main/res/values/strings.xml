@@ -18,6 +18,11 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <!--profile-->
+    <string name="profile_name">Vorname Nachname</string>
+    <string name="profile_date_of_birth">21. Geburtstag am 27.Mai</string>
+    <string name="tab_left">Wunschliste</string>
+    <string name="tab_center">Events</string>
+    <string name="tab_right">Freunde</string>
+
 </resources>
