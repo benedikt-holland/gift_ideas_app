@@ -12,9 +12,12 @@ import java.sql.ResultSet
 import java.sql.SQLException
 import java.util.*
 import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
+import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
-import androidx.viewpager2.widget.ViewPager2
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.geschenkapp.databinding.ActivityMainBinding
@@ -36,6 +39,12 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
+		//toolbar
+        supportActionBar?.apply {
+            title = "Home"
+        }
+
                       
         val viewModelJob = SupervisorJob()
         val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
@@ -108,6 +117,9 @@ class MainActivity : AppCompatActivity() {
         })
 
         getListOfTest()
+
+        getButtonClick()
+
         /**
         // getting the recyclerview by its id
         val recyclerview = findViewById<RecyclerView>(R.id.recyclerview)
@@ -131,6 +143,21 @@ class MainActivity : AppCompatActivity() {
         recyclerview.adapter = adapter
         **/
     }
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.toolbar, menu)
+        return true
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle item selection
+        return when (item.itemId) {
+            R.id.actionShare -> {
+                Toast.makeText(this, "share", Toast.LENGTH_SHORT).show()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
         
 
     private fun getListOfTest() {
@@ -140,5 +167,16 @@ class MainActivity : AppCompatActivity() {
         }
         adapter = CustomAdapter(testListAbc)
         rv.adapter = adapter
+    }
+
+    private fun getButtonClick(){
+        val btnStar = findViewById(R.id.btnFavorites) as Button
+        btnStar.setOnClickListener {
+            Toast.makeText(this, "favorites", Toast.LENGTH_SHORT).show()
+        }
+        val btnGift = findViewById(R.id.btnGeschenk) as Button
+        btnGift.setOnClickListener {
+            Toast.makeText(this, "gift", Toast.LENGTH_SHORT).show()
+        }
     }
 }

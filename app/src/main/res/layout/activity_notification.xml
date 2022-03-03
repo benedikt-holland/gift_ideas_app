@@ -4,6 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".NotificationActivity">
+    android:theme="@style/Theme.Geschenkapp">
+
+    <include
+        android:id="@+id/tToolbar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        layout="@layout/toolbar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
