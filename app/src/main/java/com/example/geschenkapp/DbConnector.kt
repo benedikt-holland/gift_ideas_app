@@ -1,10 +1,33 @@
 package com.example.geschenkapp
 
+import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.*
 import java.sql.*
 
 
-class DbConnector {
-    private var connection: Connection = DriverManager.getConnection("jdbc:mysql://db.montesvoss.de:3306/db", "android", "!#IAl{Q]/WmP@:0=")
+class DbConnector: ViewModel() {
+    private val viewModelJob = SupervisorJob()
+    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+    private lateinit var connection: Connection
+
+    override fun onCleared() {
+        super.onCleared()
+        viewModelJob.cancel()
+    }
+
+    fun connect() {
+        try {
+            connection = DriverManager.getConnection(
+                "jdbc:mysql://db.montesvoss.de:3306/db",
+                "android",
+                "!#IAl{Q]/WmP@:0="
+            )
+            println("Database connection established!")
+        } catch (e: SQLException) {
+            e.printStackTrace()
+            println("Unable to establish database connection")
+        }
+    }
 
     //Load friends list when on home screen
     //Loads all users the user is friends with
@@ -23,11 +46,16 @@ class DbConnector {
     //Create new account and log in
     //Returns user_id, first_name, last_name, date_of_birth, email, profile_privacy, profile_picture
     //Needed for settings
-    fun loginUser(email: String, password: String): ResultSet {
-        val query: String = "CALL login($email, $password);"
-        var statement = connection.prepareStatement(query)
-        var result: ResultSet = statement.executeQuery()
-        return result
+    fun loginUser(email: String, password: String): ResultSet? {
+        try {
+            //val query = "CALL login('$email', '$password');"
+                val query = "SELECT * FROM users LIMIT 10;"
+            var statement = connection.prepareStatement(query)
+            return statement.executeQuery()
+        } catch (e: SQLException) {
+            e.printStackTrace()
+            return null
+        }
     }
 
     //Load User when logging in
