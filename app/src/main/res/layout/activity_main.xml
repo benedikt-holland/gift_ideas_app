@@ -4,15 +4,79 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+	<com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:menu="@menu/bottom_nav_menu"
+        app:itemIconTint="@drawable/bottom_navbar_color"
+        app:itemTextColor="@drawable/bottom_navbar_color"
+        app:labelVisibilityMode="selected"
+        />
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/search"
+        android:iconifiedByDefault="true"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/buttonFav"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:background="@android:color/transparent"
+        android:textCursorDrawable="@null"
+        app:iconifiedByDefault="false"
+        app:queryBackground="@null"
+        app:queryHint="@string/search_hint"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonFav"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+        android:minWidth="0dp"
+        android:text=""
+        app:icon="@drawable/ic_star"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/buttonGeschenk"
+        android:background="@android:color/transparent"
+        app:iconTint="@color/primaryTextColor"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonGeschenk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+        android:minWidth="0dp"
+        android:text=""
+        app:icon="@drawable/ic_gift"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="@android:color/transparent"
+        app:iconTint="@color/primaryTextColor"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search"
+        tools:itemCount="5"
+        tools:layout_editor_absoluteX="0dp"
+        tools:listitem="@layout/card_view_design" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
