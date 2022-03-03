@@ -8,6 +8,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import java.sql.ResultSet
 import java.sql.SQLException
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
     lateinit var user: ResultSet
@@ -24,8 +25,16 @@ class MainActivity : AppCompatActivity() {
         val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
         uiScope.launch(Dispatchers.IO) {
             try {
+                var inputStream = assets.open("config.properties")
+                var props = Properties()
+                props.load(inputStream)
+                var usr = props.getProperty("MYSQL_USER", "")
+                var pwd = props.getProperty("MYSQL_PWD", "")
+                var url = props.getProperty("MYSQL_URL", "")
+                inputStream.close()
+
                 var db = DbConnector()
-                db.connect()
+                db.connect(url, usr, pwd)
                 user = db.loginUser("Hans@Müller.de", "password")
                 user.next()
                 val userId = user.getInt("id")

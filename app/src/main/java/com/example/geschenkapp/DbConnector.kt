@@ -15,11 +15,11 @@ class DbConnector: ViewModel() {
         viewModelJob.cancel()
     }
 
-    fun connect() {
+    fun connect(url : String, usr : String, pwd : String) {
         connection = DriverManager.getConnection(
-            "jdbc:mysql://db.montesvoss.de:3306/db",
-            "android",
-            "!#IAl{Q]/WmP@:0="
+            url,
+            usr,
+            pwd
         )
         println("Database connection established!")
     }
