@@ -38,12 +38,17 @@ class ProfileActivity : AppCompatActivity() {
         val imageUri = "http://montesvoss.de:8080/downloadFile/bild.png"
         val ivProfilepicture : ImageView = findViewById(R.id.ivProfilepicture)
 
-
         val viewModelJob = SupervisorJob()
         var uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
         uiScope.launch(Dispatchers.IO){
+            var inputStream = assets.open("config.properties")
+            var props = Properties()
+            props.load(inputStream)
+            var auth = props.getProperty("API_AUTH", "")
+            inputStream.close()
+
             var imageConnector = ImageConnector()
-            profilePicture = imageConnector.getImage(imageUri)
+            profilePicture = imageConnector.getImage(imageUri, auth)
             withContext(Dispatchers.Main) {
                 ivProfilepicture.setImageBitmap(profilePicture)
             }
