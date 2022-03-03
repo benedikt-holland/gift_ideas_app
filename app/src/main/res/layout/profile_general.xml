@@ -59,26 +59,18 @@
         app:tabMode="fixed"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvDateofbirth"
-        >
+        app:layout_constraintTop_toBottomOf="@+id/tvDateofbirth">
 
         <com.google.android.material.tabs.TabItem
-            android:text="@string/tab_left"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"/>
-
         <com.google.android.material.tabs.TabItem
-            android:text="@string/tab_center"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"/>
-
         <com.google.android.material.tabs.TabItem
-            android:text="@string/tab_right"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"/>
-
     </com.google.android.material.tabs.TabLayout>
-
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/profileViewPager"
@@ -87,7 +79,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileTabLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/profileTabLayout"
+        android:layout_centerInParent="true" />
 
     <ImageButton
         android:id="@+id/btnAddGift"
@@ -103,23 +96,3 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-<!--
-android:layout_width="0dp"
-        android:layout_height="800dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:adjustViewBounds="true"
-        android:contentDescription="@string/profile_picture"
-        android:cropToPadding="true"
-        android:scaleType="center"
-        android:scaleX="10"
-        android:scaleY="10"
-        android:src="@drawable/ic_profile"
-        app:layout_constrainedHeight="false"
-        app:layout_constraintBottom_toTopOf="@+id/tvName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight="200dp"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" -->

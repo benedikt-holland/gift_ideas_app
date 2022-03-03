@@ -14,9 +14,14 @@
             android:exported="false" />
         <activity
             android:name=".ProfileActivity"
-            android:exported="false"
+            android:exported="true"
             android:label="@string/title_activity_profile"
-            android:theme="@style/Theme.Geschenkapp.NoActionBar" />
+            android:theme="@style/Theme.Geschenkapp.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".MainActivity"
             android:exported="true">
