@@ -22,15 +22,15 @@ val tabArray = arrayOf(
 )
 
 class ProfileActivity : AppCompatActivity() {
-	lateinit var tabLayout: TabLayout
+    lateinit var tabLayout: TabLayout
     lateinit var viewPager: ViewPager2
-    private lateinit var binding : ActivityProfileBinding
+    private lateinit var binding: ActivityProfileBinding
     private lateinit var profilePicture: Bitmap
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
-		setSupportActionBar(findViewById(R.id.toolbar))
+        setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.apply {
             title = "Profil"
             // show back button on toolbar
@@ -52,11 +52,11 @@ class ProfileActivity : AppCompatActivity() {
         binding = ActivityProfileBinding.inflate(layoutInflater)
 
 
-        val ivProfilepicture : ImageView = findViewById(R.id.ivProfilepicture)
+        val ivProfilepicture: ImageView = findViewById(R.id.ivProfilepicture)
 
         val viewModelJob = SupervisorJob()
         var uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
-        uiScope.launch(Dispatchers.IO){
+        uiScope.launch(Dispatchers.IO) {
             var inputStream = assets.open("config.properties")
             var props = Properties()
             props.load(inputStream)
@@ -72,11 +72,13 @@ class ProfileActivity : AppCompatActivity() {
 
         }
     }
-override fun onCreateOptionsMenu(menu: Menu): Boolean {
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater: MenuInflater = menuInflater
         inflater.inflate(R.menu.toolbar, menu)
         return true
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle item selection
         return when (item.itemId) {
@@ -85,4 +87,6 @@ override fun onCreateOptionsMenu(menu: Menu): Boolean {
                 true
             }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
 }
