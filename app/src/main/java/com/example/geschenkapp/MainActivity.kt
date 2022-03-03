@@ -5,6 +5,10 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -84,7 +88,25 @@ class MainActivity : AppCompatActivity() {
         // Setting the Adapter with the recyclerview
         recyclerview.adapter = adapter
         **/
-        initProfileViewPager()
+    }
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.toolbar, menu)
+        return true
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle item selection
+        return when (item.itemId) {
+            R.id.actionBack -> {
+                Toast.makeText(this, "back", Toast.LENGTH_SHORT).show()
+                true
+            }
+            R.id.actionShare -> {
+                Toast.makeText(this, "share", Toast.LENGTH_SHORT).show()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private fun getListOfTest() {
@@ -95,11 +117,4 @@ class MainActivity : AppCompatActivity() {
         adapter = CustomAdapter(testListAbc)
         rv.adapter = adapter
     }
-
-
-    private fun initProfileViewPager() {
-        //var viewPager : ViewPager2 = findViewById(R.id.profileViewPager)
-        //var adapter = ViewPAger
-    }
-
 }
