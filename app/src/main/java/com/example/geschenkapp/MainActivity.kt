@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,6 +29,11 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
+        //toolbar
+        supportActionBar?.apply {
+            title = "Home"
+        }
 
         //bottom navigation bar
         binding.bottomNavigation.setOnItemSelectedListener { item ->
@@ -66,6 +72,9 @@ class MainActivity : AppCompatActivity() {
         })
 
         getListOfTest()
+
+        getButtonClick()
+
         /**
         // getting the recyclerview by its id
         val recyclerview = findViewById<RecyclerView>(R.id.recyclerview)
@@ -97,10 +106,6 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle item selection
         return when (item.itemId) {
-            R.id.actionBack -> {
-                Toast.makeText(this, "back", Toast.LENGTH_SHORT).show()
-                true
-            }
             R.id.actionShare -> {
                 Toast.makeText(this, "share", Toast.LENGTH_SHORT).show()
                 true
@@ -116,5 +121,16 @@ class MainActivity : AppCompatActivity() {
         }
         adapter = CustomAdapter(testListAbc)
         rv.adapter = adapter
+    }
+
+    private fun getButtonClick(){
+        val btnStar = findViewById(R.id.btnFavorites) as Button
+        btnStar.setOnClickListener {
+            Toast.makeText(this, "favorites", Toast.LENGTH_SHORT).show()
+        }
+        val btnGift = findViewById(R.id.btnGeschenk) as Button
+        btnGift.setOnClickListener {
+            Toast.makeText(this, "gift", Toast.LENGTH_SHORT).show()
+        }
     }
 }

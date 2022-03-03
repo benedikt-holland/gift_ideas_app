@@ -23,6 +23,13 @@ class ProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
         setSupportActionBar(findViewById(R.id.toolbar))
+        supportActionBar?.apply {
+            title = ""
+            // show back button on toolbar
+            // on back button press, it will navigate to parent activity
+            setDisplayHomeAsUpEnabled(true)
+            setDisplayShowHomeEnabled(true)
+        }
 
         tabLayout = findViewById(R.id.profileTabLayout)
         viewPager = findViewById(R.id.profileViewPager)
@@ -42,10 +49,6 @@ class ProfileActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle item selection
         return when (item.itemId) {
-            R.id.actionBack -> {
-                Toast.makeText(this, "back", Toast.LENGTH_SHORT).show()
-                true
-            }
             R.id.actionShare -> {
                 Toast.makeText(this, "share", Toast.LENGTH_SHORT).show()
                 true
