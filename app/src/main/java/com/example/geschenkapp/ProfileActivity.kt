@@ -35,7 +35,6 @@ class ProfileActivity : AppCompatActivity() {
         binding = ActivityProfileBinding.inflate(layoutInflater)
 
 
-        val imageUri = "http://montesvoss.de:8080/downloadFile/bild.png"
         val ivProfilepicture : ImageView = findViewById(R.id.ivProfilepicture)
 
         val viewModelJob = SupervisorJob()
@@ -45,10 +44,11 @@ class ProfileActivity : AppCompatActivity() {
             var props = Properties()
             props.load(inputStream)
             var auth = props.getProperty("API_AUTH", "")
+            var downloadUri = props.getProperty("API_DOWNLOAD", "") + "bild.png"
             inputStream.close()
 
             var imageConnector = ImageConnector()
-            profilePicture = imageConnector.getImage(imageUri, auth)
+            profilePicture = imageConnector.getImage(downloadUri, auth)
             withContext(Dispatchers.Main) {
                 ivProfilepicture.setImageBitmap(profilePicture)
             }
