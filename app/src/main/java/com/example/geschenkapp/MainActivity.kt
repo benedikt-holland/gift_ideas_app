@@ -6,8 +6,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import java.sql.ResultSet
+import java.sql.SQLException
 
 class MainActivity : AppCompatActivity() {
+    lateinit var user: ResultSet
+    lateinit var friendsFeed: ResultSet
+    lateinit var giftFeed: ResultSet
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -17,15 +23,24 @@ class MainActivity : AppCompatActivity() {
         val viewModelJob = SupervisorJob()
         val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
         uiScope.launch(Dispatchers.IO) {
-            var db = DbConnector()
-            db.connect()
-            val user = db.loginUser("Hans@Müller.de", "password")
-            if (user!=null) {
-                while (user.next()) {
-                    println(user.getString("first_name"))
+            try {
+                var db = DbConnector()
+                db.connect()
+                user = db.loginUser("Hans@Müller.de", "password")
+                user.next()
+                val userId = user.getInt("id")
+                try {
+                    friendsFeed = db.getFriendsFeed(userId)
+                } catch (e: Exception) {
+                    e.printStackTrace()
                 }
-            } else {
-                println("Login failed")
+                try {
+                    giftFeed = db.getGiftFeedByMemberId(userId)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
     }
