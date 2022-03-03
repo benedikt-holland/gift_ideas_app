@@ -4,6 +4,13 @@ import CustomAdapter
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
+import java.sql.ResultSet
+import java.sql.SQLException
+import java.util.*
 import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.widget.SearchView
@@ -12,13 +19,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.geschenkapp.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import java.util.*
+
 
 class MainActivity : AppCompatActivity() {
+    lateinit var user: ResultSet
+    lateinit var friendsFeed: ResultSet
+    lateinit var giftFeed: ResultSet
     lateinit var adapter: CustomAdapter
     lateinit var rv: RecyclerView
     private lateinit var binding: ActivityMainBinding
-
     private lateinit var linearLayoutManager: LinearLayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,7 +35,39 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+                      
+        val viewModelJob = SupervisorJob()
+        val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+        uiScope.launch(Dispatchers.IO) {
+            try {
+                var inputStream = assets.open("config.properties")
+                var props = Properties()
+                props.load(inputStream)
+                var usr = props.getProperty("MYSQL_USER", "")
+                var pwd = props.getProperty("MYSQL_PWD", "")
+                var url = props.getProperty("MYSQL_URL", "")
+                inputStream.close()
 
+                var db = DbConnector()
+                db.connect(url, usr, pwd)
+                user = db.loginUser("Hans@Müller.de", "password")
+                user.next()
+                val userId = user.getInt("id")
+                try {
+                    friendsFeed = db.getFriendsFeed(userId)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+                try {
+                    giftFeed = db.getGiftFeedByMemberId(userId)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+        
         //bottom navigation bar
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             Log.d("MainActivity", "item clicked")
@@ -86,8 +127,8 @@ class MainActivity : AppCompatActivity() {
         // Setting the Adapter with the recyclerview
         recyclerview.adapter = adapter
         **/
-        initProfileViewPager()
     }
+        
 
     private fun getListOfTest() {
         val testListAbc = ArrayList<String>()
@@ -97,11 +138,4 @@ class MainActivity : AppCompatActivity() {
         adapter = CustomAdapter(testListAbc)
         rv.adapter = adapter
     }
-
-
-    private fun initProfileViewPager() {
-        //var viewPager : ViewPager2 = findViewById(R.id.profileViewPager)
-        //var adapter = ViewPAger
-    }
-
 }
