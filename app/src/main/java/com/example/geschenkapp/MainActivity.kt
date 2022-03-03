@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.geschenkapp.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import java.io.FileNotFoundException
 
 
 class MainActivity : AppCompatActivity() {
@@ -63,6 +64,8 @@ class MainActivity : AppCompatActivity() {
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
+            } catch(e: FileNotFoundException) {
+                System.err.println("Missing config.properties file in app/src/main/assets/ containing database credentials")
             } catch (e: Exception) {
                 e.printStackTrace()
             }
