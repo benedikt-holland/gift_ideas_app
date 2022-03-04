@@ -28,7 +28,7 @@ class DbConnector: ViewModel() {
     //Loads all users the user is friends with
     //Returns user_id, first_name, last_name, date_of_birth, is_favourite, count_gifts
     fun getFriendsFeed(userId: Int): ResultSet {
-        val query: String = "SELECT f.friend_id AS user_id, u.first_name, u.last_name, " +
+        val query: String = "SELECT f.id, u.first_name, u.last_name, " +
                 "u.date_of_birth, f.is_favourite, " +
                 "(SELECT COUNT(*) FROM gifts WHERE user_id=f.friend_id) AS count_gifts " +
                 "FROM friends AS f " +
@@ -201,7 +201,7 @@ class DbConnector: ViewModel() {
     }
 
     fun updateFavourite(friendId: Int, isFavourite: Int) {
-        val query: String = "UPDATE friends SET is_favourite=$isFavourite WHERE id=$friendId;"
+        val query: String = "UPDATE friends SET is_favourite=$isFavourite WHERE id=$friendId AND;"
         var statement = connection.prepareStatement(query)
         var result: ResultSet = statement.executeQuery()
     }

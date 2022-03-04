@@ -17,4 +17,6 @@
   <!-- Surface color -->
   <color name="surface">#ffffff</color>
   <color name="surfaceDark">#202020</color>
+  <!-- Icon color -->
+  <color name="favourite">#ffff00</color>
 </resources>

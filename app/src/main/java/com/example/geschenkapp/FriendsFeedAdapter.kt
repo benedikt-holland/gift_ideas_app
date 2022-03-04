@@ -1,20 +1,26 @@
+package com.example.geschenkapp
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
-import com.example.geschenkapp.ItemsViewModel
-import com.example.geschenkapp.R
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.ArrayList
 
 //class CustomAdapter(private var mList: ArrayList<ItemsViewModel>) : RecyclerView.Adapter<CustomAdapter.ViewHolder>(), Filterable {
-class CustomAdapter(private var testList: ArrayList<String>) : RecyclerView.Adapter<CustomAdapter.ViewHolder>(), Filterable {
+class FriendsFeedAdapter(private var giftList: ArrayList<ArrayList<String>>) : RecyclerView.Adapter<FriendsFeedAdapter.ViewHolder>(), Filterable {
 
     //test array
-    var testFilterList = ArrayList<String>()
+    var giftFilterList = ArrayList<ArrayList<String>>()
     init {
-        testFilterList = testList
+        for (row in giftList) {
+            giftFilterList.add(row)
+        }
     }
     // create new views
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -31,7 +37,7 @@ class CustomAdapter(private var testList: ArrayList<String>) : RecyclerView.Adap
 
         //val ItemsViewModel = mList[position]
         //holder.bind(mList[position])
-        holder.bind(testFilterList[position])
+        holder.bind(giftFilterList[position])
 
         // sets the image to the imageview from our itemHolder class
         //holder.imageView.setImageResource(ItemsViewModel.image)
@@ -44,32 +50,34 @@ class CustomAdapter(private var testList: ArrayList<String>) : RecyclerView.Adap
     // return the number of the items in the list
     override fun getItemCount(): Int {
         //return mList.size
-        return testFilterList.size
+        return giftFilterList.size
     }
 
     override fun getFilter(): Filter {
         return object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
                 val charSearch = constraint.toString()
+                val resultList = ArrayList<ArrayList<String>>()
                 if (charSearch.isEmpty()) {
-                    testFilterList = testList
+                    for (row in giftList) {
+                        resultList.add(row)
+                    }
                 } else {
-                    val resultList = ArrayList<String>()
-                    for (row in testList) {
-                        if (row.lowercase(Locale.ROOT).contains(charSearch.lowercase(Locale.ROOT))) {
+                    for (row in giftList) {
+                        if (row[1].lowercase(Locale.ROOT).contains(charSearch.lowercase(Locale.ROOT))) {
                             resultList.add(row)
                         }
                     }
-                    testFilterList = resultList
                 }
+                giftFilterList = resultList
                 val filterResults = FilterResults()
-                filterResults.values = testFilterList
+                filterResults.values = giftFilterList
                 return filterResults
             }
 
             @Suppress("UNCHECKED_CAST")
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                testFilterList = results?.values as ArrayList<String>
+                giftFilterList = results?.values as ArrayList<ArrayList<String>>
                 notifyDataSetChanged()
             }
 
@@ -77,9 +85,33 @@ class CustomAdapter(private var testList: ArrayList<String>) : RecyclerView.Adap
     }
     // Holds the views for adding it to image and text
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
-        fun bind(mList: String) {
-            //val imageView: ImageView = itemView.findViewById(R.id.imageview)
-            val textView: TextView = itemView.findViewById(R.id.textView)
+        fun bind(giftList: ArrayList<String>) {
+            val name: TextView = itemView.findViewById(R.id.tvName)
+            val dateofbirth: TextView = itemView.findViewById(R.id.tvDateOfBirth)
+            val count: TextView = itemView.findViewById(R.id.tvCountGifts)
+            if (giftList[2]!=null) {
+                name.text = giftList[1] + " " + giftList[2]
+            } else {
+                name.text = giftList[1]
+            }
+            dateofbirth.text = giftList[3]
+            count.text = giftList[5] + " Vorschläge"
+
+            val btnStar = itemView.findViewById(R.id.btnAddFavourite) as ImageButton
+            btnStar.setOnClickListener {
+                if (giftList[4].toInt()==0) {
+                    //btnStar.tint = Color.YELLOW
+                    giftList[4] = "1"
+                } else {
+                    //btnStar.tint = Color.BLACK
+                    giftList[4] = "0"
+                }
+            }
+
+            val viewModelJob = SupervisorJob()
+            val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+            uiScope.launch(Dispatchers.IO) {
+            }
         }
     }
 

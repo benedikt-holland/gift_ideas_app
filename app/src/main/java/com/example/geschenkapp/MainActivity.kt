@@ -1,15 +1,9 @@
 package com.example.geschenkapp
 
-import CustomAdapter
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
 import java.sql.ResultSet
-import java.sql.SQLException
 import java.util.*
 import android.util.Log
 import android.view.Menu
@@ -21,30 +15,23 @@ import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.geschenkapp.databinding.ActivityMainBinding
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.coroutines.*
 import java.io.FileNotFoundException
+import kotlin.collections.ArrayList
 
 
 class MainActivity : AppCompatActivity() {
     lateinit var user: ResultSet
     lateinit var friendsFeed: ResultSet
     lateinit var giftFeed: ResultSet
-    lateinit var adapter: CustomAdapter
+    lateinit var adapter: FriendsFeedAdapter
     lateinit var rv: RecyclerView
     private lateinit var binding: ActivityMainBinding
     private lateinit var linearLayoutManager: LinearLayoutManager
+    var db = DbConnector()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
-
-		//toolbar
-        supportActionBar?.apply {
-            title = "Home"
-        }
-
                       
         val viewModelJob = SupervisorJob()
         val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
@@ -58,28 +45,27 @@ class MainActivity : AppCompatActivity() {
                 var url = props.getProperty("MYSQL_URL", "")
                 inputStream.close()
 
-                var db = DbConnector()
                 db.connect(url, usr, pwd)
                 user = db.loginUser("Hans@Müller.de", "password")
                 user.next()
                 val userId = user.getInt("id")
-                try {
-                    friendsFeed = db.getFriendsFeed(userId)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-                try {
-                    giftFeed = db.getGiftFeedByMemberId(userId)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
+                loadFriendsFeed(userId)
             } catch(e: FileNotFoundException) {
                 System.err.println("Missing config.properties file in app/src/main/assets/ containing database credentials")
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
-        
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+
+        //toolbar
+        supportActionBar?.apply {
+            title = "Home"
+        }
+
         //bottom navigation bar
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             Log.d("MainActivity", "item clicked")
@@ -115,8 +101,6 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
-
-        getListOfTest()
 
         getButtonClick()
 
@@ -160,13 +144,36 @@ class MainActivity : AppCompatActivity() {
     }
         
 
-    private fun getListOfTest() {
-        val testListAbc = ArrayList<String>()
-        for (i in 1..20) {
-            testListAbc.add("item $i")
+    suspend fun loadGiftFeed(userId: Int) {
+        val giftList = ArrayList<ArrayList<String>>()
+        giftFeed = db.getGiftFeedByMemberId(userId)
+        while(giftFeed.next()) {
+            var row = ArrayList<String>()
+            for (i in 1..8) {
+                row.add(giftFeed.getString(i))
+            }
+            giftList.add(row)
         }
-        adapter = CustomAdapter(testListAbc)
-        rv.adapter = adapter
+        withContext(Dispatchers.Main) {
+            adapter = FriendsFeedAdapter(giftList)
+            rv.adapter = adapter
+        }
+    }
+
+    suspend fun loadFriendsFeed(userId: Int) {
+        var friendsFeedArray = ArrayList<ArrayList<String>>()
+        friendsFeed = db.getFriendsFeed(userId)
+        while(friendsFeed.next()) {
+            var row = ArrayList<String>()
+            for (i in 1 until friendsFeed.metaData.columnCount+1) {
+                row.add(friendsFeed.getString(i))
+            }
+            friendsFeedArray.add(row)
+        }
+        withContext(Dispatchers.Main) {
+            adapter = FriendsFeedAdapter(friendsFeedArray)
+            rv.adapter = adapter
+        }
     }
 
     private fun getButtonClick(){
