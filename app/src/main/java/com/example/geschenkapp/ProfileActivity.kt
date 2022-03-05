@@ -12,8 +12,11 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.viewpager2.widget.ViewPager2
+import com.example.geschenkapp.exceptions.NoUserException
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import java.io.FileNotFoundException
+import java.sql.ResultSet
 
 val tabArray = arrayOf(
     "Wunschliste",
@@ -26,6 +29,7 @@ class ProfileActivity : AppCompatActivity() {
     lateinit var viewPager: ViewPager2
     private lateinit var binding: ActivityProfileBinding
     private lateinit var profilePicture: Bitmap
+    lateinit var user: ResultSet
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,25 +55,42 @@ class ProfileActivity : AppCompatActivity() {
 
         binding = ActivityProfileBinding.inflate(layoutInflater)
 
-
         val ivProfilepicture: ImageView = findViewById(R.id.ivProfilepicture)
 
+        var userId : Int = intent.extras?.getInt("userId") ?: throw NoUserException("There are no extras to read the userId from!")
         val viewModelJob = SupervisorJob()
-        var uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+        val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
         uiScope.launch(Dispatchers.IO) {
-            var inputStream = assets.open("config.properties")
-            var props = Properties()
-            props.load(inputStream)
-            var auth = props.getProperty("API_AUTH", "")
-            var downloadUri = props.getProperty("API_DOWNLOAD", "") + "bild.png"
-            inputStream.close()
+            try {
+                var inputStream = assets.open("config.properties")
+                var props = Properties()
+                props.load(inputStream)
+                var usr = props.getProperty("MYSQL_USER", "")
+                var pwd = props.getProperty("MYSQL_PWD", "")
+                var url = props.getProperty("MYSQL_URL", "")
 
-            var imageConnector = ImageConnector()
-            profilePicture = imageConnector.getImage(downloadUri, auth)
-            withContext(Dispatchers.Main) {
-                ivProfilepicture.setImageBitmap(profilePicture)
+
+                var db = DbConnector()
+                db.connect(url, usr, pwd)
+                user = db.getUserById(userId)
+                user.next()
+                val profilePictureFileName = user.getString("profile_picture")
+
+                var auth = props.getProperty("API_AUTH", "")
+                var downloadUri = props.getProperty("API_DOWNLOAD", "") + profilePictureFileName
+                inputStream.close()
+
+                var imageConnector = ImageConnector()
+                profilePicture = imageConnector.getImage(downloadUri, auth)
+                withContext(Dispatchers.Main) {
+                    ivProfilepicture.setImageBitmap(profilePicture)
+                }
+
+            } catch(e: FileNotFoundException) {
+                System.err.println("Missing config.properties file in app/src/main/assets/ containing database credentials")
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
-
         }
     }
 
