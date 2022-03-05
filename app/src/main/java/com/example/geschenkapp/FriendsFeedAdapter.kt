@@ -1,25 +1,24 @@
 package com.example.geschenkapp
 
+import android.content.Intent
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.ArrayList
 
 //class CustomAdapter(private var mList: ArrayList<ItemsViewModel>) : RecyclerView.Adapter<CustomAdapter.ViewHolder>(), Filterable {
-class FriendsFeedAdapter(private var giftList: ArrayList<ArrayList<String>>) : RecyclerView.Adapter<FriendsFeedAdapter.ViewHolder>(), Filterable {
+class FriendsFeedAdapter(private var friendsList: ArrayList<ArrayList<String>>) : RecyclerView.Adapter<FriendsFeedAdapter.ViewHolder>(), Filterable {
 
     //test array
-    var giftFilterList = ArrayList<ArrayList<String>>()
+    var friendsFilterList = ArrayList<ArrayList<String>>()
     init {
-        for (row in giftList) {
-            giftFilterList.add(row)
+        for (row in friendsList) {
+            friendsFilterList.add(row)
         }
     }
     // create new views
@@ -27,7 +26,7 @@ class FriendsFeedAdapter(private var giftList: ArrayList<ArrayList<String>>) : R
         // inflates the card_view_design view
         // that is used to hold list item
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.card_view_design, parent, false)
+            .inflate(R.layout.friendsfeed_card, parent, false)
 
         return ViewHolder(view)
     }
@@ -37,7 +36,7 @@ class FriendsFeedAdapter(private var giftList: ArrayList<ArrayList<String>>) : R
 
         //val ItemsViewModel = mList[position]
         //holder.bind(mList[position])
-        holder.bind(giftFilterList[position])
+        holder.bind(friendsFilterList[position])
 
         // sets the image to the imageview from our itemHolder class
         //holder.imageView.setImageResource(ItemsViewModel.image)
@@ -50,7 +49,7 @@ class FriendsFeedAdapter(private var giftList: ArrayList<ArrayList<String>>) : R
     // return the number of the items in the list
     override fun getItemCount(): Int {
         //return mList.size
-        return giftFilterList.size
+        return friendsFilterList.size
     }
 
     override fun getFilter(): Filter {
@@ -59,25 +58,25 @@ class FriendsFeedAdapter(private var giftList: ArrayList<ArrayList<String>>) : R
                 val charSearch = constraint.toString()
                 val resultList = ArrayList<ArrayList<String>>()
                 if (charSearch.isEmpty()) {
-                    for (row in giftList) {
+                    for (row in friendsList) {
                         resultList.add(row)
                     }
                 } else {
-                    for (row in giftList) {
+                    for (row in friendsList) {
                         if (row[1].lowercase(Locale.ROOT).contains(charSearch.lowercase(Locale.ROOT))) {
                             resultList.add(row)
                         }
                     }
                 }
-                giftFilterList = resultList
+                friendsFilterList = resultList
                 val filterResults = FilterResults()
-                filterResults.values = giftFilterList
+                filterResults.values = friendsFilterList
                 return filterResults
             }
 
             @Suppress("UNCHECKED_CAST")
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                giftFilterList = results?.values as ArrayList<ArrayList<String>>
+                friendsFilterList = results?.values as ArrayList<ArrayList<String>>
                 notifyDataSetChanged()
             }
 
@@ -85,32 +84,36 @@ class FriendsFeedAdapter(private var giftList: ArrayList<ArrayList<String>>) : R
     }
     // Holds the views for adding it to image and text
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
-        fun bind(giftList: ArrayList<String>) {
+        fun bind(friendsList: ArrayList<String>) {
             val name: TextView = itemView.findViewById(R.id.tvName)
-            val dateofbirth: TextView = itemView.findViewById(R.id.tvDateOfBirth)
+            val dateofbirth: TextView = itemView.findViewById(R.id.tvFeedDateofbirth)
             val count: TextView = itemView.findViewById(R.id.tvCountGifts)
-            if (giftList[2]!=null) {
-                name.text = giftList[1] + " " + giftList[2]
+            if (friendsList[3]!=null) {
+                name.text = friendsList[2] + " " + friendsList[3]
             } else {
-                name.text = giftList[1]
+                name.text = friendsList[2]
             }
-            dateofbirth.text = giftList[3]
-            count.text = giftList[5] + " Vorschläge"
+            dateofbirth.text = friendsList[4]
+            count.text = friendsList[6] + " Vorschläge"
 
             val btnStar = itemView.findViewById(R.id.btnAddFavourite) as ImageButton
             btnStar.setOnClickListener {
-                if (giftList[4].toInt()==0) {
+                if (friendsList[5].toInt()==0) {
                     //btnStar.tint = Color.YELLOW
-                    giftList[4] = "1"
+                    friendsList[5] = "1"
                 } else {
                     //btnStar.tint = Color.BLACK
-                    giftList[4] = "0"
+                    friendsList[5] = "0"
                 }
             }
 
-            val viewModelJob = SupervisorJob()
-            val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
-            uiScope.launch(Dispatchers.IO) {
+            val btnCard = itemView.findViewById(R.id.cvFriend) as CardView
+            btnCard.setOnClickListener {
+                var intent = Intent(itemView.context, ProfileActivity::class.java)
+                var b = Bundle()
+                b.putInt("id", friendsList[1].toInt())
+                intent.putExtras(b)
+                itemView.context.startActivity(intent)
             }
         }
     }

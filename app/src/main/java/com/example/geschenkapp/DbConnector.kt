@@ -28,7 +28,7 @@ class DbConnector: ViewModel() {
     //Loads all users the user is friends with
     //Returns user_id, first_name, last_name, date_of_birth, is_favourite, count_gifts
     fun getFriendsFeed(userId: Int): ResultSet {
-        val query: String = "SELECT f.id, u.first_name, u.last_name, " +
+        val query: String = "SELECT f.id, f.friend_id, u.first_name, u.last_name, " +
                 "u.date_of_birth, f.is_favourite, " +
                 "(SELECT COUNT(*) FROM gifts WHERE user_id=f.friend_id) AS count_gifts " +
                 "FROM friends AS f " +
@@ -44,7 +44,7 @@ class DbConnector: ViewModel() {
     //Needed for settings
     fun loginUser(email: String, password: String): ResultSet {
         val query = "CALL login('$email', '$password');"
-        var statement = connection.prepareStatement(query)
+        var statement = connection.prepareCall(query)
         return statement.executeQuery()
     }
 
@@ -54,7 +54,7 @@ class DbConnector: ViewModel() {
     fun createUser(FirstName: String, LastName: String, DateOfBirth: Date,
                    Email: String, UserPassword: String): ResultSet {
         val query = "CALL addUser($FirstName, $LastName, $DateOfBirth, $Email, $UserPassword);"
-        var statement = connection.prepareStatement(query)
+        var statement = connection.prepareCall(query)
         var result: ResultSet = statement.executeQuery()
         return result
 
@@ -82,7 +82,7 @@ class DbConnector: ViewModel() {
     //privacy 2&1 or friend: return first_name, last_name, profile_picture, profile_privacy
     fun getUser(currentUserId: Int, userId: Int): ResultSet {
         val query: String = "CALL getUserById($currentUserId, $userId);"
-        var statement = connection.prepareStatement(query)
+        var statement = connection.prepareCall(query)
         var result: ResultSet = statement.executeQuery()
         return result
     }
@@ -162,14 +162,14 @@ class DbConnector: ViewModel() {
 
     fun likeComment(userId: Int, commentId: Int, likes: Int): ResultSet {
         val query: String = "CALL applyLikeToComment($userId, $commentId, $likes);"
-        var statement = connection.prepareStatement(query)
+        var statement = connection.prepareCall(query)
         var result: ResultSet = statement.executeQuery()
         return result
     }
 
     fun likeGift(userId: Int, giftId: Int, likes: Int): ResultSet {
         val query: String = "CALL applyLikeToGift($userId, $giftId, $likes);"
-        var statement = connection.prepareStatement(query)
+        var statement = connection.prepareCall(query)
         var result: ResultSet = statement.executeQuery()
         return result
     }

@@ -76,10 +76,10 @@
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
         app:layout_constraintTop_toBottomOf="@id/search"
         tools:itemCount="5"
         tools:layout_editor_absoluteX="0dp"
-        tools:listitem="@layout/card_view_design" />
+        tools:listitem="@layout/friendsfeed_card" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

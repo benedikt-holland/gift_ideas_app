@@ -19,20 +19,21 @@ import kotlinx.coroutines.*
 import java.io.FileNotFoundException
 import kotlin.collections.ArrayList
 
+var db = DbConnector()
+var userId = -1
 
 class MainActivity : AppCompatActivity() {
     lateinit var user: ResultSet
     lateinit var friendsFeed: ResultSet
     lateinit var giftFeed: ResultSet
-    lateinit var adapter: FriendsFeedAdapter
+    lateinit var friendsFeedAdapter: FriendsFeedAdapter
     lateinit var rv: RecyclerView
     private lateinit var binding: ActivityMainBinding
     private lateinit var linearLayoutManager: LinearLayoutManager
-    var db = DbConnector()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-                      
+
         val viewModelJob = SupervisorJob()
         val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
         uiScope.launch(Dispatchers.IO) {
@@ -48,7 +49,7 @@ class MainActivity : AppCompatActivity() {
                 db.connect(url, usr, pwd)
                 user = db.loginUser("Hans@Müller.de", "password")
                 user.next()
-                val userId = user.getInt("id")
+                userId = user.getInt("id")
                 loadFriendsFeed(userId)
             } catch(e: FileNotFoundException) {
                 System.err.println("Missing config.properties file in app/src/main/assets/ containing database credentials")
@@ -71,7 +72,10 @@ class MainActivity : AppCompatActivity() {
             Log.d("MainActivity", "item clicked")
             when (item.itemId) {
                 R.id.ic_bottom_nav_profile -> {
-                    val intent = Intent(this, ProfileActivity::class.java)
+                    var intent = Intent(this, ProfileActivity::class.java)
+                    var b = Bundle()
+                    b.putInt("id", userId)
+                    intent.putExtras(b)
                     startActivity(intent)
                 }
                 R.id.ic_bottom_nav_notifications -> {
@@ -86,6 +90,7 @@ class MainActivity : AppCompatActivity() {
             true
 
         }
+
         rv = findViewById(R.id.recyclerview)
         rv.layoutManager = LinearLayoutManager(rv.context)
         rv.setHasFixedSize(true)
@@ -96,13 +101,14 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                adapter.filter.filter(newText)
+                friendsFeedAdapter.filter.filter(newText)
                 return false
             }
 
         })
 
         getButtonClick()
+
 
         /**
         // getting the recyclerview by its id
@@ -155,8 +161,8 @@ class MainActivity : AppCompatActivity() {
             giftList.add(row)
         }
         withContext(Dispatchers.Main) {
-            adapter = FriendsFeedAdapter(giftList)
-            rv.adapter = adapter
+            friendsFeedAdapter = FriendsFeedAdapter(giftList)
+            rv.adapter = friendsFeedAdapter
         }
     }
 
@@ -171,8 +177,9 @@ class MainActivity : AppCompatActivity() {
             friendsFeedArray.add(row)
         }
         withContext(Dispatchers.Main) {
-            adapter = FriendsFeedAdapter(friendsFeedArray)
-            rv.adapter = adapter
+            friendsFeedAdapter = FriendsFeedAdapter(friendsFeedArray)
+            rv.adapter = friendsFeedAdapter
+            friendsFeedAdapter.notifyDataSetChanged()
         }
     }
 

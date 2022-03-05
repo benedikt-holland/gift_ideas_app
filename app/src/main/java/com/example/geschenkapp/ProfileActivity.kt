@@ -1,5 +1,6 @@
 package com.example.geschenkapp
 
+import android.content.res.TypedArray
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.widget.ImageView
@@ -10,12 +11,19 @@ import java.util.*
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
+import android.widget.ImageButton
+import android.widget.TextView
 import android.widget.Toast
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import java.io.FileNotFoundException
+import java.sql.ResultSet
+import java.sql.SQLException
 
-val tabArray = arrayOf(
+var initTabArray = arrayOf(
+    "Geschenke",
     "Wunschliste",
     "Events",
     "Freunde"
@@ -38,38 +46,86 @@ class ProfileActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
             setDisplayShowHomeEnabled(true)
         }
-
         tabLayout = findViewById(R.id.profileTabLayout)
         viewPager = findViewById(R.id.profileViewPager)
-
         val adapter = TabAdapter(supportFragmentManager, lifecycle)
         viewPager.adapter = adapter
+        binding = ActivityProfileBinding.inflate(layoutInflater)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        var friendUserId: Int = -1
+        val b:Bundle? = intent.extras
+        if (b!=null) {
+            friendUserId = b.getInt("id")
+        }
+
+        var btnSettings: ImageButton = findViewById(R.id.btnSettings)
+        var btnAddFriend: ImageButton = findViewById(R.id.btnAddFriend)
+        var tabArray = initTabArray
+        if (friendUserId==userId) {
+            initTabArray.slice(1..3).toTypedArray()
+            btnSettings.visibility = View.VISIBLE
+            btnAddFriend.visibility = View.GONE
+        } else {
+            initTabArray.slice(0..2).toTypedArray()
+            btnSettings.visibility = View.GONE
+            btnAddFriend.visibility = View.VISIBLE
+        }
 
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = tabArray[position]
         }.attach()
 
-        binding = ActivityProfileBinding.inflate(layoutInflater)
-
-
+        var tvName: TextView = findViewById(R.id.tvName)
+        var tvDateofbirth: TextView = findViewById(R.id.tvProfileDateofbirth)
         val ivProfilepicture: ImageView = findViewById(R.id.ivProfilepicture)
 
         val viewModelJob = SupervisorJob()
-        var uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+        val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
         uiScope.launch(Dispatchers.IO) {
-            var inputStream = assets.open("config.properties")
-            var props = Properties()
-            props.load(inputStream)
-            var auth = props.getProperty("API_AUTH", "")
-            var downloadUri = props.getProperty("API_DOWNLOAD", "") + "bild.png"
-            inputStream.close()
 
-            var imageConnector = ImageConnector()
-            profilePicture = imageConnector.getImage(downloadUri, auth)
-            withContext(Dispatchers.Main) {
-                ivProfilepicture.setImageBitmap(profilePicture)
+            //Load user data
+            var profileUser: ResultSet = db.getUser(userId, friendUserId)
+
+            //Load profile picture
+            try {
+                var inputStream = assets.open("config.properties")
+                var props = Properties()
+                props.load(inputStream)
+                var auth = props.getProperty("API_AUTH", "")
+                var downloadUri = props.getProperty("API_DOWNLOAD", "") + profileUser.getString("profile_picture") + ".png"
+                inputStream.close()
+
+                var imageConnector = ImageConnector()
+                profilePicture = imageConnector.getImage(downloadUri, auth)
+                withContext(Dispatchers.Main) {
+                    ivProfilepicture.setImageBitmap(profilePicture)
+                }
+            } catch (e: FileNotFoundException) {
+                System.err.println("Missing config.properties file in app/src/main/assets/ containing database credentials")
+            } catch (e: SQLException) {
+                println("User has no profile picture")
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
 
+            withContext(Dispatchers.Main) {
+                if (profileUser.next()) {
+                    tvName.text = if (profileUser.getString("last_name") != null) {
+                        profileUser.getString("first_name") + " " + profileUser.getString("last_name")
+                    } else {
+                        profileUser.getString("first_name")
+                    }
+                    try {
+                        tvDateofbirth.text = profileUser.getString("date_of_birth")
+                    } catch(e: SQLException) {
+                        tvDateofbirth.visibility = View.INVISIBLE
+                        println("User privacy settings hides date of birth")
+                    }
+                }
+            }
         }
     }
 
