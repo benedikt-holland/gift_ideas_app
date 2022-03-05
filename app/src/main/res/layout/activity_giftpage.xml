@@ -188,10 +188,10 @@
         android:id="@+id/btnJoin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/tvMemberCount"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:text="@string/join"/>
@@ -200,7 +200,7 @@
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search"/>
+        app:layout_constraintBottom_toTopOf="@id/btnJoin"
+        app:layout_constraintTop_toBottomOf="@id/tvMemberCount"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
