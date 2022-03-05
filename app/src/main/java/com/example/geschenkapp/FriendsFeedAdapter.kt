@@ -12,7 +12,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 //class CustomAdapter(private var mList: ArrayList<ItemsViewModel>) : RecyclerView.Adapter<CustomAdapter.ViewHolder>(), Filterable {
-class FriendsFeedAdapter(private var friendsList: ArrayList<ArrayList<String>>) : RecyclerView.Adapter<FriendsFeedAdapter.ViewHolder>(), Filterable {
+class FriendsFeedAdapter(private var friendsList: ArrayList<ArrayList<String>>) : RecyclerView.Adapter<FriendsFeedAdapter.FriendsFeedViewHolder>(), Filterable {
 
     //test array
     var friendsFilterList = ArrayList<ArrayList<String>>()
@@ -22,21 +22,21 @@ class FriendsFeedAdapter(private var friendsList: ArrayList<ArrayList<String>>) 
         }
     }
     // create new views
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FriendsFeedViewHolder {
         // inflates the card_view_design view
         // that is used to hold list item
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.friendsfeed_card, parent, false)
 
-        return ViewHolder(view)
+        return FriendsFeedViewHolder(view)
     }
 
     // binds the list items to a view
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holderFriendsFeed: FriendsFeedViewHolder, position: Int) {
 
         //val ItemsViewModel = mList[position]
         //holder.bind(mList[position])
-        holder.bind(friendsFilterList[position])
+        holderFriendsFeed.bind(friendsFilterList[position])
 
         // sets the image to the imageview from our itemHolder class
         //holder.imageView.setImageResource(ItemsViewModel.image)
@@ -83,7 +83,7 @@ class FriendsFeedAdapter(private var friendsList: ArrayList<ArrayList<String>>) 
         }
     }
     // Holds the views for adding it to image and text
-    class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
+    class FriendsFeedViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
         fun bind(friendsList: ArrayList<String>) {
             val name: TextView = itemView.findViewById(R.id.tvName)
             val dateofbirth: TextView = itemView.findViewById(R.id.tvFeedDateofbirth)

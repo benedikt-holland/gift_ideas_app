@@ -1,6 +1,5 @@
 package com.example.geschenkapp
 
-import android.content.res.TypedArray
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.widget.ImageView
@@ -15,6 +14,8 @@ import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -46,38 +47,45 @@ class ProfileActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
             setDisplayShowHomeEnabled(true)
         }
-        tabLayout = findViewById(R.id.profileTabLayout)
-        viewPager = findViewById(R.id.profileViewPager)
-        val adapter = TabAdapter(supportFragmentManager, lifecycle)
-        viewPager.adapter = adapter
-        binding = ActivityProfileBinding.inflate(layoutInflater)
     }
 
     override fun onResume() {
         super.onResume()
+
+        //Get userId
         var friendUserId: Int = -1
         val b:Bundle? = intent.extras
         if (b!=null) {
             friendUserId = b.getInt("id")
         }
 
+        //Show settings button for personal profile and add friend button for stranger profile
         var btnSettings: ImageButton = findViewById(R.id.btnSettings)
         var btnAddFriend: ImageButton = findViewById(R.id.btnAddFriend)
         var tabArray = initTabArray
         if (friendUserId==userId) {
-            initTabArray.slice(1..3).toTypedArray()
+            tabArray = initTabArray.slice(1..3).toTypedArray()
             btnSettings.visibility = View.VISIBLE
             btnAddFriend.visibility = View.GONE
         } else {
-            initTabArray.slice(0..2).toTypedArray()
+            tabArray = initTabArray.slice(0..2).toTypedArray()
             btnSettings.visibility = View.GONE
             btnAddFriend.visibility = View.VISIBLE
         }
+
+        //Set tabs for profile page
+        //Hide 'friends' tab for stranger profile and 'gifts' tab for personal profile
+        tabLayout = findViewById(R.id.profileTabLayout)
+        viewPager = findViewById(R.id.profileViewPager)
+        val adapter = ProfileTabAdapter(supportFragmentManager, lifecycle, userId, friendUserId)
+        viewPager.adapter = adapter
+        binding = ActivityProfileBinding.inflate(layoutInflater)
 
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = tabArray[position]
         }.attach()
 
+        //Fill textviews with userdata
         var tvName: TextView = findViewById(R.id.tvName)
         var tvDateofbirth: TextView = findViewById(R.id.tvProfileDateofbirth)
         val ivProfilepicture: ImageView = findViewById(R.id.ivProfilepicture)

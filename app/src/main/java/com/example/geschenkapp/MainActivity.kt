@@ -27,9 +27,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var friendsFeed: ResultSet
     lateinit var giftFeed: ResultSet
     lateinit var friendsFeedAdapter: FriendsFeedAdapter
-    lateinit var rv: RecyclerView
+    lateinit var friendsFeedRv: RecyclerView
     private lateinit var binding: ActivityMainBinding
-    private lateinit var linearLayoutManager: LinearLayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,9 +90,9 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        rv = findViewById(R.id.recyclerview)
-        rv.layoutManager = LinearLayoutManager(rv.context)
-        rv.setHasFixedSize(true)
+        friendsFeedRv = findViewById(R.id.rvFriendsFeed)
+        friendsFeedRv.layoutManager = LinearLayoutManager(friendsFeedRv.context)
+        friendsFeedRv.setHasFixedSize(true)
 
         binding.search.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -162,23 +161,16 @@ class MainActivity : AppCompatActivity() {
         }
         withContext(Dispatchers.Main) {
             friendsFeedAdapter = FriendsFeedAdapter(giftList)
-            rv.adapter = friendsFeedAdapter
+            friendsFeedRv.adapter = friendsFeedAdapter
         }
     }
 
     suspend fun loadFriendsFeed(userId: Int) {
-        var friendsFeedArray = ArrayList<ArrayList<String>>()
         friendsFeed = db.getFriendsFeed(userId)
-        while(friendsFeed.next()) {
-            var row = ArrayList<String>()
-            for (i in 1 until friendsFeed.metaData.columnCount+1) {
-                row.add(friendsFeed.getString(i))
-            }
-            friendsFeedArray.add(row)
-        }
+        val friendsFeedArray = unloadResultSet(friendsFeed)
         withContext(Dispatchers.Main) {
             friendsFeedAdapter = FriendsFeedAdapter(friendsFeedArray)
-            rv.adapter = friendsFeedAdapter
+            friendsFeedRv.adapter = friendsFeedAdapter
             friendsFeedAdapter.notifyDataSetChanged()
         }
     }
@@ -193,4 +185,16 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "gift", Toast.LENGTH_SHORT).show()
         }
     }
+}
+
+fun unloadResultSet(resultSet: ResultSet): ArrayList<ArrayList<String>> {
+    var resultSetArray = ArrayList<ArrayList<String>>()
+    while(resultSet.next()) {
+        var row = ArrayList<String>()
+        for (i in 1 until resultSet.metaData.columnCount+1) {
+            row.add(resultSet.getString(i))
+        }
+        resultSetArray.add(row)
+    }
+    return resultSetArray
 }
