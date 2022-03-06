@@ -86,6 +86,7 @@ class MainActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.ic_bottom_nav_profile -> {
                     val intent = Intent(this, ProfileActivity::class.java)
+                    intent.putExtra("userId", user.getInt("id"))
                     startActivity(intent)
                 }
                 R.id.ic_bottom_nav_notifications -> {
