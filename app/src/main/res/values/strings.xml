@@ -44,4 +44,9 @@
     <string name="giftpage_member_count">10 (8 fehlen)</string>
     <string name="join">Teilnehmen</string>
 
+    <!--loginpage-->
+    <string name="login">Anmelden</string>
+    <string name="email">E-Mail</string>
+    <string name="password">Passwort</string>
+
 </resources>

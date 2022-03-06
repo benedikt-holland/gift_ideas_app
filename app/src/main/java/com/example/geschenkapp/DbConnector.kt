@@ -76,15 +76,6 @@ class DbConnector: ViewModel() {
 
     }
 
-    //Get User from Id for new Activities
-    fun getUserById(userId: Int): ResultSet{
-        val query: String = "SELECT id, first_name, last_name, date_of_birth, email, " +
-                "profile_privacy, profile_picture FROM users WHERE id=$userId;"
-        var statement = connection.prepareStatement(query)
-        var result: ResultSet = statement.executeQuery()
-        return result
-    }
-
     //Open user profile in search bar. Returning columns depended on privacy and friendship status
     //privacy 4: returns nothing
     //privacy 3: returns first_name, last_name, profile_privacy

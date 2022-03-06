@@ -108,7 +108,6 @@ class ProfileActivity : AppCompatActivity() {
         val btnSettings = findViewById(R.id.btnSettings) as ImageButton
         btnSettings.setOnClickListener {
             val intent = Intent(this, ProfileSettingsActivity::class.java)
-            intent.putExtra("userId", user.getInt("id"))
             startActivity(intent)
         }
     }
