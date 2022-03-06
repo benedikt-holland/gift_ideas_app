@@ -20,6 +20,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import java.io.FileNotFoundException
+import java.lang.NullPointerException
 import java.sql.ResultSet
 import java.sql.SQLException
 
@@ -96,6 +97,21 @@ class ProfileActivity : AppCompatActivity() {
 
             //Load user data
             var profileUser: ResultSet = db.getUser(userId, friendUserId)
+            if (profileUser.next()) {
+                withContext(Dispatchers.Main) {
+                    tvName.text = if (profileUser.getString("last_name") != null) {
+                        profileUser.getString("first_name") + " " + profileUser.getString("last_name")
+                    } else {
+                        profileUser.getString("first_name")
+                    }
+                    try {
+                        tvDateofbirth.text = profileUser.getString("date_of_birth")
+                    } catch(e: SQLException) {
+                        tvDateofbirth.visibility = View.INVISIBLE
+                        println("User privacy settings hides date of birth")
+                    }
+                }
+            }
 
             //Load profile picture
             try {
@@ -113,27 +129,13 @@ class ProfileActivity : AppCompatActivity() {
                 }
             } catch (e: FileNotFoundException) {
                 System.err.println("Missing config.properties file in app/src/main/assets/ containing database credentials")
-            } catch (e: SQLException) {
+            } catch (e: NullPointerException) {
                 println("User has no profile picture")
             } catch (e: Exception) {
                 e.printStackTrace()
             }
 
-            withContext(Dispatchers.Main) {
-                if (profileUser.next()) {
-                    tvName.text = if (profileUser.getString("last_name") != null) {
-                        profileUser.getString("first_name") + " " + profileUser.getString("last_name")
-                    } else {
-                        profileUser.getString("first_name")
-                    }
-                    try {
-                        tvDateofbirth.text = profileUser.getString("date_of_birth")
-                    } catch(e: SQLException) {
-                        tvDateofbirth.visibility = View.INVISIBLE
-                        println("User privacy settings hides date of birth")
-                    }
-                }
-            }
+
         }
     }
 
