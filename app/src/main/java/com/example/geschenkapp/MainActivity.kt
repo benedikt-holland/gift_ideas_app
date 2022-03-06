@@ -33,23 +33,13 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        user = DataHolder.getInstance().user
+        db = DbHolder.getInstance().db
+
         val viewModelJob = SupervisorJob()
         val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
         uiScope.launch(Dispatchers.IO) {
             try {
-                var inputStream = assets.open("config.properties")
-                var props = Properties()
-                props.load(inputStream)
-                var usr = props.getProperty("MYSQL_USER", "")
-                var pwd = props.getProperty("MYSQL_PWD", "")
-                var url = props.getProperty("MYSQL_URL", "")
-                inputStream.close()
-
-                db.connect(url, usr, pwd)
-                user = db.loginUser("Hans@Müller.de", "password")
-                user.next()
-                DataHolder.getInstance().user = user
-                DbHolder.getInstance().db = db
                 userId = user.getInt("id")
                 loadFriendsFeed(userId)
                 try {
@@ -62,9 +52,7 @@ class MainActivity : AppCompatActivity() {
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
-            } catch(e: FileNotFoundException) {
-                System.err.println("Missing config.properties file in app/src/main/assets/ containing database credentials")
-            } catch (e: Exception) {
+            }  catch (e: Exception) {
                 e.printStackTrace()
             }
         }

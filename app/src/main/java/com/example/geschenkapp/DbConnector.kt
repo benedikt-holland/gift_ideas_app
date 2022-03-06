@@ -42,10 +42,11 @@ class DbConnector: ViewModel() {
     //Load User when logging in
     //Returns user_id, first_name, last_name, date_of_birth, email, profile_privacy, profile_picture
     //Needed for settings
-    fun loginUser(email: String, password: String): ResultSet {
+    fun loginUser(email: String, password: String): ResultSet? {
         val query = "CALL login('$email', '$password');"
         var statement = connection.prepareCall(query)
-        return statement.executeQuery()
+        statement.execute()
+        return statement.resultSet
     }
 
     //Create new account and log in
