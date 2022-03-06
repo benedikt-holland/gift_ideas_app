@@ -101,6 +101,11 @@ class MainActivity : AppCompatActivity() {
             true
 
         }
+        //set notification number
+        binding.bottomNavigation.getOrCreateBadge(R.id.ic_bottom_nav_notifications).apply {
+            number = 10
+            isVisible = true
+        }
         rv = findViewById(R.id.recyclerview)
         rv.layoutManager = LinearLayoutManager(rv.context)
         rv.setHasFixedSize(true)

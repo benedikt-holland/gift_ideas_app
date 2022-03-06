@@ -14,6 +14,8 @@
     <string name="title_activity_profile">ProfileActivity</string>
     <string name="title_activity_profile_settings">ProfileSettingsActivity</string>
     <string name="title_activity_notification">NotificationActivity</string>
+    <string name="title_activity_giftpage">GiftPageActivity</string>
+
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
@@ -26,5 +28,20 @@
     <string name="tab_left">Wunschliste</string>
     <string name="tab_center">Events</string>
     <string name="tab_right">Freunde</string>
+
+    <!--giftpage-->
+    <string name="giftpage_name_description">Name:</string>
+    <string name="giftpage_name">Buch</string>
+    <string name="giftpage_price_description">Preis:</string>
+    <string name="giftpage_price">12€</string>
+    <string name="giftpage_link_description">Link:</string>
+    <string name="giftpage_link">http://google.com</string>
+    <string name="giftpage_owner_description">Von:</string>
+    <string name="giftpage_owner">Lena</string>
+    <string name="giftpage_privacy_description">Privatssphäre:</string>
+    <string name="giftpage_privacy">public</string>
+    <string name="giftpage_member_count_description">Anzahl Beteiligte:</string>
+    <string name="giftpage_member_count">10 (8 fehlen)</string>
+    <string name="join">Teilnehmen</string>
 
 </resources>
