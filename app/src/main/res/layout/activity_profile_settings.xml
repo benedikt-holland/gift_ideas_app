@@ -14,10 +14,10 @@
         layout="@layout/toolbar" />
 
     <TextView
-        android:id="@+id/tvHello"
+        android:id="@+id/tvToDo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello"
+        android:text="ToDo"
         app:layout_constraintTop_toBottomOf="@id/tToolbar"
         app:layout_constraintLeft_toLeftOf="parent"/>
 
