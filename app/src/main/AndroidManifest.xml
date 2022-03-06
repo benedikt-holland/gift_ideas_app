@@ -25,6 +25,12 @@
             android:parentActivityName=".MainActivity">
         </activity>
         <activity
+            android:name=".GiftPageActivity"
+            android:exported="true"
+            android:label="@string/title_activity_giftpage"
+            android:theme="@style/Theme.Geschenkapp.NoActionBar"
+            android:parentActivityName=".ProfileActivity"/>
+        <activity
             android:name=".MainActivity"
             android:exported="true">
 

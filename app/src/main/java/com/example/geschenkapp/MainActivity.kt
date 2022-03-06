@@ -19,8 +19,6 @@ import kotlinx.coroutines.*
 import java.io.FileNotFoundException
 import kotlin.collections.ArrayList
 
-var db = DbConnector()
-var userId = -1
 
 class MainActivity : AppCompatActivity() {
     lateinit var user: ResultSet
@@ -88,6 +86,11 @@ class MainActivity : AppCompatActivity() {
             }
             true
 
+        }
+        //set notification number
+        binding.bottomNavigation.getOrCreateBadge(R.id.ic_bottom_nav_notifications).apply {
+            number = 10
+            isVisible = true
         }
 
         friendsFeedRv = findViewById(R.id.rvFriendsFeed)
