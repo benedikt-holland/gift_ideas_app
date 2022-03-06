@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var friendsFeedAdapter: FriendsFeedAdapter
     lateinit var friendsFeedRv: RecyclerView
     private var db = DbConnector()
-    private val userId: Int = -1
+    private var userId: Int = -1
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
                 user.next()
                 DataHolder.getInstance().user = user
                 DbHolder.getInstance().db = db
-                val userId = user.getInt("id")
+                userId = user.getInt("id")
                 loadFriendsFeed(userId)
                 try {
                     friendsFeed = db.getFriendsFeed(userId)
