@@ -26,8 +26,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var giftFeed: ResultSet
     lateinit var friendsFeedAdapter: FriendsFeedAdapter
     lateinit var friendsFeedRv: RecyclerView
-    lateinit var db: DbConnector
-    val userId: Int = -1
+    private var db = DbConnector()
+    private val userId: Int = -1
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
