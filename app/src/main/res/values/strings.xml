@@ -12,6 +12,7 @@
     <string name="profile">Profil</string>
     <string name="notifications">Benachrichtigungen</string>
     <string name="title_activity_profile">ProfileActivity</string>
+    <string name="title_activity_profile_settings">ProfileSettingsActivity</string>
     <string name="title_activity_notification">NotificationActivity</string>
     <string name="title_activity_giftpage">GiftPageActivity</string>
 

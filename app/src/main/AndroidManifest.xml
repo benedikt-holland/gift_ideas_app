@@ -1,29 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.geschenkapp">
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
-        android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Geschenkapp">
+        android:theme="@style/Theme.Geschenkapp"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".ProfileSettingsActivity"
+            android:exported="false"
+            android:label="@string/title_activity_profile_settings"
+            android:parentActivityName=".ProfileActivity"
+            android:theme="@style/Theme.Geschenkapp.NoActionBar"/>
         <activity
             android:name=".NotificationActivity"
             android:exported="true"
             android:label="@string/title_activity_notification"
-            android:theme="@style/Theme.Geschenkapp.NoActionBar"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Theme.Geschenkapp.NoActionBar" />
         <activity
             android:name=".ProfileActivity"
             android:exported="true"
             android:label="@string/title_activity_profile"
-            android:theme="@style/Theme.Geschenkapp.NoActionBar"
-            android:parentActivityName=".MainActivity">
-        </activity>
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Theme.Geschenkapp.NoActionBar"></activity>
         <activity
             android:name=".GiftPageActivity"
             android:exported="true"

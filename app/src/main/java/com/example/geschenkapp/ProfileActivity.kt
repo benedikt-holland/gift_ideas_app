@@ -1,8 +1,8 @@
 package com.example.geschenkapp
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.geschenkapp.databinding.ActivityProfileBinding
 import kotlinx.coroutines.*
@@ -10,6 +10,7 @@ import java.util.*
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.widget.*
 import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
@@ -36,6 +37,7 @@ class ProfileActivity : AppCompatActivity() {
     lateinit var viewPager: ViewPager2
     private lateinit var binding: ActivityProfileBinding
     private lateinit var profilePicture: Bitmap
+    lateinit var user: ResultSet
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,6 +93,7 @@ class ProfileActivity : AppCompatActivity() {
         var tvDateofbirth: TextView = findViewById(R.id.tvProfileDateofbirth)
         val ivProfilepicture: ImageView = findViewById(R.id.ivProfilepicture)
 
+        user = DataHolder.getInstance().user
         val viewModelJob = SupervisorJob()
         val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
         uiScope.launch(Dispatchers.IO) {
@@ -118,8 +121,10 @@ class ProfileActivity : AppCompatActivity() {
                 var inputStream = assets.open("config.properties")
                 var props = Properties()
                 props.load(inputStream)
+                val profilePictureFileName = user.getString("profile_picture")
+
                 var auth = props.getProperty("API_AUTH", "")
-                var downloadUri = props.getProperty("API_DOWNLOAD", "") + profileUser.getString("profile_picture") + ".png"
+                var downloadUri = props.getProperty("API_DOWNLOAD", "") + profilePictureFileName
                 inputStream.close()
 
                 var imageConnector = ImageConnector()
@@ -137,6 +142,7 @@ class ProfileActivity : AppCompatActivity() {
 
 
         }
+        getButtonClick()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -153,6 +159,15 @@ class ProfileActivity : AppCompatActivity() {
                 true
             }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun getButtonClick(){
+        val btnSettings = findViewById(R.id.btnSettings) as ImageButton
+        btnSettings.setOnClickListener {
+            val intent = Intent(this, ProfileSettingsActivity::class.java)
+            intent.putExtra("userId", user.getInt("id"))
+            startActivity(intent)
         }
     }
 }

@@ -26,6 +26,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var giftFeed: ResultSet
     lateinit var friendsFeedAdapter: FriendsFeedAdapter
     lateinit var friendsFeedRv: RecyclerView
+    lateinit var db: DbConnector
+    val userId: Int = -1
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,8 +48,19 @@ class MainActivity : AppCompatActivity() {
                 db.connect(url, usr, pwd)
                 user = db.loginUser("Hans@Müller.de", "password")
                 user.next()
-                userId = user.getInt("id")
+                DataHolder.getInstance().user = user
+                val userId = user.getInt("id")
                 loadFriendsFeed(userId)
+                try {
+                    friendsFeed = db.getFriendsFeed(userId)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+                try {
+                    giftFeed = db.getGiftFeedByMemberId(userId)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
             } catch(e: FileNotFoundException) {
                 System.err.println("Missing config.properties file in app/src/main/assets/ containing database credentials")
             } catch (e: Exception) {
