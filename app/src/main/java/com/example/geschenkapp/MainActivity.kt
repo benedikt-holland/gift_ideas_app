@@ -49,6 +49,7 @@ class MainActivity : AppCompatActivity() {
                 user = db.loginUser("Hans@Müller.de", "password")
                 user.next()
                 DataHolder.getInstance().user = user
+                DbHolder.getInstance().db = db
                 val userId = user.getInt("id")
                 loadFriendsFeed(userId)
                 try {

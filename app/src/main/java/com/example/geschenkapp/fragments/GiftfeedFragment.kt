@@ -7,15 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.geschenkapp.ProfileFeedAdapter
-import com.example.geschenkapp.R
-import com.example.geschenkapp.db
-import com.example.geschenkapp.unloadResultSet
+import com.example.geschenkapp.*
 import kotlinx.coroutines.*
 
 class GiftfeedFragment(userId: Int, friendUserId: Int, isWish: Boolean = true): Fragment() {
     lateinit var profileFeedRv: RecyclerView
     lateinit var profileFeedAdapter: ProfileFeedAdapter
+    lateinit var db: DbConnector
     val isWish: Boolean = isWish
     val userId: Int = userId
     val friendUserId: Int = friendUserId
@@ -25,6 +23,7 @@ class GiftfeedFragment(userId: Int, friendUserId: Int, isWish: Boolean = true): 
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.giftfeed, container, false)
+        db = DbHolder.getInstance().db
         return view
     }
 

@@ -12,11 +12,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.*
 import android.view.View
-import android.widget.ImageButton
-import android.widget.TextView
-import android.widget.Toast
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -38,6 +33,7 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var binding: ActivityProfileBinding
     private lateinit var profilePicture: Bitmap
     lateinit var user: ResultSet
+    lateinit var db: DbConnector
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,12 +57,14 @@ class ProfileActivity : AppCompatActivity() {
         if (b!=null) {
             friendUserId = b.getInt("id")
         }
+        user = DataHolder.getInstance().user
+        db = DbHolder.getInstance().db
 
         //Show settings button for personal profile and add friend button for stranger profile
         var btnSettings: ImageButton = findViewById(R.id.btnSettings)
         var btnAddFriend: ImageButton = findViewById(R.id.btnAddFriend)
         var tabArray = initTabArray
-        if (friendUserId==userId) {
+        if (friendUserId==user.getInt("id")) {
             tabArray = initTabArray.slice(1..3).toTypedArray()
             btnSettings.visibility = View.VISIBLE
             btnAddFriend.visibility = View.GONE
@@ -80,7 +78,7 @@ class ProfileActivity : AppCompatActivity() {
         //Hide 'friends' tab for stranger profile and 'gifts' tab for personal profile
         tabLayout = findViewById(R.id.profileTabLayout)
         viewPager = findViewById(R.id.profileViewPager)
-        val adapter = ProfileTabAdapter(supportFragmentManager, lifecycle, userId, friendUserId)
+        val adapter = ProfileTabAdapter(supportFragmentManager, lifecycle, user.getInt("id"), friendUserId)
         viewPager.adapter = adapter
         binding = ActivityProfileBinding.inflate(layoutInflater)
 
@@ -93,13 +91,12 @@ class ProfileActivity : AppCompatActivity() {
         var tvDateofbirth: TextView = findViewById(R.id.tvProfileDateofbirth)
         val ivProfilepicture: ImageView = findViewById(R.id.ivProfilepicture)
 
-        user = DataHolder.getInstance().user
         val viewModelJob = SupervisorJob()
         val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
         uiScope.launch(Dispatchers.IO) {
 
             //Load user data
-            var profileUser: ResultSet = db.getUser(userId, friendUserId)
+            var profileUser: ResultSet = db.getUser(user.getInt("id"), friendUserId)
             if (profileUser.next()) {
                 withContext(Dispatchers.Main) {
                     tvName.text = if (profileUser.getString("last_name") != null) {
