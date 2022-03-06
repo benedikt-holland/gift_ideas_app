@@ -1,15 +1,9 @@
 package com.example.geschenkapp
 
-import CustomAdapter
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
 import java.sql.ResultSet
-import java.sql.SQLException
 import java.util.*
 import android.util.Log
 import android.view.Menu
@@ -21,31 +15,24 @@ import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.geschenkapp.databinding.ActivityMainBinding
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.coroutines.*
 import java.io.FileNotFoundException
+import kotlin.collections.ArrayList
 
 
 class MainActivity : AppCompatActivity() {
     lateinit var user: ResultSet
     lateinit var friendsFeed: ResultSet
     lateinit var giftFeed: ResultSet
-    lateinit var adapter: CustomAdapter
-    lateinit var rv: RecyclerView
+    lateinit var friendsFeedAdapter: FriendsFeedAdapter
+    lateinit var friendsFeedRv: RecyclerView
+    private var db = DbConnector()
+    private var userId: Int = -1
     private lateinit var binding: ActivityMainBinding
-    private lateinit var linearLayoutManager: LinearLayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
 
-		//toolbar
-        supportActionBar?.apply {
-            title = "Home"
-        }
-
-                      
         val viewModelJob = SupervisorJob()
         val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
         uiScope.launch(Dispatchers.IO) {
@@ -58,12 +45,13 @@ class MainActivity : AppCompatActivity() {
                 var url = props.getProperty("MYSQL_URL", "")
                 inputStream.close()
 
-                var db = DbConnector()
                 db.connect(url, usr, pwd)
                 user = db.loginUser("Hans@Müller.de", "password")
                 user.next()
                 DataHolder.getInstance().user = user
-                val userId = user.getInt("id")
+                DbHolder.getInstance().db = db
+                userId = user.getInt("id")
+                loadFriendsFeed(userId)
                 try {
                     friendsFeed = db.getFriendsFeed(userId)
                 } catch (e: Exception) {
@@ -80,13 +68,25 @@ class MainActivity : AppCompatActivity() {
                 e.printStackTrace()
             }
         }
-        
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+
+        //toolbar
+        supportActionBar?.apply {
+            title = "Home"
+        }
+
         //bottom navigation bar
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             Log.d("MainActivity", "item clicked")
             when (item.itemId) {
                 R.id.ic_bottom_nav_profile -> {
-                    val intent = Intent(this, ProfileActivity::class.java)
+                    var intent = Intent(this, ProfileActivity::class.java)
+                    var b = Bundle()
+                    b.putInt("id", userId)
+                    intent.putExtras(b)
                     startActivity(intent)
                 }
                 R.id.ic_bottom_nav_notifications -> {
@@ -106,9 +106,10 @@ class MainActivity : AppCompatActivity() {
             number = 10
             isVisible = true
         }
-        rv = findViewById(R.id.recyclerview)
-        rv.layoutManager = LinearLayoutManager(rv.context)
-        rv.setHasFixedSize(true)
+
+        friendsFeedRv = findViewById(R.id.rvFriendsFeed)
+        friendsFeedRv.layoutManager = LinearLayoutManager(friendsFeedRv.context)
+        friendsFeedRv.setHasFixedSize(true)
 
         binding.search.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -116,15 +117,14 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                adapter.filter.filter(newText)
+                friendsFeedAdapter.filter.filter(newText)
                 return false
             }
 
         })
 
-        getListOfTest()
-
         getButtonClick()
+
 
         /**
         // getting the recyclerview by its id
@@ -166,13 +166,30 @@ class MainActivity : AppCompatActivity() {
     }
         
 
-    private fun getListOfTest() {
-        val testListAbc = ArrayList<String>()
-        for (i in 1..20) {
-            testListAbc.add("item $i")
+    suspend fun loadGiftFeed(userId: Int) {
+        val giftList = ArrayList<ArrayList<String>>()
+        giftFeed = db.getGiftFeedByMemberId(userId)
+        while(giftFeed.next()) {
+            var row = ArrayList<String>()
+            for (i in 1..8) {
+                row.add(giftFeed.getString(i))
+            }
+            giftList.add(row)
         }
-        adapter = CustomAdapter(testListAbc)
-        rv.adapter = adapter
+        withContext(Dispatchers.Main) {
+            friendsFeedAdapter = FriendsFeedAdapter(giftList)
+            friendsFeedRv.adapter = friendsFeedAdapter
+        }
+    }
+
+    suspend fun loadFriendsFeed(userId: Int) {
+        friendsFeed = db.getFriendsFeed(userId)
+        val friendsFeedArray = unloadResultSet(friendsFeed)
+        withContext(Dispatchers.Main) {
+            friendsFeedAdapter = FriendsFeedAdapter(friendsFeedArray)
+            friendsFeedRv.adapter = friendsFeedAdapter
+            friendsFeedAdapter.notifyDataSetChanged()
+        }
     }
 
     private fun getButtonClick(){
@@ -185,4 +202,16 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "gift", Toast.LENGTH_SHORT).show()
         }
     }
+}
+
+fun unloadResultSet(resultSet: ResultSet): ArrayList<ArrayList<String>> {
+    var resultSetArray = ArrayList<ArrayList<String>>()
+    while(resultSet.next()) {
+        var row = ArrayList<String>()
+        for (i in 1 until resultSet.metaData.columnCount+1) {
+            row.add(resultSet.getString(i))
+        }
+        resultSetArray.add(row)
+    }
+    return resultSetArray
 }

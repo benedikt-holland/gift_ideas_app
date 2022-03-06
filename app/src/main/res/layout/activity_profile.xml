@@ -32,7 +32,7 @@
         app:layout_constraintTop_toBottomOf="@+id/ivProfilepicture" />
 
     <TextView
-        android:id="@+id/tvDateofbirth"
+        android:id="@+id/tvProfileDateofbirth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/profile_date_of_birth"
@@ -47,7 +47,18 @@
         android:src="@drawable/ic_settings"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/tvName"
-        app:layout_constraintTop_toTopOf="@+id/tvName" />
+        app:layout_constraintTop_toTopOf="@+id/tvName"
+        android:visibility="visible"/>
+
+    <ImageButton
+        android:id="@+id/btnAddFriend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_addfriend"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/tvName"
+        app:layout_constraintTop_toTopOf="@+id/tvName"
+        android:visibility="gone"/>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/profileTabLayout"
@@ -56,7 +67,7 @@
         app:tabMode="fixed"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvDateofbirth">
+        app:layout_constraintTop_toBottomOf="@+id/tvProfileDateofbirth">
 
         <com.google.android.material.tabs.TabItem
             android:layout_height="wrap_content"
@@ -68,6 +79,20 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"/>
     </com.google.android.material.tabs.TabLayout>
+
+    <!--
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvGiftFeed"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/profileTabLayout"
+        tools:itemCount="4"
+        app:layout_editor_absoluteX="0dp"
+        tools:listitem="@layout/giftfeed_card"/>
+        -->
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/profileViewPager"
@@ -90,8 +115,3 @@
         android:layout_margin="16dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-<!--
-
-
--->
