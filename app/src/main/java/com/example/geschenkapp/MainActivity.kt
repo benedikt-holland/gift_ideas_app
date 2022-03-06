@@ -62,6 +62,7 @@ class MainActivity : AppCompatActivity() {
                 db.connect(url, usr, pwd)
                 user = db.loginUser("Hans@Müller.de", "password")
                 user.next()
+                DataHolder.getInstance().user = user
                 val userId = user.getInt("id")
                 try {
                     friendsFeed = db.getFriendsFeed(userId)
@@ -86,7 +87,6 @@ class MainActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.ic_bottom_nav_profile -> {
                     val intent = Intent(this, ProfileActivity::class.java)
-                    intent.putExtra("userId", user.getInt("id"))
                     startActivity(intent)
                 }
                 R.id.ic_bottom_nav_notifications -> {

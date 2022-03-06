@@ -1,8 +1,8 @@
 package com.example.geschenkapp
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.geschenkapp.databinding.ActivityProfileBinding
 import kotlinx.coroutines.*
@@ -10,7 +10,7 @@ import java.util.*
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.widget.Toast
+import android.widget.*
 import androidx.viewpager2.widget.ViewPager2
 import com.example.geschenkapp.exceptions.NoUserException
 import com.google.android.material.tabs.TabLayout
@@ -57,7 +57,8 @@ class ProfileActivity : AppCompatActivity() {
 
         val ivProfilepicture: ImageView = findViewById(R.id.ivProfilepicture)
 
-        var userId : Int = intent.extras?.getInt("userId") ?: throw NoUserException("There are no extras to read the userId from!")
+        user = DataHolder.getInstance().user
+
         val viewModelJob = SupervisorJob()
         val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
         uiScope.launch(Dispatchers.IO) {
@@ -65,15 +66,6 @@ class ProfileActivity : AppCompatActivity() {
                 var inputStream = assets.open("config.properties")
                 var props = Properties()
                 props.load(inputStream)
-                var usr = props.getProperty("MYSQL_USER", "")
-                var pwd = props.getProperty("MYSQL_PWD", "")
-                var url = props.getProperty("MYSQL_URL", "")
-
-
-                var db = DbConnector()
-                db.connect(url, usr, pwd)
-                user = db.getUserById(userId)
-                user.next()
                 val profilePictureFileName = user.getString("profile_picture")
 
                 var auth = props.getProperty("API_AUTH", "")
