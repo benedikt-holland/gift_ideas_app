@@ -16,6 +16,7 @@ class GiftPageActivity  : AppCompatActivity() {
     lateinit var giftPageCommentsRv: RecyclerView
     private var db = DbConnector()
     private var userId: Int = -1
+    private var giftId: Int = -1
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,6 +29,11 @@ class GiftPageActivity  : AppCompatActivity() {
             // on back button press, it will navigate to parent activity
             setDisplayHomeAsUpEnabled(true)
             setDisplayShowHomeEnabled(true)
+        }
+
+        val b: Bundle? = intent.extras
+        if (b != null) {
+            giftId = b.getInt("id")
         }
         /*giftPageCommentsRv = findViewById(R.id.rvGiftPageComments)
         giftPageCommentsRv.layoutManager = LinearLayoutManager(giftPageCommentsRv.context)
