@@ -12,6 +12,7 @@
     <string name="profile">Profil</string>
     <string name="notifications">Benachrichtigungen</string>
     <string name="title_activity_profile">ProfileActivity</string>
+    <string name="title_activity_profile_settings">ProfileSettingsActivity</string>
     <string name="title_activity_notification">NotificationActivity</string>
     <string name="title_activity_giftpage">GiftPageActivity</string>
 
@@ -42,5 +43,13 @@
     <string name="giftpage_member_count_description">Anzahl Beteiligte:</string>
     <string name="giftpage_member_count">10 (8 fehlen)</string>
     <string name="join">Teilnehmen</string>
+
+    <!--loginpage-->
+    <string name="login">Anmelden</string>
+    <string name="email">E-Mail</string>
+    <string name="password">Passwort</string>
+    <string name="noEmailError">Bitte trage eine E-Mail ein!</string>
+    <string name="noPasswordError">Bitte trage ein Passwort ein!</string>
+    <string name="wrongCredentials">Ihre E-Mail-Adresse und Ihr Kennwort stimmen nicht überein!</string>
 
 </resources>
