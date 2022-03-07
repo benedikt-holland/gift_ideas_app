@@ -19,6 +19,4 @@
   <color name="surfaceDark">#202020</color>
   <!-- Icon color -->
   <color name="favourite">#ffff00</color>
-  <color name="downvote">#ff0000</color>
-  <color name="upvote">#0000ff</color>
 </resources>

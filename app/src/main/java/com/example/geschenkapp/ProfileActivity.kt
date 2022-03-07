@@ -14,8 +14,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.*
 import android.view.View
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.geschenkapp.exceptions.NoUserException
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -41,8 +39,6 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var profilePicture: Bitmap
     lateinit var user: ResultSet
     lateinit var db: DbConnector
-    lateinit var profileFeedRv: RecyclerView
-    lateinit var profileFeedAdapter: ProfileFeedAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,10 +86,6 @@ class ProfileActivity : AppCompatActivity() {
         val adapter =
             ProfileTabAdapter(supportFragmentManager, lifecycle, user.getInt("id"), friendUserId)
         viewPager.adapter = adapter
-
-        profileFeedRv = findViewById(R.id.rvGiftFeed)
-        profileFeedRv.layoutManager = LinearLayoutManager(profileFeedRv.context)
-        profileFeedRv.setHasFixedSize(true)
         binding = ActivityProfileBinding.inflate(layoutInflater)
 
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
@@ -151,7 +143,6 @@ class ProfileActivity : AppCompatActivity() {
                 e.printStackTrace()
             }
 
-            loadGiftFeed(user.getInt("id"), friendUserId)
 
         }
         getButtonClick()
@@ -182,6 +173,7 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
+    private fun useBottomNavBar(){
     suspend fun loadGiftFeed(userId: Int, friendUserId: Int) {
         val giftFeed = db.getGiftFeedByUserId(userId, friendUserId)
         val giftFeedArray = unloadResultSet(giftFeed)
