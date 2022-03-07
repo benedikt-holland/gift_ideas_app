@@ -6,14 +6,7 @@ import java.sql.*
 
 
 class DbConnector: ViewModel() {
-    private val viewModelJob = SupervisorJob()
-    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
     private lateinit var connection: Connection
-
-    override fun onCleared() {
-        super.onCleared()
-        viewModelJob.cancel()
-    }
 
     suspend fun connect(url : String, usr : String, pwd : String) {
         connection = DriverManager.getConnection(
@@ -124,7 +117,8 @@ class DbConnector: ViewModel() {
                 "g.post_privacy, g.gift_picture, g.is_closed, " +
                 "o.first_name AS owner_first_name, o.last_name AS owner_last_name, " +
                 "(SELECT COUNT(*) FROM members WHERE gift_id=g.id) AS member_count, " +
-                "SUM(l.likes) AS likes " +
+                "SUM(l.likes) AS likes, " +
+                "(SELECT likes FROM likes WHERE gift_id=g.id AND user_id=$currentUserId LIMIT 1) AS isLiked " +
                 "FROM gifts AS g " +
                 "LEFT JOIN users AS o ON g.owner_id=o.id " +
                 "LEFT JOIN likes AS l ON g.id=l.gift_id " +

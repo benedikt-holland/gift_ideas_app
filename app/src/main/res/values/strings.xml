@@ -5,7 +5,7 @@
     <string name="back">Zurück</string>
 
     <!--search-->
-    <string name="search_hint">Suche Geschenkidee</string>
+    <string name="search_hint">Suche nach Personen</string>
 
     <!-- bottom navigation bar-->
     <string name="home">Home</string>

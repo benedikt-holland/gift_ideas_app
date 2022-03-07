@@ -50,6 +50,11 @@ class ProfileActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
             setDisplayShowHomeEnabled(true)
         }
+
+        profileFeedRv = findViewById(R.id.rvGiftFeed)
+        profileFeedRv.layoutManager = LinearLayoutManager(profileFeedRv.context)
+        profileFeedRv.setHasFixedSize(true)
+        binding = ActivityProfileBinding.inflate(layoutInflater)
     }
 
     override fun onResume() {
@@ -84,11 +89,6 @@ class ProfileActivity : AppCompatActivity() {
         viewPager = findViewById(R.id.profileViewPager)
         val adapter = ProfileTabAdapter(supportFragmentManager, lifecycle, user.getInt("id"), friendUserId)
         viewPager.adapter = adapter
-
-        profileFeedRv = findViewById(R.id.rvGiftFeed)
-        profileFeedRv.layoutManager = LinearLayoutManager(profileFeedRv.context)
-        profileFeedRv.setHasFixedSize(true)
-        binding = ActivityProfileBinding.inflate(layoutInflater)
 
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = tabArray[position]
@@ -180,9 +180,12 @@ class ProfileActivity : AppCompatActivity() {
         val giftFeed = db.getGiftFeedByUserId(userId, friendUserId)
         val giftFeedArray = unloadResultSet(giftFeed)
         withContext(Dispatchers.Main) {
-            profileFeedAdapter = ProfileFeedAdapter(giftFeedArray)
-            profileFeedRv.adapter = profileFeedAdapter
-            profileFeedAdapter.notifyDataSetChanged()
+            if (profileFeedRv.adapter==null) {
+                profileFeedAdapter = ProfileFeedAdapter(giftFeedArray)
+                profileFeedRv.adapter = profileFeedAdapter
+            } else {
+                profileFeedAdapter.updateData(giftFeedArray)
+            }
         }
     }
 }
