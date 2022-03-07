@@ -221,7 +221,8 @@
         app:layout_constraintTop_toBottomOf="@id/tvMemberCount"
         app:layout_constraintVertical_bias="1.0"
         tools:layout_editor_absoluteX="25dp"
-        tools:listitem="@layout/giftpage_comments_card" />
+        tools:listitem="@layout/giftpage_comments_card"
+        tools:itemCount="5"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

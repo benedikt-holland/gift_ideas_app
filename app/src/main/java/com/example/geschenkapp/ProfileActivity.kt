@@ -62,8 +62,8 @@ class ProfileActivity : AppCompatActivity() {
 
         //Get userId
         var friendUserId: Int = -1
-        val b:Bundle? = intent.extras
-        if (b!=null) {
+        val b: Bundle? = intent.extras
+        if (b != null) {
             friendUserId = b.getInt("id")
         }
         user = DataHolder.getInstance().user
@@ -73,7 +73,7 @@ class ProfileActivity : AppCompatActivity() {
         var btnSettings: ImageButton = findViewById(R.id.btnSettings)
         var btnAddFriend: ImageButton = findViewById(R.id.btnAddFriend)
         var tabArray = initTabArray
-        if (friendUserId==user.getInt("id")) {
+        if (friendUserId == user.getInt("id")) {
             tabArray = initTabArray.slice(1..3).toTypedArray()
             btnSettings.visibility = View.VISIBLE
             btnAddFriend.visibility = View.GONE
@@ -82,12 +82,13 @@ class ProfileActivity : AppCompatActivity() {
             btnSettings.visibility = View.GONE
             btnAddFriend.visibility = View.VISIBLE
         }
-		useBottomNavBar()
+        useBottomNavBar()
         //Set tabs for profile page
         //Hide 'friends' tab for stranger profile and 'gifts' tab for personal profile
         tabLayout = findViewById(R.id.profileTabLayout)
         viewPager = findViewById(R.id.profileViewPager)
-        val adapter = ProfileTabAdapter(supportFragmentManager, lifecycle, user.getInt("id"), friendUserId)
+        val adapter =
+            ProfileTabAdapter(supportFragmentManager, lifecycle, user.getInt("id"), friendUserId)
         viewPager.adapter = adapter
 
         profileFeedRv = findViewById(R.id.rvGiftFeed)
@@ -119,7 +120,7 @@ class ProfileActivity : AppCompatActivity() {
                     }
                     try {
                         tvDateofbirth.text = profileUser.getString("date_of_birth")
-                    } catch(e: SQLException) {
+                    } catch (e: SQLException) {
                         tvDateofbirth.visibility = View.INVISIBLE
                         println("User privacy settings hides date of birth")
                     }
@@ -173,7 +174,7 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
-	private fun getButtonClick() {
+    private fun getButtonClick() {
         val btnSettings = findViewById(R.id.btnSettings) as ImageButton
         btnSettings.setOnClickListener {
             val intent = Intent(this, ProfileSettingsActivity::class.java)
@@ -181,7 +182,7 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
-    suspend fun loadGiftFeed(userId: Int, friendUserId: Int ) {
+    suspend fun loadGiftFeed(userId: Int, friendUserId: Int) {
         val giftFeed = db.getGiftFeedByUserId(userId, friendUserId)
         val giftFeedArray = unloadResultSet(giftFeed)
         withContext(Dispatchers.Main) {
@@ -189,7 +190,9 @@ class ProfileActivity : AppCompatActivity() {
             profileFeedRv.adapter = profileFeedAdapter
             profileFeedAdapter.notifyDataSetChanged()
         }
-        private fun useBottomNavBar(){
+    }
+
+    private fun useBottomNavBar() {
         bottomNavBar = findViewById(R.id.bottomNavigation)
         bottomNavBar.selectedItemId = R.id.ic_bottom_nav_profile
         bottomNavBar.setOnItemSelectedListener { item ->
