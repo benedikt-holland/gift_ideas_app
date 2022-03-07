@@ -7,6 +7,17 @@
     tools:context=".LoginActivity">
 
 
+    <TextView
+        android:id="@+id/tvInvisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btnLogin"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tfEmail"
         android:layout_width="match_parent"
@@ -15,14 +26,16 @@
         android:hint="@string/email"
         android:layout_marginRight="50dp"
         android:layout_marginLeft="50dp"
-        app:layout_constraintVertical_chainStyle="packed"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/tfPassword">
+
+        app:layout_constraintTop_toTopOf="@id/tvInvisible"
+        android:layout_marginTop="-60dp"
+        >
+
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Hans@Müller.d"
+            android:text="Hans@Müller.de"
             />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -31,9 +44,9 @@
         android:id="@+id/tfPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintVertical_chainStyle="packed"
-        app:layout_constraintTop_toBottomOf="@id/tfEmail"
-        app:layout_constraintBottom_toBottomOf="parent"
+
+        app:layout_constraintTop_toTopOf="@id/tvInvisible"
+
 
         android:layout_marginTop="20dp"
         android:hint="@string/password"
