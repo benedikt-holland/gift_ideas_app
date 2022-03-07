@@ -43,15 +43,6 @@ class NotificationActivity : AppCompatActivity() {
         }
     }
 
-/*
-    override fun onBackPressed() {
-        val intent = Intent(this, MainActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        startActivity(intent)
-        super.onBackPressed()
-    }
-*/
-
     private fun useBottomNavBar(){
         bottomNavBar = findViewById(R.id.bottomNavigation)
         bottomNavBar.selectedItemId = R.id.ic_bottom_nav_notifications
@@ -60,17 +51,14 @@ class NotificationActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.ic_bottom_nav_home -> {
                     val intent = Intent(this, MainActivity::class.java)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    startActivity(intent)
-                    //finish()
-                    //finishAffinity()
+                    intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                    startActivityIfNeeded(intent, 0)
                 }
                 R.id.ic_bottom_nav_profile -> {
                     Log.d("ProfileActivity", "notification")
                     val intent = Intent(this, ProfileActivity::class.java)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    startActivity(intent)
-                    //finish()
+                    intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                    startActivityIfNeeded(intent, 0)
                 }
                 R.id.ic_bottom_nav_notifications -> {
                     true

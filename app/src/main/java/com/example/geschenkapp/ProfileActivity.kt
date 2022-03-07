@@ -164,19 +164,13 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
-	private fun getButtonClick(){
+	private fun getButtonClick() {
         val btnSettings = findViewById(R.id.btnSettings) as ImageButton
         btnSettings.setOnClickListener {
             val intent = Intent(this, ProfileSettingsActivity::class.java)
             startActivity(intent)
-
-
-    /*override fun onBackPressed() {
-        val intent = Intent(this, MainActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        startActivity(intent)
-        super.onBackPressed()
-    }*/
+        }
+    }
 
     private fun useBottomNavBar(){
         bottomNavBar = findViewById(R.id.bottomNavigation)
@@ -186,17 +180,15 @@ class ProfileActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.ic_bottom_nav_home -> {
                     val intent = Intent(this, MainActivity::class.java)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    startActivity(intent)
-                    //finish()
-                    //finishAffinity()
+                    //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                    startActivityIfNeeded(intent, 0)
                 }
                 R.id.ic_bottom_nav_notifications -> {
                     Log.d("NotificationActivity", "notification")
                     val intent = Intent(this, NotificationActivity::class.java)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    startActivity(intent)
-                    //finish()
+                    intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                    startActivityIfNeeded(intent, 0)
                 }
                 R.id.ic_bottom_nav_profile -> {
                     true
