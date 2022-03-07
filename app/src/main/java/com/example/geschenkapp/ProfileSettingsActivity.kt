@@ -3,10 +3,7 @@ package com.example.geschenkapp
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
-import android.widget.Spinner
+import android.widget.*
 import com.example.geschenkapp.databinding.ActivityMainBinding
 import com.example.geschenkapp.databinding.ActivityProfileSettingsBinding
 import java.sql.ResultSet
@@ -36,12 +33,16 @@ class ProfileSettingsActivity : AppCompatActivity() {
         user = DataHolder.getInstance().user
         db = DbHolder.getInstance().db
 
-        binding.tvFirstName.setText(user.getString("first_name"))
+        binding.etFirstName.setText(user.getString("first_name"))
         binding.tvLastName.setText(user.getString("last_name"))
 
         spinnerProfilePrivacy()
         spinnerPostPrivacy()
 
+        val btnSave = findViewById(R.id.btnSave) as Button
+        btnSave.setOnClickListener {
+            Toast.makeText(this, R.string.saved, Toast.LENGTH_SHORT).show()
+        }
 
 
     }
