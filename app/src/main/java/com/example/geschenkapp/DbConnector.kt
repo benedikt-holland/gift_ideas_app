@@ -197,8 +197,8 @@ class DbConnector: ViewModel() {
         var result: ResultSet = statement.executeQuery()
     }
 
-    suspend fun removeFriend(friendId: Int) {
-        val query: String = "DELETE FROM friends WHERE id=$friendId;"
+    suspend fun removeFriend(friendUserId: Int, userId: Int) {
+        val query: String = "DELETE FROM friends WHERE friend_id=$friendUserId, user_id=$userId;"
         var statement = connection.prepareStatement(query)
         var result: ResultSet = statement.executeQuery()
     }

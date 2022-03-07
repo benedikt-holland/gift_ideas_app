@@ -58,6 +58,9 @@ class ProfileFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             }
             tvGiftMemberCount.text = profileList[10] + " Teilnehmer"
             tvVotes.text = profileList[11]
+            when(profileList[12]) {
+                null -> 0
+            }
         }
         val btnDownvote = itemView.findViewById(R.id.btnDownvote) as ImageButton
         val btnUpvote = itemView.findViewById(R.id.btnUpvote) as ImageButton
