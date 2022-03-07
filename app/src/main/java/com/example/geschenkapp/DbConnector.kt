@@ -124,7 +124,7 @@ class DbConnector: ViewModel() {
                 "g.post_privacy, g.gift_picture, g.is_closed, " +
                 "o.first_name AS owner_first_name, o.last_name AS owner_last_name, " +
                 "(SELECT COUNT(*) FROM members WHERE gift_id=g.id) AS member_count, " +
-                "SUM(l.likes) AS likes " +
+                "SUM(l.likes) AS likes, (SELECT id FROM members WHERE user_id=$currentUserId AND gift_id=g.id) AS member_id " +
                 "FROM gifts AS g " +
                 "LEFT JOIN users AS o ON g.owner_id=o.id " +
                 "LEFT JOIN likes AS l ON g.id=l.gift_id " +
@@ -232,4 +232,15 @@ class DbConnector: ViewModel() {
         var result: ResultSet = statement.executeQuery()
     }
 
+    suspend fun joinGift(userId: Int, giftId: Int) {
+        val query = "CALL joinGift($userId, $giftId);"
+        var statement = connection.prepareCall(query)
+        statement.executeQuery()
+    }
+
+    suspend fun leaveGift(userId: Int, giftId: Int) {
+        val query = "DELETE FROM members WHERE user_id=$userId AND gift_id=$giftId"
+        var statement = connection.prepareStatement(query)
+        statement.executeQuery()
+    }
 }
