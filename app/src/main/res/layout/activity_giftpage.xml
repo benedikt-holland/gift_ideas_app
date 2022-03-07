@@ -212,19 +212,20 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/btnJoin"
+        app:layout_constraintTop_toBottomOf="@id/tvMemberCount"
+        app:layout_constraintVertical_bias="1.0"
+        tools:itemCount="5"
+        tools:layout_editor_absoluteX="25dp"
+        tools:listitem="@layout/card_view_design" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!--
-      <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@id/btnJoin"
-            app:layout_constraintTop_toBottomOf="@id/tvMemberCount"
-            app:layout_constraintVertical_bias="1.0"
-            tools:itemCount="5"
-            tools:layout_editor_absoluteX="25dp"
-            tools:listitem="@layout/card_view_design" />
+
 
     -->
