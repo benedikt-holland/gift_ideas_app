@@ -182,23 +182,15 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/vSeparator3" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tvPrivacy"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/vSeparator3"
+    <Spinner
+        android:id="@+id/spPrivacy"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_width="60dp">
-
-
-        <AutoCompleteTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="test"
-            android:inputType="none" />
-
-    </com.google.android.material.textfield.TextInputLayout>
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/vSeparator3"
+        android:gravity="end"/>
 
     <View
         android:id="@+id/vSeparator4"
@@ -208,7 +200,7 @@
         android:background="@android:color/darker_gray"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvPrivacy" />
+        app:layout_constraintTop_toBottomOf="@id/tvPrivacyDescription" />
 
     <TextView
         android:id="@+id/tvPostPrivacyDescription"
