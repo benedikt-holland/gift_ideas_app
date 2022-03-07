@@ -12,6 +12,7 @@
     <string name="profile">Profil</string>
     <string name="notifications">Benachrichtigungen</string>
     <string name="title_activity_profile">ProfileActivity</string>
+    <string name="title_activity_profile_settings">ProfileSettingsActivity</string>
     <string name="title_activity_notification">NotificationActivity</string>
     <string name="title_activity_giftpage">GiftPageActivity</string>
 
@@ -36,11 +37,37 @@
     <string name="giftpage_link_description">Link:</string>
     <string name="giftpage_link">http://google.com</string>
     <string name="giftpage_owner_description">Von:</string>
-    <string name="giftpage_owner">Lena</string>
+    <string name="giftpage_owner">Hans</string>
     <string name="giftpage_privacy_description">Privatssphäre:</string>
     <string name="giftpage_privacy">public</string>
     <string name="giftpage_member_count_description">Anzahl Beteiligte:</string>
     <string name="giftpage_member_count">10 (8 fehlen)</string>
     <string name="join">Teilnehmen</string>
+    <string name="gift_picture">Bild von Geschenk</string>
+
+    <!--loginpage-->
+    <string name="login">Anmelden</string>
+    <string name="email">E-Mail</string>
+    <string name="password">Passwort</string>
+    <string name="noEmailError">Bitte trage eine E-Mail ein!</string>
+    <string name="noPasswordError">Bitte trage ein Passwort ein!</string>
+    <string name="wrongCredentials">Ihre E-Mail-Adresse und Ihr Kennwort stimmen nicht überein!</string>
+    <string name="defaultEmail">Hans@Müller.de</string>
+    <string name="defaultPassword">password</string>
+
+    <!--comments-->
+    <string name="comment">Ich finde diese Idee sehr gut, lasst uns zusammenlegen! rubzoiunwezinw rhegnpuw bzuiz rzjbiwornuzqw  zjnwiz wetzn</string>
+
+    <!--card views-->
+    <string name="giftidea">Geschenkidee</string>
+    <string name="addFavorite">add Favorite</string>
+    <string name="giftfeed_price">0€</string>
+    <string name="likeCount">0</string>
+    <string name="suggestionCount">0 Vorschläge</string>
+
+
+    <string name="settingsButton">Einstellungen</string>
+    <string name="addFriend">Freund hinzufügen</string>
+    <string name="floatingActionButton">Floating Action Button</string>
 
 </resources>

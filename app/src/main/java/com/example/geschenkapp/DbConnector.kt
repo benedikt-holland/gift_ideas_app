@@ -28,7 +28,7 @@ class DbConnector: ViewModel() {
     //Loads all users the user is friends with
     //Returns user_id, first_name, last_name, date_of_birth, is_favourite, count_gifts
     fun getFriendsFeed(userId: Int): ResultSet {
-        val query: String = "SELECT f.friend_id AS user_id, u.first_name, u.last_name, " +
+        val query: String = "SELECT f.id, f.friend_id, u.first_name, u.last_name, " +
                 "u.date_of_birth, f.is_favourite, " +
                 "(SELECT COUNT(*) FROM gifts WHERE user_id=f.friend_id) AS count_gifts " +
                 "FROM friends AS f " +
@@ -42,10 +42,11 @@ class DbConnector: ViewModel() {
     //Load User when logging in
     //Returns user_id, first_name, last_name, date_of_birth, email, profile_privacy, profile_picture
     //Needed for settings
-    fun loginUser(email: String, password: String): ResultSet {
+    fun loginUser(email: String, password: String): ResultSet? {
         val query = "CALL login('$email', '$password');"
-        var statement = connection.prepareStatement(query)
-        return statement.executeQuery()
+        var statement = connection.prepareCall(query)
+        statement.execute()
+        return statement.resultSet
     }
 
     //Create new account and log in
@@ -54,7 +55,7 @@ class DbConnector: ViewModel() {
     fun createUser(FirstName: String, LastName: String, DateOfBirth: Date,
                    Email: String, UserPassword: String): ResultSet {
         val query = "CALL addUser($FirstName, $LastName, $DateOfBirth, $Email, $UserPassword);"
-        var statement = connection.prepareStatement(query)
+        var statement = connection.prepareCall(query)
         var result: ResultSet = statement.executeQuery()
         return result
 
@@ -76,22 +77,13 @@ class DbConnector: ViewModel() {
 
     }
 
-    //Get User from Id for new Activities
-    fun getUserById(userId: Int): ResultSet{
-        val query: String = "SELECT id, first_name, last_name, date_of_birth, email, " +
-                "profile_privacy, profile_picture FROM users WHERE id=$userId;"
-        var statement = connection.prepareStatement(query)
-        var result: ResultSet = statement.executeQuery()
-        return result
-    }
-
     //Open user profile in search bar. Returning columns depended on privacy and friendship status
     //privacy 4: returns nothing
     //privacy 3: returns first_name, last_name, profile_privacy
     //privacy 2&1 or friend: return first_name, last_name, profile_picture, profile_privacy
     fun getUser(currentUserId: Int, userId: Int): ResultSet {
         val query: String = "CALL getUserById($currentUserId, $userId);"
-        var statement = connection.prepareStatement(query)
+        var statement = connection.prepareCall(query)
         var result: ResultSet = statement.executeQuery()
         return result
     }
@@ -171,14 +163,14 @@ class DbConnector: ViewModel() {
 
     fun likeComment(userId: Int, commentId: Int, likes: Int): ResultSet {
         val query: String = "CALL applyLikeToComment($userId, $commentId, $likes);"
-        var statement = connection.prepareStatement(query)
+        var statement = connection.prepareCall(query)
         var result: ResultSet = statement.executeQuery()
         return result
     }
 
     fun likeGift(userId: Int, giftId: Int, likes: Int): ResultSet {
         val query: String = "CALL applyLikeToGift($userId, $giftId, $likes);"
-        var statement = connection.prepareStatement(query)
+        var statement = connection.prepareCall(query)
         var result: ResultSet = statement.executeQuery()
         return result
     }
@@ -210,7 +202,7 @@ class DbConnector: ViewModel() {
     }
 
     fun updateFavourite(friendId: Int, isFavourite: Int) {
-        val query: String = "UPDATE friends SET is_favourite=$isFavourite WHERE id=$friendId;"
+        val query: String = "UPDATE friends SET is_favourite=$isFavourite WHERE id=$friendId AND;"
         var statement = connection.prepareStatement(query)
         var result: ResultSet = statement.executeQuery()
     }
