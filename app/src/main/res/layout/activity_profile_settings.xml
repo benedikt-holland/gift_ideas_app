@@ -152,14 +152,13 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/vSeparator2" />
 
-    <TextView
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/tvDarkMode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
-        android:text="@string/giftpage_name"
-        android:textSize="17sp"
+        android:checked="false"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/vSeparator2" />
 
@@ -167,7 +166,6 @@
         android:id="@+id/vSeparator3"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="10dp"
         android:background="@android:color/darker_gray"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -184,16 +182,23 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/vSeparator3" />
 
-    <TextView
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tvPrivacy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
-        android:text="@string/giftpage_name"
-        android:textSize="17sp"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/vSeparator3" />
+        app:layout_constraintTop_toBottomOf="@id/vSeparator3"
+        android:layout_height="wrap_content"
+        android:layout_width="60dp">
+
+
+        <AutoCompleteTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="test"
+            android:inputType="none" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <View
         android:id="@+id/vSeparator4"
