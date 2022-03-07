@@ -20,6 +20,7 @@ class ProfileTabAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle, 
     }
 
     override fun createFragment(position: Int): Fragment {
+        return EventsFragment()
         if (userId==friendUserId) {
             when (position) {
                 0 -> return GiftfeedFragment(userId, friendUserId, true)
