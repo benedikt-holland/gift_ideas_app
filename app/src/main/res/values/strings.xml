@@ -29,6 +29,17 @@
     <string name="tab_center">Events</string>
     <string name="tab_right">Freunde</string>
 
+    <!--profilesettings-->
+    <string name="speichern">Speichern</string>
+    <string name="firstName">Vorname</string>
+    <string name="lastName">Nachname</string>
+    <string name="dateOfBirth">Geburtstag</string>
+    <string name="darkMode">Darkmode</string>
+    <string name="profilePrivacy">Privatsphäre</string>
+    <string name="giftPrivacy">Post Sichtbarkeit</string>
+    <string name="profilePicture">Profilbild</string>
+
+
     <!--giftpage-->
     <string name="giftpage_name_description">Name:</string>
     <string name="giftpage_name">Buch</string>
