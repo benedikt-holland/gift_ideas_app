@@ -12,6 +12,19 @@
         android:layout_width="match_parent"
         layout="@layout/toolbar" />
 
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:menu="@menu/bottom_nav_menu"
+        app:itemIconTint="@drawable/bottom_navbar_color"
+        app:itemTextColor="@drawable/bottom_navbar_color"
+        app:labelVisibilityMode="selected"
+        android:layout_alignParentBottom="true"/>
+
     <ImageView
         android:id="@+id/ivProfilepicture"
         android:layout_width="@dimen/profile_picture"

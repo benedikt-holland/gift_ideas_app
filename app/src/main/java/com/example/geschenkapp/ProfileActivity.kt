@@ -1,7 +1,9 @@
 package com.example.geschenkapp
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.geschenkapp.databinding.ActivityProfileBinding
@@ -13,6 +15,7 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.viewpager2.widget.ViewPager2
 import com.example.geschenkapp.exceptions.NoUserException
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import java.io.FileNotFoundException
@@ -27,6 +30,7 @@ val tabArray = arrayOf(
 class ProfileActivity : AppCompatActivity() {
     lateinit var tabLayout: TabLayout
     lateinit var viewPager: ViewPager2
+    lateinit var bottomNavBar: BottomNavigationView
     private lateinit var binding: ActivityProfileBinding
     private lateinit var profilePicture: Bitmap
     lateinit var user: ResultSet
@@ -42,6 +46,8 @@ class ProfileActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
             setDisplayShowHomeEnabled(true)
         }
+
+        useBottomNavBar()
 
         tabLayout = findViewById(R.id.profileTabLayout)
         viewPager = findViewById(R.id.profileViewPager)
@@ -108,6 +114,46 @@ class ProfileActivity : AppCompatActivity() {
                 true
             }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+
+    /*override fun onBackPressed() {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        startActivity(intent)
+        super.onBackPressed()
+    }*/
+
+    private fun useBottomNavBar(){
+        bottomNavBar = findViewById(R.id.bottomNavigation)
+        bottomNavBar.selectedItemId = R.id.ic_bottom_nav_profile
+        bottomNavBar.setOnItemSelectedListener { item ->
+            Log.d("ProfileActivity", "item clicked")
+            when (item.itemId) {
+                R.id.ic_bottom_nav_home -> {
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    startActivity(intent)
+                    //finish()
+                    //finishAffinity()
+                }
+                R.id.ic_bottom_nav_notifications -> {
+                    Log.d("NotificationActivity", "notification")
+                    val intent = Intent(this, NotificationActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    startActivity(intent)
+                    //finish()
+                }
+                R.id.ic_bottom_nav_profile -> {
+                    true
+                }
+                else -> {
+                    Log.d("ProfileActivity", "item not found")
+                }
+            }
+            true
+
         }
     }
 }

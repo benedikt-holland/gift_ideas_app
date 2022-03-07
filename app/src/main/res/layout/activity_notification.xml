@@ -6,6 +6,19 @@
     android:layout_height="match_parent"
     android:theme="@style/Theme.Geschenkapp">
 
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:menu="@menu/bottom_nav_menu"
+        app:itemIconTint="@drawable/bottom_navbar_color"
+        app:itemTextColor="@drawable/bottom_navbar_color"
+        app:labelVisibilityMode="selected"
+        android:layout_alignParentBottom="true"/>
+
     <include
         android:id="@+id/tToolbar"
         android:layout_height="wrap_content"

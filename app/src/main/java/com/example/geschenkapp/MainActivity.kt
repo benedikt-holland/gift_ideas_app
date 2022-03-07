@@ -2,6 +2,8 @@ package com.example.geschenkapp
 
 import CustomAdapter
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
+import android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.coroutines.CoroutineScope
@@ -45,6 +47,7 @@ class MainActivity : AppCompatActivity() {
             title = "Home"
         }
 
+        useBottomNavBar()
                       
         val viewModelJob = SupervisorJob()
         val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
@@ -79,28 +82,8 @@ class MainActivity : AppCompatActivity() {
                 e.printStackTrace()
             }
         }
-        
-        //bottom navigation bar
-        binding.bottomNavigation.setOnItemSelectedListener { item ->
-            Log.d("MainActivity", "item clicked")
-            when (item.itemId) {
-                R.id.ic_bottom_nav_profile -> {
-                    val intent = Intent(this, ProfileActivity::class.java)
-                    intent.putExtra("userId", user.getInt("id"))
-                    startActivity(intent)
-                }
-                R.id.ic_bottom_nav_notifications -> {
-                    Log.d("NotificationActivity", "notification")
-                    val intent = Intent(this, NotificationActivity::class.java)
-                    startActivity(intent)
-                }
-                else -> {
-                    Log.d("MainActivity", "item not found")
-                }
-            }
-            true
 
-        }
+        useBottomNavBar()
         //set notification number
         binding.bottomNavigation.getOrCreateBadge(R.id.ic_bottom_nav_notifications).apply {
             number = 10
@@ -183,6 +166,37 @@ class MainActivity : AppCompatActivity() {
         val btnGift = findViewById(R.id.btnGeschenk) as Button
         btnGift.setOnClickListener {
             Toast.makeText(this, "gift", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun useBottomNavBar(){
+        //bottom navigation bar
+        binding.bottomNavigation.selectedItemId = R.id.ic_bottom_nav_home
+        binding.bottomNavigation.setOnItemSelectedListener { item ->
+            Log.d("MainActivity", "item clicked")
+            when (item.itemId) {
+                R.id.ic_bottom_nav_profile -> {
+                    val intent = Intent(this, ProfileActivity::class.java)
+                    intent.putExtra("userId", user.getInt("id"))
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    startActivity(intent)
+                    //finish()
+                }
+                R.id.ic_bottom_nav_notifications -> {
+                    Log.d("NotificationActivity", "notification")
+                    val intent = Intent(this, NotificationActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    startActivity(intent)
+                    //finish()
+                }
+                R.id.ic_bottom_nav_home -> {
+                    true
+                }
+                else -> {
+                    Log.d("MainActivity", "item not found")
+                }
+            }
+            true
         }
     }
 }
