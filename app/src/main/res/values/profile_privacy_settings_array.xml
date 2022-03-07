@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="privacy_array">
+    <string-array name="profile_privacy_array">
         <item>@string/profilePrivacyPublic</item>
         <item>@string/profilePrivacyHideFeed</item>
         <item>@string/profilePrivacyNameAndProfilePicture</item>

@@ -63,10 +63,17 @@
     <string name="noPasswordError">Bitte trage ein Passwort ein!</string>
     <string name="wrongCredentials">Ihre E-Mail-Adresse und Ihr Kennwort stimmen nicht überein!</string>
 
-    <!--arrays-->
+    <!--profile privacy array-->
     <string name="profilePrivacyPublic">öffentlich</string>
     <string name="profilePrivacyHideFeed">Feed verstecken</string>
     <string name="profilePrivacyNameAndProfilePicture">Name und Profilbild</string>
     <string name="profilePrivacyName">nur Name</string>
     <string name="profilePrivacyHidden">alles verstecken</string>
+
+    <!--post privacy array-->
+    <string name="postPrivacyPublic">öffentlich, verstecke Teilnehmer</string>
+    <string name="postPrivacyOnlyFriendsOfOwner">nur Freunde des Erstellers</string>
+    <string name="postPrivacyOnlyFriendsOfOwnerHiddenMembers">nur Freunde des Erstellers, verstecke Teilnehmer</string>
+    <string name="postPrivacyHidden">versteckt, nur über Link teilbar</string>
+
 </resources>

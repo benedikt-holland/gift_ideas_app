@@ -40,18 +40,18 @@ class ProfileSettingsActivity : AppCompatActivity() {
         binding.tvLastName.setText(user.getString("last_name"))
 
         spinnerProfilePrivacy()
-
+        spinnerPostPrivacy()
 
 
 
     }
 
     private fun spinnerProfilePrivacy(){
-        val spinner: Spinner = findViewById(R.id.spPrivacy)
+        val spinner: Spinner = findViewById(R.id.spProfilePrivacy)
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter.createFromResource(
             this,
-            R.array.privacy_array,
+            R.array.profile_privacy_array,
             android.R.layout.simple_spinner_item
         ).also { adapter ->
             // Specify the layout to use when the list of choices appears
@@ -60,12 +60,19 @@ class ProfileSettingsActivity : AppCompatActivity() {
             spinner.adapter = adapter
         }
     }
-    fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
-        // An item was selected. You can retrieve the selected item using
-        //parent.getItemAtPosition(pos)
-    }
 
-    fun onNothingSelected(parent: AdapterView<*>) {
-        // Another interface callback
+    private fun spinnerPostPrivacy(){
+        val spinner: Spinner = findViewById(R.id.spPostPrivacy)
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.post_privacy_array,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Apply the adapter to the spinner
+            spinner.adapter = adapter
+        }
     }
 }
