@@ -35,7 +35,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Hans@Müller.de"
+            android:text="@string/defaultEmail"
             />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -59,7 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="textPassword"
-            android:text="password"/>
+            android:text="@string/defaultPassword"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
