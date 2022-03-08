@@ -82,16 +82,5 @@
         tools:layout_editor_absoluteX="0dp"
         tools:listitem="@layout/friendsfeed_card" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabSearchFriend"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_gravity="end|bottom"
-        android:src="@drawable/ic_search_friend"
-        android:layout_margin="16dp"
-        android:contentDescription="@string/floatingActionButton" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
