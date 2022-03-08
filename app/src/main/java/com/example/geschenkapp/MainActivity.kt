@@ -63,10 +63,7 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        //toolbar
-        supportActionBar?.apply {
-            title = "Home"
-        }
+        setSupportActionBar()
 
         //bottom navigation bar
         binding.bottomNavigation.selectedItemId = R.id.ic_bottom_nav_home
@@ -98,11 +95,7 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        //set notification number
-        binding.bottomNavigation.getOrCreateBadge(R.id.ic_bottom_nav_notifications).apply {
-            number = 10
-            isVisible = true
-        }
+        setNotificationNumber()
 
         friendsFeedRv = findViewById(R.id.rvFriendsFeed)
         friendsFeedRv.layoutManager = LinearLayoutManager(friendsFeedRv.context)
@@ -204,6 +197,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun setNotificationNumber(){
+        binding.bottomNavigation.getOrCreateBadge(R.id.ic_bottom_nav_notifications).apply {
+            number = 10
+            isVisible = true
+        }
+    }
+
+    private fun setSupportActionBar(){
+        //toolbar
+        supportActionBar?.apply {
+            title = "Home"
+        }
+    }
 }
 
 fun unloadResultSet(resultSet: ResultSet): ArrayList<ArrayList<String>> {

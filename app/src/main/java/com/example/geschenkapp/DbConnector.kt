@@ -45,9 +45,9 @@ class DbConnector: ViewModel() {
     //Create new account and log in
     //Returns user_id, first_name, last_name, date_of_birth, email, profile_privacy, profile_picture
     //Needed for settings
-    suspend fun createUser(FirstName: String, LastName: String, DateOfBirth: Date,
+    suspend fun createUser(FirstName: String, LastName: String, DateOfBirth: LocalDate,
                    Email: String, UserPassword: String): ResultSet {
-        val query = "CALL addUser($FirstName, $LastName, $DateOfBirth, $Email, $UserPassword);"
+        val query = "CALL addUser('$FirstName', '$LastName', '$DateOfBirth', '$Email', '$UserPassword');"
         var statement = connection.prepareCall(query)
         var result: ResultSet = statement.executeQuery()
         return result

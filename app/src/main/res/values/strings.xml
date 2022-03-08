@@ -38,7 +38,7 @@
     <string name="profilePrivacy">Privatsphäre</string>
     <string name="giftPrivacy">Post Sichtbarkeit</string>
     <string name="profilePicture">Profilbild</string>
-    <string name="defaultDateOfBirth">01.01.2000</string>
+    <string name="defaultDateOfBirth">2000-01-01</string>
     <string name="defaultEmail">vorname@nachname.de</string>
     <string name="defaultFirstname">Vorname</string>
     <string name="defaultLastname">Nachname</string>
@@ -107,5 +107,6 @@
 
 	<!-- register-->
     <string name="register">Registrieren</string>
+
 
 </resources>
