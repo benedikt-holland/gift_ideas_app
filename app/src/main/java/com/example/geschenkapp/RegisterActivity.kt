@@ -15,9 +15,7 @@ import kotlinx.coroutines.launch
 import java.sql.ResultSet
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-mport android.app.DatePickerDialog
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
+import android.app.DatePickerDialog
 import android.widget.TextView
 import java.util.*
 
@@ -26,7 +24,8 @@ class RegisterActivity : AppCompatActivity() {
     lateinit var user: ResultSet
     private var db = DbConnector()
     private lateinit var binding: ActivityRegisterBinding
-	lateinit var datepicker: TextView
+    lateinit var datepicker: TextView
+    lateinit var clickView: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +39,43 @@ class RegisterActivity : AppCompatActivity() {
 
 
         getButtonClick()
+        setDate()
+    }
+
+    private fun setDate() {
+        val c = Calendar.getInstance()
+        val year = c.get(Calendar.YEAR)
+        val month = c.get(Calendar.MONTH)
+        val day = c.get(Calendar.DAY_OF_MONTH)
+        var mt = "0"
+        var d = "0"
+
+        datepicker = findViewById(R.id.tvDateOfBirth)
+        clickView = findViewById(R.id.tvForClick)
+        clickView.setOnClickListener {
+            val dpd = DatePickerDialog(
+                this,
+                DatePickerDialog.OnDateSetListener { view, mYear, mMonth, mDay ->
+                    val month2 = mMonth + 1
+                    if (month2 < 10) {
+                        mt = "0" + month2
+                    } else {
+                        mt = month2.toString()
+                    }
+                    if (mDay < 10) {
+                        d = "0" + mDay
+                    } else {
+                        d = mDay.toString()
+                    }
+                    datepicker.setText("" + mYear + "-" + mt + "-" + d)
+                },
+                year,
+                month,
+                day
+            )
+            dpd.show()
+        }
+
     }
 
     private fun getButtonClick() {
@@ -49,7 +85,7 @@ class RegisterActivity : AppCompatActivity() {
             //read values from frontend
             var firstName = binding.tfFirstname.editText?.text.toString()
             var lastName = binding.tfLastname.editText?.text.toString()
-            var dateOfBirthString = binding.tfDateofbirth.editText?.text.toString()
+            var dateOfBirthString = binding.tvDateOfBirth.text.toString()
             var email = binding.tfEmail.editText?.text.toString()
             var password = binding.tfPassword.editText?.text.toString()
 
@@ -86,8 +122,6 @@ class RegisterActivity : AppCompatActivity() {
                 }
 
 
-
-
                 var tempUser = db.createUser(firstName, lastName, dateOfBirth, email, password)
                 tempUser.next()
                 user = tempUser
@@ -98,32 +132,7 @@ class RegisterActivity : AppCompatActivity() {
                 startActivity(intent)
             }
 
-			private fun setDate(){
-        val c = Calendar.getInstance()
-        val year = c.get(Calendar.YEAR)
-        val month = c.get(Calendar.MONTH)
-        val day = c.get(Calendar.DAY_OF_MONTH)
-        var mt = "0"
-        var d = "0"
 
-        datepicker = findViewById(R.id.tvDateOfBirth)
-        datepicker.setOnClickListener{
-            val dpd = DatePickerDialog(this, DatePickerDialog.OnDateSetListener{ view, mYear, mMonth, mDay ->
-                val month2 = mMonth + 1
-                if(month2<10){
-                    mt = "0" + month2
-                } else{
-                    mt = month2.toString()
-                }
-                if(mDay<10){
-                    d = "0" + mDay
-                } else{
-                    d = mDay.toString()
-                }
-                datepicker.setText(""+ mYear + "-" + mt + "-"+ d )
-            }, year, month, day)
-            dpd.show()
-			}
         }
     }
 }

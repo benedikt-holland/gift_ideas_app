@@ -103,6 +103,8 @@
 
     <!-- register-->
     <string name="register">Register</string>
+    <string name="setDateOfBirth">select date of birth</string>
+
 
 
 </resources>

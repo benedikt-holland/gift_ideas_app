@@ -107,6 +107,7 @@
 
 	<!-- register-->
     <string name="register">Registrieren</string>
+    <string name="setDateOfBirth">Geburtsdatum wählen</string>
 
 
 </resources>
