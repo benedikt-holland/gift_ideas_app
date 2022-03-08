@@ -3,6 +3,7 @@ package com.example.geschenkapp
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.*
 import java.sql.*
+import java.time.LocalDate
 
 
 class DbConnector: ViewModel() {
@@ -222,6 +223,23 @@ class DbConnector: ViewModel() {
         val query: String = "DELETE FROM gifts WHERE owner_id=$currentUserId AND id=$giftId;"
         var statement = connection.prepareStatement(query)
         var result: ResultSet = statement.executeQuery()
+    }
+
+    fun editUser(userId: Int, firstName : String, lastName : String, dateOfBirth : LocalDate,
+                 email: String, profilePrivacy : Int, profilePicture : String){
+        val query : String = "UPDATE db.users SET first_name=\"$firstName\", last_name=\"$lastName\"," +
+                " date_of_birth=\"$dateOfBirth\", email=\"$email\", profile_privacy=$profilePrivacy, profile_picture=\"$profilePicture\"" +
+                " WHERE id=$userId;"
+        var statement = connection.prepareStatement(query)
+        statement.executeUpdate()
+    }
+
+    fun checkIfEmailExistsOnOtherUser( userId: Int, email: String):Boolean{
+        val query : String = "SELECT u.id FROM users AS u WHERE u.email = \"$email\" AND u.id != $userId;"
+        var statement = connection.prepareStatement(query)
+        statement.execute()
+        var result : ResultSet = statement.resultSet
+        return result.next()
     }
 
 }
