@@ -38,7 +38,7 @@
     <string name="profilePrivacy">Privatsphäre</string>
     <string name="giftPrivacy">Post Sichtbarkeit</string>
     <string name="profilePicture">Profilbild</string>
-    <string name="defaultDateOfBirth">hier klicken</string>
+    <string name="defaultDateOfBirth">Geburtsdatum wählen</string>
     <string name="defaultEmail">vorname@nachname.de</string>
     <string name="defaultFirstname">Vorname</string>
     <string name="defaultLastname">Nachname</string>

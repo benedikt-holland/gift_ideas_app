@@ -252,7 +252,6 @@ class ProfileSettingsActivity : AppCompatActivity() {
         var mt = "0"
         var d = "0"
 
-
         binding.tvDateOfBirth.setOnClickListener{
             val dpd = DatePickerDialog(this, DatePickerDialog.OnDateSetListener{view, mYear, mMonth, mDay ->
                 val month2 = mMonth + 1
@@ -271,9 +270,4 @@ class ProfileSettingsActivity : AppCompatActivity() {
             dpd.show()
         }
     }
-    /*private fun updateDateInView() {
-        val myFormat = "yyyy/mm/dd" // mention the format you need
-        val sdf = SimpleDateFormat(myFormat, Locale.GERMAN)
-        binding.tvDateOfBirth.text = sdf.format(calendar.getTime())
-    }*/
 }
