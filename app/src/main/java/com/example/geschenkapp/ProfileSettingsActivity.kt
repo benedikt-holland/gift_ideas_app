@@ -1,17 +1,18 @@
 package com.example.geschenkapp
 
+import android.app.UiModeManager
+import android.os.Bundle
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapRegionDecoder
-import android.net.Uri
-import android.os.Bundle
 import android.os.Looper
 import android.provider.MediaStore
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import com.example.geschenkapp.databinding.ActivityProfileSettingsBinding
 import kotlinx.coroutines.*
 import java.io.File
@@ -20,8 +21,10 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
 
+
 class ProfileSettingsActivity : AppCompatActivity() {
 
+    lateinit var uiModeManager: UiModeManager
     lateinit var user: ResultSet
     private var db = DbConnector()
     private lateinit var binding: ActivityProfileSettingsBinding
@@ -112,6 +115,7 @@ class ProfileSettingsActivity : AppCompatActivity() {
 
             //Convert date input to date
             val dateOfBirth = LocalDate.parse(dateOfBirthInput, DateTimeFormatter.ISO_DATE)
+        getSwitchState()
 
 
             //Push new options to Database
@@ -207,5 +211,28 @@ class ProfileSettingsActivity : AppCompatActivity() {
             // Apply the adapter to the spinner
             spinner.adapter = adapter
         }
+    }
+
+    private fun getSwitchState(){
+        binding = ActivityProfileSettingsBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+
+        binding.swDarkMode.setOnCheckedChangeListener { compoundButton, b ->
+            if (b){
+                // when switch button is checked
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                delegate.applyDayNight()
+            }else{
+                // if switch button is unchecked
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                delegate.applyDayNight()
+            }
+        }
+
+    }
+
+    override fun onNightModeChanged(mode: Int) {
+        super.onNightModeChanged(mode)
     }
 }
