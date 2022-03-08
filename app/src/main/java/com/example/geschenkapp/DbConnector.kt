@@ -96,14 +96,30 @@ class DbConnector: ViewModel() {
     //Returns gift_id, title, price, gift_picture, user_first_name, user_last_name,
     // owner_first_name, owner_last_name
     suspend fun getGiftFeedByMemberId(memberId: Int): ResultSet {
-        val query: String = "SELECT g.id, g.title, g.price, g.gift_picture, " +
+        /*val query: String = "SELECT g.id, g.title, g.price, g.gift_picture, " +
                 "u.first_name AS user_first_name, u.last_name AS user_last_name, " +
                 "o.first_name AS owner_first_name, o.last_name AS owner_last_name " +
                 "FROM gifts AS g " +
                 "LEFT JOIN users AS o ON g.owner_id=o.id " +
                 "LEFT JOIN users AS u ON g.user_id = u.id " +
                 "LEFT JOIN members AS m ON g.id=m.gift_id " +
-                "WHERE m.user_id = $memberId AND g.is_closed=0;"
+                "WHERE m.user_id = $memberId AND g.is_closed=0;"*/
+        val query: String = "SELECT g.id, g.title, g.price, g.owner_id, g.is_wish, " +
+                "g.post_privacy, g.gift_picture, g.is_closed, " +
+                "o.first_name AS owner_first_name, o.last_name AS owner_last_name, " +
+                "(SELECT COUNT(*) FROM members WHERE gift_id=g.id) AS member_count, " +
+                "SUM(l.likes) AS likes, " +
+                "(SELECT id FROM members WHERE user_id=$memberId AND gift_id=g.id) AS member_id, " +
+                "(SELECT likes FROM likes WHERE gift_id=g.id AND user_id=$memberId LIMIT 1) AS isLiked " +
+                "FROM gifts AS g " +
+                "LEFT JOIN users AS o ON g.owner_id=o.id " +
+                "LEFT JOIN likes AS l ON g.id=l.gift_id " +
+                "LEFT JOIN members AS m ON g.id=m.gift_id " +
+                "WHERE m.user_id = $memberId AND " +
+                "(post_privacy=0 OR post_privacy=1 OR post_privacy=2 AND EXISTS( " +
+                "SELECT * FROM friends WHERE user_id=$memberId AND friend_id=g.owner_id)) " +
+                "GROUP BY g.id " +
+                "ORDER BY g.is_closed DESC, likes DESC;"
         var statement = connection.prepareStatement(query)
         var result: ResultSet = statement.executeQuery()
         return result

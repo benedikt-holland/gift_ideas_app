@@ -236,7 +236,11 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     suspend fun loadGiftFeed(userId: Int, friendUserId: Int) {
-        val giftFeed = db.getGiftFeedByUserId(userId, friendUserId)
+        val giftFeed = if (userId != friendUserId) {
+            db.getGiftFeedByUserId(userId, friendUserId)
+        } else {
+            db.getGiftFeedByMemberId(userId)
+        }
         val giftFeedArray = unloadResultSet(giftFeed)
         withContext(Dispatchers.Main) {
             if (profileFeedRv.adapter==null) {
