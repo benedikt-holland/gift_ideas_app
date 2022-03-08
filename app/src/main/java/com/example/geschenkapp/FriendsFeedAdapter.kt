@@ -11,10 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 import java.util.*
 import kotlin.collections.ArrayList
 
-//class CustomAdapter(private var mList: ArrayList<ItemsViewModel>) : RecyclerView.Adapter<CustomAdapter.ViewHolder>(), Filterable {
+//Adapter for friends feed recyclerview on home screen
 class FriendsFeedAdapter(private var friendsList: ArrayList<ArrayList<String>>) : RecyclerView.Adapter<FriendsFeedAdapter.FriendsFeedViewHolder>(), Filterable {
 
-    //test array
+    //Initiate FilterList
     var friendsFilterList = ArrayList<ArrayList<String>>()
     init {
         for (row in friendsList) {
@@ -33,17 +33,7 @@ class FriendsFeedAdapter(private var friendsList: ArrayList<ArrayList<String>>) 
 
     // binds the list items to a view
     override fun onBindViewHolder(holderFriendsFeed: FriendsFeedViewHolder, position: Int) {
-
-        //val ItemsViewModel = mList[position]
-        //holder.bind(mList[position])
         holderFriendsFeed.bind(friendsFilterList[position])
-
-        // sets the image to the imageview from our itemHolder class
-        //holder.imageView.setImageResource(ItemsViewModel.image)
-
-        // sets the text to the textview from our itemHolder class
-        //holder.textView.text = ItemsViewModel.text
-
     }
 
     // return the number of the items in the list
@@ -52,22 +42,26 @@ class FriendsFeedAdapter(private var friendsList: ArrayList<ArrayList<String>>) 
         return friendsFilterList.size
     }
 
+    //Set filter when searching through search bar
     override fun getFilter(): Filter {
         return object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
                 val charSearch = constraint.toString()
                 val resultList = ArrayList<ArrayList<String>>()
+                //Return all if empty
                 if (charSearch.isEmpty()) {
                     for (row in friendsList) {
                         resultList.add(row)
                     }
                 } else {
+                    //Assemble full name
                     for (row in friendsList) {
                         val name = if(row[3]!=null) {
                            row[2] + " " + row[3]
                         } else {
                             row[2]
                         }
+                        //Check for first name, last name and combination
                         if (row[2].lowercase(Locale.ROOT).contains(charSearch.lowercase(Locale.ROOT)) || (row[3]!=null && row[3].lowercase(Locale.ROOT).contains(charSearch.lowercase(Locale.ROOT))) ||
                             name.lowercase(Locale.ROOT).contains(charSearch.lowercase(Locale.ROOT))) {
                             resultList.add(row)
@@ -100,8 +94,9 @@ class FriendsFeedAdapter(private var friendsList: ArrayList<ArrayList<String>>) 
                 name.text = friendsList[2]
             }
             dateofbirth.text = friendsList[4]
-            count.text = friendsList[6] + " Vorschläge"
+            count.text = friendsList[6] + " Vorschläge" //.getString(R.string.suggestionCount)
 
+            //On click listener for favourite function
             val btnStar = itemView.findViewById(R.id.btnAddFavourite) as ImageButton
             btnStar.setOnClickListener {
                 if (friendsList[5].toInt()==0) {
@@ -113,6 +108,7 @@ class FriendsFeedAdapter(private var friendsList: ArrayList<ArrayList<String>>) 
                 }
             }
 
+            //On click listener for clicking on cards in recyclerview
             val btnCard = itemView.findViewById(R.id.cvFriend) as CardView
             btnCard.setOnClickListener {
                 var intent = Intent(itemView.context, ProfileActivity::class.java)

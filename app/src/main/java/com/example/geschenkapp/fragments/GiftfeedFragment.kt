@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.geschenkapp.*
 import kotlinx.coroutines.*
 
+//Fragment Container for Tab Giftideas on Profile page
 class GiftfeedFragment(userId: Int, friendUserId: Int, isWish: Boolean = true): Fragment() {
     lateinit var profileFeedRv: RecyclerView
     lateinit var profileFeedAdapter: ProfileFeedAdapter

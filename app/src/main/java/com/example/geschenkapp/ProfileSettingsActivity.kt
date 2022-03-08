@@ -26,6 +26,7 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 
+//Class for profile settings page
 class ProfileSettingsActivity : AppCompatActivity() {
 
     lateinit var uiModeManager: UiModeManager

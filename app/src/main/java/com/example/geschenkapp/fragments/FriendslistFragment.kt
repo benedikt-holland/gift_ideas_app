@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.geschenkapp.R
 
+//Fragment Container for Tab Friends on Profile page
 class FriendslistFragment: Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,

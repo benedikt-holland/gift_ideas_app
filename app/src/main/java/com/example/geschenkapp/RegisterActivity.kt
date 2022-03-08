@@ -19,6 +19,7 @@ import android.app.DatePickerDialog
 import android.widget.TextView
 import java.util.*
 
+//Class for register page
 class RegisterActivity : AppCompatActivity() {
 
     lateinit var user: ResultSet

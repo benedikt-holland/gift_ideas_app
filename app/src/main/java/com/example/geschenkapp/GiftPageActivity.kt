@@ -10,12 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.*
 import java.sql.ResultSet
 
+//Class for gift detail page
 class GiftPageActivity  : AppCompatActivity() {
 
     lateinit var user: ResultSet
-    lateinit var friendsFeed: ResultSet
-    lateinit var giftPageCommentsAdapter: GiftpageCommentsAdapter
-    lateinit var giftPageCommentsRv: RecyclerView
     private var db = DbConnector()
     private var giftId: Int = -1
     private var memberId: Int? = null
@@ -27,6 +25,7 @@ class GiftPageActivity  : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         var isNew = false
         setContentView(R.layout.activity_giftpage)
+        //Set up action bar
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.apply {
             // show back button on toolbar
@@ -35,14 +34,18 @@ class GiftPageActivity  : AppCompatActivity() {
             setDisplayShowHomeEnabled(true)
         }
 
+        //Get dataholders with userdata and database connector
         user = DataHolder.getInstance().user
         db = DbHolder.getInstance().db
 
+        //Extract giftId and user id of selected profile
         val b: Bundle? = intent.extras
         if (b != null) {
             giftId = b.getInt("id")
             profileUserId = b.getInt("profileUserId")
         }
+        //giftId returns 0 if none is specified
+        //No gift idea means a new gift is being created
         isNew = giftId == 0
 
         val tvName: TextView = findViewById(R.id.tvName)
@@ -57,9 +60,11 @@ class GiftPageActivity  : AppCompatActivity() {
         val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
         uiScope.launch(Dispatchers.IO) {
             userId = user.getInt("id")
+            //Get gift data from database
             var gift = db.getGiftById(userId, giftId)
             if (gift.next()) {
                 withContext(Dispatchers.Main) {
+                    //Set text view content
                     tvName.text = gift.getString("title")
                     tvPrice.text = gift.getString("price")
                     tvLink.text = gift.getString("gift_link")
@@ -69,6 +74,7 @@ class GiftPageActivity  : AppCompatActivity() {
                     } else {
                         tvOwner.text = gift.getString("owner_first_name")
                     }
+                    //Disable Edit Views if user is not the owner
                     if (gift.getInt("owner_id") == userId) {
                         tvName.isEnabled = true
                         tvPrice.isEnabled = true
@@ -80,6 +86,7 @@ class GiftPageActivity  : AppCompatActivity() {
                         tvLink.isEnabled = false
                         spPrivacy.isEnabled = false
                     }
+                    //Set name of profile user onto actionbar
                     supportActionBar?.apply {
                         if (gift.getString("user_last_name") != null) {
                             title =
@@ -89,8 +96,11 @@ class GiftPageActivity  : AppCompatActivity() {
                         }
                     }
 
+                    //Preselect privacy settings spinner
                     spPrivacy.setSelection(gift.getInt("post_privacy"))
                     tvMemberCount.text = gift.getString("member_count")
+                    //Update Join button:
+                    // 'Leave' if member, 'Join' if no member, 'Save changes' if owner
                     if (!isNew) {
                         updateJoinButtonColor(
                             btnJoin,
@@ -100,10 +110,12 @@ class GiftPageActivity  : AppCompatActivity() {
                     } else {
                         updateJoinButtonColor(btnJoin, null, userId)
                     }
+                    //Set listener for join button
                     btnJoin.setOnClickListener {
                         val viewModelJob = SupervisorJob()
                         val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
                         uiScope.launch(Dispatchers.IO) {
+                            //User is owner of gift
                             if (isNew || userId == gift.getInt("owner_id")) {
                                 val profilePrivacyArray: Array<String> =
                                     resources.getStringArray(R.array.profile_privacy_array)
@@ -113,6 +125,7 @@ class GiftPageActivity  : AppCompatActivity() {
                                         postPrivacy = i
                                     }
                                 }
+                                //Update dabase according to input data
                                 try {
                                     db.updateGift(
                                         if (isNew) null else giftId,
@@ -130,6 +143,7 @@ class GiftPageActivity  : AppCompatActivity() {
                                         Toast.LENGTH_LONG
                                     ).show()
                                 }
+                                // If not owner
                             } else {
                                 var memberCount: Int = gift.getInt("member_count")
                                 try {
@@ -137,10 +151,12 @@ class GiftPageActivity  : AppCompatActivity() {
                                 } catch (e: Exception) {
                                     memberId = null
                                 }
+                                //When user is not a member of gift -> Join
                                 if (memberId != null && memberId != 0) {
                                     db.leaveGift(memberId!!)
                                     memberCount -= 1
                                     memberId = null
+                                    //When user is member of gift -> Leave
                                 } else {
                                     val memberSet: ResultSet = db.joinGift(userId, giftId)
                                     if (memberSet.next()) {
@@ -149,11 +165,13 @@ class GiftPageActivity  : AppCompatActivity() {
                                     memberCount += 1
                                 }
                                 withContext(Dispatchers.Main) {
+                                    //Update Text and color of join button
                                     updateJoinButtonColor(
                                         btnJoin,
                                         memberId,
                                         gift.getInt("owner_id")
                                     )
+                                    //Update member count
                                     tvMemberCount.text = memberCount.toString()
                                 }
                             }
@@ -170,6 +188,8 @@ class GiftPageActivity  : AppCompatActivity() {
 
     }
 
+    //Sets Join button text and color according to
+    // Red 'Leave' if member, Green 'Join' if no member, Blue 'Save changes' if owner
     fun updateJoinButtonColor(btnJoin: Button, memberId: Int?, ownerId: Int) {
         if (ownerId == userId) {
             btnJoin.text = "Änderungen speichern"
@@ -183,6 +203,7 @@ class GiftPageActivity  : AppCompatActivity() {
         }
     }
 
+    //Call profile activity with userId
     override fun onBackPressed() {
         var intent = Intent(this, ProfileActivity::class.java)
         var b = Bundle()
@@ -192,6 +213,7 @@ class GiftPageActivity  : AppCompatActivity() {
         startActivityIfNeeded(intent, 0)
     }
 
+    //Set spinner data
     private fun spinnerPostPrivacy(){
         val spinner: Spinner = findViewById(R.id.spGiftpagePostPrivacy)
         // Create an ArrayAdapter using the string array and a default spinner layout

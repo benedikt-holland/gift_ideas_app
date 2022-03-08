@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import com.example.geschenkapp.GiftPageActivity
 import com.example.geschenkapp.R
 
+//Fragment Container for Tab Wishlist on Profile page
 class WishlistFragment: Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,

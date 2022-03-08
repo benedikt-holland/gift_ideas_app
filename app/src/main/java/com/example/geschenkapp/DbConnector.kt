@@ -6,6 +6,7 @@ import java.sql.*
 import java.time.LocalDate
 
 
+//Connector for mysql database, contains all SQL Methods for backend
 class DbConnector: ViewModel() {
     private lateinit var connection: Connection
 
@@ -152,6 +153,7 @@ class DbConnector: ViewModel() {
 
     }
 
+    //Get gift when clicking on giftfeed on profile page
     suspend fun getGiftById(userId: Int, giftId: Int): ResultSet {
         val query: String = "SELECT g.id, g.title, g.price, g.owner_id, g.user_id, g.is_wish, " +
                 "g.post_privacy, g.gift_link, g.gift_picture, g.is_closed, " +
@@ -168,6 +170,7 @@ class DbConnector: ViewModel() {
         return result
     }
 
+    //Update gift as owner
     suspend fun updateGift(giftId: Int?, title: String, price: Int, userId: Int, ownerId: Int, link: String, privacy: Int) {
         val query: String
         if(giftId!=null) {
@@ -216,6 +219,7 @@ class DbConnector: ViewModel() {
         return result
     }
 
+    //Up or downvote gift idea on profile screen
     suspend fun likeGift(userId: Int, giftId: Int, likes: Int): ResultSet {
         val query = "CALL applyLikeToGift($userId, $giftId, $likes);"
         var statement = connection.prepareCall(query)
@@ -236,6 +240,7 @@ class DbConnector: ViewModel() {
         statement.executeUpdate()
     }
 
+    //Add friend on profile page
     suspend fun addFriend(friendUserId: Int, userId: Int) {
         val query: String = "INSERT INTO friends (friend_id, user_id) " +
                 "VALUES ($friendUserId, $userId);"
@@ -243,6 +248,7 @@ class DbConnector: ViewModel() {
         statement.executeUpdate()
     }
 
+    //Remove friend on profile page
     suspend fun removeFriend(friendUserId: Int, userId: Int) {
         val query: String = "DELETE FROM friends WHERE friend_id=$friendUserId AND user_id=$userId;"
         var statement = connection.prepareStatement(query)
@@ -255,6 +261,7 @@ class DbConnector: ViewModel() {
         statement.executeUpdate()
     }
 
+    //Create new gift idea
     suspend fun insertGift(title: String, price: Int?=null, userId: Int, ownerId: Int?=null,
                    postPrivacy: Int=0, giftPicture: String?=null, giftLink: String?=null) {
         val query: String =
@@ -272,6 +279,7 @@ class DbConnector: ViewModel() {
         statement.executeUpdate()
     }
 
+    //Join gift idea
     suspend fun joinGift(userId: Int, giftId: Int): ResultSet {
         val query = "CALL joinGift($userId, $giftId);"
         var statement = connection.prepareCall(query)
@@ -279,12 +287,15 @@ class DbConnector: ViewModel() {
         return result
     }
 
+    //Leave gift idea
     suspend fun leaveGift(memberId: Int) {
         val query = "DELETE FROM members WHERE id=$memberId;"
         var statement = connection.prepareStatement(query)
         statement.executeUpdate()
     }
-    fun editUser(userId: Int, firstName : String, lastName : String, dateOfBirth : LocalDate,
+
+    //Edit own user data on settings page
+    suspend fun editUser(userId: Int, firstName : String, lastName : String, dateOfBirth : LocalDate,
                  email: String, profilePrivacy : Int, profilePicture : String): ResultSet{
         val query : String = "UPDATE db.users SET first_name=\"$firstName\", last_name=\"$lastName\"," +
                 " date_of_birth=\"$dateOfBirth\", email=\"$email\", profile_privacy=$profilePrivacy, profile_picture=\"$profilePicture\"" +
@@ -298,7 +309,8 @@ class DbConnector: ViewModel() {
         return result
     }
 
-    fun checkIfEmailExistsOnOtherUser( userId: Int, email: String):Boolean{
+    //Check if email exists on register page
+    suspend fun checkIfEmailExistsOnOtherUser( userId: Int, email: String):Boolean{
         val query : String = "SELECT u.id FROM users AS u WHERE u.email = \"$email\" AND u.id != $userId;"
         var statement = connection.prepareStatement(query)
         statement.execute()

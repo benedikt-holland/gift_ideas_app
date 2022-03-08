@@ -16,6 +16,7 @@ import java.io.File
 import java.io.InputStream
 import java.util.*
 
+//Connector for setting profile picture
 class ImageConnector : ViewModel() {
     private val viewModelJob = SupervisorJob()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)

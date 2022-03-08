@@ -13,6 +13,7 @@ import java.sql.ResultSet
 import java.util.*
 
 
+//Class for login screen
 class LoginActivity : AppCompatActivity() {
 
     lateinit var user: ResultSet
@@ -31,6 +32,7 @@ class LoginActivity : AppCompatActivity() {
         val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
         uiScope.launch(Dispatchers.IO) {
             try {
+                //Initate database connection and save to data holder
                 var inputStream = assets.open("config.properties")
                 var props = Properties()
                 props.load(inputStream)
@@ -48,6 +50,7 @@ class LoginActivity : AppCompatActivity() {
         getButtonClick()
     }
 
+    //Register onclick listener for register and login button
     private fun getButtonClick() {
         val btnRegister = findViewById(R.id.btnRegister) as Button
         btnRegister.setOnClickListener {

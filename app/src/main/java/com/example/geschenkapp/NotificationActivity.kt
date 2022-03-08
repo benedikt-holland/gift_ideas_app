@@ -10,6 +10,8 @@ import android.view.MenuItem
 import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
+//Class for the notifications activity
+//Not implemented yet
 class NotificationActivity : AppCompatActivity() {
     lateinit var bottomNavBar: BottomNavigationView
     override fun onCreate(savedInstanceState: Bundle?) {

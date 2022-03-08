@@ -10,6 +10,8 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 
+//Currently not in use
+//Needed for future comments implementation
 class GiftpageCommentsAdapter(private var friendsList: ArrayList<ArrayList<String>>) : RecyclerView.Adapter<GiftpageCommentsAdapter.FriendsFeedViewHolder>() {
     //test array
     var friendsFilterList = ArrayList<ArrayList<String>>()

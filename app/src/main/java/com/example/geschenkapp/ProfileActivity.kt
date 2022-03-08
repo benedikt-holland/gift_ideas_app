@@ -29,6 +29,7 @@ import java.lang.NullPointerException
 import java.sql.ResultSet
 import java.sql.SQLException
 
+//Possible tabs
 var initTabArray = arrayOf(
     "Geschenke",
     "Wunschliste",
@@ -55,11 +56,13 @@ class ProfileActivity : AppCompatActivity() {
 
     }
 
+    //Overwrite activity content with new user data when resuming
     override fun onResume() {
         super.onResume()
 
         setContentView(R.layout.activity_profile)
         setSupportActionBar(findViewById(R.id.toolbar))
+        //Initiate Actionbar with back button
         supportActionBar?.apply {
             title = getResources().getString(R.string.profile)
             // show back button on toolbar
@@ -67,6 +70,8 @@ class ProfileActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
             setDisplayShowHomeEnabled(true)
         }
+
+        //Get userdata and database connector
         user = DataHolder.getInstance().user
         db = DbHolder.getInstance().db
         userId = user.getInt("id")
@@ -146,7 +151,7 @@ class ProfileActivity : AppCompatActivity() {
                 var isFriend: Boolean = profileUser.getInt("is_friend") == 1
                 updateAddFriendButtonColor(btnAddFriend, isFriend)
 
-
+                //Listener for friend add buttton
                 btnAddFriend.setOnClickListener {
                     val viewModelJob = SupervisorJob()
                     val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
@@ -170,6 +175,7 @@ class ProfileActivity : AppCompatActivity() {
                 println("Unable to set user data")
             }
 
+            //Load recyclerview with gift feed
             loadGiftFeed(userId, friendUserId)
 
             //Load profile picture
@@ -222,6 +228,7 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
+    //Register buttons
     private fun getButtonClick() {
         val btnSettings = findViewById(R.id.btnSettings) as ImageButton
         btnSettings.setOnClickListener {
@@ -239,6 +246,7 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
+    //Load giftfeed of selected user and load into recyclerview
     suspend fun loadGiftFeed(userId: Int, friendUserId: Int) {
         val giftFeed = if (userId != friendUserId) {
             db.getGiftFeedByUserId(userId, friendUserId)
@@ -256,6 +264,7 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
+    //Update Color of add friend button according to friendship status
     fun updateAddFriendButtonColor(btnAddFriend: ImageButton, isFriend: Boolean) {
         if (isFriend) {
             btnAddFriend.setColorFilter(Color.argb(255, 50, 205, 50))
@@ -264,6 +273,7 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
+    //Bottom navigation bar on tab profile
     private fun useBottomNavBar() {
         bottomNavBar = findViewById(R.id.bottomNavigation)
         bottomNavBar.selectedItemId = R.id.ic_bottom_nav_profile

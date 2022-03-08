@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.*
 import java.sql.ResultSet
 
+//Adapter for gift cards on profile page
 class ProfileFeedAdapter(private var profileFeed: ArrayList<ArrayList<String>> = ArrayList<ArrayList<String>>()): RecyclerView.Adapter<ProfileFeedViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -37,11 +38,12 @@ class ProfileFeedAdapter(private var profileFeed: ArrayList<ArrayList<String>> =
     }
 }
 
+//View holder for gift cards on profile page
 class ProfileFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     var db: DbConnector = DbHolder.getInstance().db
     var user: ResultSet = DataHolder.getInstance().user
     fun bind(profileList: ArrayList<String>) {
-
+        //Set text view content
         val tvVotes: TextView = itemView.findViewById(R.id.tvVotes)
         if (!profileList.isEmpty()) {
             val tvGiftName: TextView = itemView.findViewById(R.id.tvGiftName)
@@ -62,6 +64,7 @@ class ProfileFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
                 null -> 0
             }
         }
+        //Register vote buttons
         val btnDownvote = itemView.findViewById(R.id.btnDownvote) as ImageButton
         val btnUpvote = itemView.findViewById(R.id.btnUpvote) as ImageButton
         updateVoteColor(btnDownvote, btnUpvote, profileList[13])
@@ -74,9 +77,11 @@ class ProfileFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
                 } else {
                     1
                 }
+                //Push like to database
                 var likes = db.likeGift(user.getInt("id"), profileList[0].toInt(), vote)
                 withContext(Dispatchers.Main) {
                     try {
+                        //Update local data
                         likes.next()
                         profileList[11] = likes.getInt(1).toString()
                         tvVotes.text = profileList[11]
@@ -84,6 +89,7 @@ class ProfileFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
+                    //Update button color
                     updateVoteColor(btnDownvote, btnUpvote, profileList[13])
                 }
             }
@@ -113,6 +119,7 @@ class ProfileFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             }
         }
 
+        //Listener for clicking on gift cards, opens detail gift page
         val btnCard = itemView.findViewById(R.id.cvGift) as CardView
         btnCard.setOnClickListener {
             var intent = Intent(itemView.context, GiftPageActivity::class.java)
@@ -124,6 +131,9 @@ class ProfileFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
 
     }
+
+    //Update color of vote buttons
+    //Downvote: Red, Upvote: Blue
     fun updateVoteColor(btnDownvote: ImageButton, btnUpvote: ImageButton, like: String?) {
 
         if (like!=null) when(like.toInt()) {

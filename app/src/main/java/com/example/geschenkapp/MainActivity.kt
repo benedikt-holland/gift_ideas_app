@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        //Get user data and database connector
         user = DataHolder.getInstance().user
         db = DbHolder.getInstance().db
 
@@ -44,18 +45,19 @@ class MainActivity : AppCompatActivity() {
         val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
         uiScope.launch(Dispatchers.IO) {
             try {
+                //Load friendsfeed and set recyclerview content
                 userId = user.getInt("id")
                 loadFriendsFeed(userId)
-                try {
+                /*try {
                     friendsFeed = db.getFriendsFeed(userId)
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
                 try {
-                    giftFeed = db.getGiftFeedByMemberId(userId)
+                    //giftFeed = db.getGiftFeedByMemberId(userId)
                 } catch (e: Exception) {
                     e.printStackTrace()
-                }
+                }*/
             }  catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -71,10 +73,12 @@ class MainActivity : AppCompatActivity() {
 
         setNotificationNumber()
 
+        //Initiate and set content of friendsfeed recyclerview
         friendsFeedRv = findViewById(R.id.rvFriendsFeed)
         friendsFeedRv.layoutManager = LinearLayoutManager(friendsFeedRv.context)
         friendsFeedRv.setHasFixedSize(true)
 
+        //Listener for clicking on recyclerview cards. Opens profile page of selected user
         binding.search.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if(query!=null) {
@@ -107,6 +111,7 @@ class MainActivity : AppCompatActivity() {
                 return false
             }
 
+            //Listen for searchbar changes
             override fun onQueryTextChange(newText: String?): Boolean {
                 friendsFeedAdapter.filter.filter(newText)
                 return false
@@ -118,6 +123,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    //Will be called when returning from other activity
     override fun onResume() {
         super.onResume()
         db = DbHolder.getInstance().db
@@ -127,8 +133,9 @@ class MainActivity : AppCompatActivity() {
         val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
         uiScope.launch(Dispatchers.IO) {
             try {
+                //Reload friendsfeed on resume
                 userId = user.getInt("id")
-                loadFriendsFeed(userId)
+                loadFriendsFeed(userId)/*
                 try {
                     friendsFeed = db.getFriendsFeed(userId)
                 } catch (e: Exception) {
@@ -138,7 +145,7 @@ class MainActivity : AppCompatActivity() {
                     giftFeed = db.getGiftFeedByMemberId(userId)
                 } catch (e: Exception) {
                     e.printStackTrace()
-                }
+                }*/
             }  catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -149,6 +156,7 @@ class MainActivity : AppCompatActivity() {
             Log.d("MainActivity", "item clicked")
             when (item.itemId) {
                 R.id.ic_bottom_nav_profile -> {
+                    //Launch profile activity and pass id of logged user
                     var intent = Intent(this, ProfileActivity::class.java)
                     var b = Bundle()
                     b.putInt("id", userId)
@@ -157,6 +165,7 @@ class MainActivity : AppCompatActivity() {
                     startActivityIfNeeded(intent, 0)
                 }
                 R.id.ic_bottom_nav_notifications -> {
+                    //Launch notifications activity
                     Log.d("NotificationActivity", "notification")
                     val intent = Intent(this, NotificationActivity::class.java)
                     intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
@@ -190,7 +199,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
         
-
+//Not implemented yet
     suspend fun loadGiftFeed(userId: Int) {
         val giftList = ArrayList<ArrayList<String>>()
         giftFeed = db.getGiftFeedByMemberId(userId)
@@ -217,6 +226,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    //Register Actionbar buttons, not implemented yet
     private fun getButtonClick(){
         val btnStar = findViewById(R.id.btnFavorites) as Button
         btnStar.setOnClickListener {
@@ -243,6 +253,7 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
+//Helper function for turnung SQL ResultSets into Arrays for use in recyclerviews
 fun unloadResultSet(resultSet: ResultSet): ArrayList<ArrayList<String>> {
     var resultSetArray = ArrayList<ArrayList<String>>()
     while(resultSet.next()) {

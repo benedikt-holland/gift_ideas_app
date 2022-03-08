@@ -10,6 +10,7 @@ import com.example.geschenkapp.fragments.GiftfeedFragment
 
 private const val NUM_TABS = 3
 
+//Adapter for tabview on profile page
 class ProfileTabAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle, userId: Int, friendUserId: Int) :
     FragmentStateAdapter(fragmentManager, lifecycle) {
     val userId: Int = userId

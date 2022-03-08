@@ -83,7 +83,7 @@
     <string name="addFavorite">add Favorite</string>
     <string name="giftfeed_price">0</string>
     <string name="likeCount">0</string>
-    <string name="suggestionCount">0 Vorschläge</string>
+    <string name="suggestionCount">Vorschläge</string>
 
     <!--search friend-->
     <string name="searchFriend">Suche Freunde</string>
