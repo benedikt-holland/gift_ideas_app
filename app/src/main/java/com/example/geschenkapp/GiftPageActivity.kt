@@ -95,21 +95,27 @@ class GiftPageActivity  : AppCompatActivity() {
                         val viewModelJob = SupervisorJob()
                         val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
                         uiScope.launch(Dispatchers.IO) {
+                            var memberCount: Int = gift.getInt("member_count")
                             try {
                                 memberId = gift.getInt("member_id")
                             } catch (e: Exception) {
                                 memberId = null
                             }
-                            if(memberId != null) {
+                            if(memberId != null && memberId!=0) {
                                 db.leaveGift(memberId!!)
+                                memberCount -= 1
                                 memberId = null
                             } else {
                                 val memberSet: ResultSet = db.joinGift(userId, giftId)
                                 if (memberSet.next()) {
                                     memberId = memberSet.getInt(1)
                                 }
+                                memberCount += 1
                             }
-                            updateJoinButtonColor(btnJoin, memberId)
+                            withContext(Dispatchers.Main) {
+                                updateJoinButtonColor(btnJoin, memberId)
+                                tvMemberCount.text = memberCount.toString()
+                            }
                         }
                     }
                 }
@@ -123,7 +129,7 @@ class GiftPageActivity  : AppCompatActivity() {
     }
 
     fun updateJoinButtonColor(btnJoin: Button, memberId: Int?) {
-        if(memberId!=null) {
+        if(memberId!=null && memberId!=0) {
             btnJoin.text = "Verlassen"
             btnJoin.setBackgroundColor(Color.argb(255, 255, 0, 0))
         } else {

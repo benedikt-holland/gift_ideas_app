@@ -58,18 +58,18 @@ class ProfileFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             }
             tvGiftMemberCount.text = profileList[10] + " Teilnehmer"
             tvVotes.text = profileList[11]
-            when(profileList[12]) {
+            when(profileList[13]) {
                 null -> 0
             }
         }
         val btnDownvote = itemView.findViewById(R.id.btnDownvote) as ImageButton
         val btnUpvote = itemView.findViewById(R.id.btnUpvote) as ImageButton
-        updateVoteColor(btnDownvote, btnUpvote, profileList[12])
+        updateVoteColor(btnDownvote, btnUpvote, profileList[13])
         btnUpvote.setOnClickListener {
             val viewModelJob = SupervisorJob()
             val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
             uiScope.launch(Dispatchers.IO) {
-                val vote = if (profileList[12].toInt()==1) {
+                val vote = if (profileList[13]=="1") {
                     0
                 } else {
                     1
@@ -80,11 +80,11 @@ class ProfileFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
                         likes.next()
                         profileList[11] = likes.getInt(1).toString()
                         tvVotes.text = profileList[11]
-                        profileList[12] = vote.toString()
+                        profileList[13] = vote.toString()
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
-                    updateVoteColor(btnDownvote, btnUpvote, profileList[12])
+                    updateVoteColor(btnDownvote, btnUpvote, profileList[13])
                 }
             }
         }
@@ -93,7 +93,7 @@ class ProfileFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             val viewModelJob = SupervisorJob()
             val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
             uiScope.launch(Dispatchers.IO) {
-                val vote = if (profileList[12].toInt()==-1) {
+                val vote = if (profileList[13]=="-1") {
                     0
                 } else {
                     -1
@@ -104,11 +104,11 @@ class ProfileFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
                         likes.next()
                         profileList[11] = likes.getInt(1).toString()
                         tvVotes.text = profileList[11]
-                        profileList[12] = vote.toString()
+                        profileList[13] = vote.toString()
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
-                    updateVoteColor(btnDownvote, btnUpvote, profileList[12])
+                    updateVoteColor(btnDownvote, btnUpvote, profileList[13])
                 }
             }
         }

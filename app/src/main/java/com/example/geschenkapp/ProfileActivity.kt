@@ -159,20 +159,22 @@ class ProfileActivity : AppCompatActivity() {
             }
 
             //Set friend button status
-            updateAddFriendButtonColor(btnAddFriend, profileUser.getInt("is_friend"))
+            var isFriend: Boolean = profileUser.getInt("is_friend") == 1
+            updateAddFriendButtonColor(btnAddFriend, isFriend)
             btnAddFriend.setOnClickListener {
                 val viewModelJob = SupervisorJob()
                 val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
                 uiScope.launch(Dispatchers.IO) {
-                    if (profileUser.getInt("is_friend") == 0) {
+                    if  (!isFriend) {
                         db.addFriend(friendUserId, user.getInt("id"))
-                        profileUser.updateInt("is_friend", 1)
+                        isFriend = true
                     } else {
                         db.removeFriend(friendUserId, user.getInt("id"))
-                        profileUser.updateInt("is_friend", 0)
+                        isFriend = false
                     }
                     withContext(Dispatchers.Main) {
-                        updateAddFriendButtonColor(btnAddFriend, profileUser.getInt("is_friend"))
+                        updateAddFriendButtonColor(btnAddFriend, isFriend)
+                        profileFeedAdapter.notifyDataSetChanged()
                     }
                 }
             }
@@ -221,8 +223,8 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
-    fun updateAddFriendButtonColor(btnAddFriend: ImageButton, isFriend: Int) {
-        if (isFriend==1) {
+    fun updateAddFriendButtonColor(btnAddFriend: ImageButton, isFriend: Boolean) {
+        if (isFriend) {
             btnAddFriend.setColorFilter(Color.argb(255, 50, 205, 50))
         } else {
             btnAddFriend.setColorFilter(Color.argb(255, 0, 0, 0))

@@ -38,7 +38,7 @@
     <string name="giftpage_link">http://google.com</string>
     <string name="giftpage_owner_description">Von:</string>
     <string name="giftpage_owner">Hans</string>
-    <string name="giftpage_privacy_description">Privatssphäre:</string>
+    <string name="giftpage_privacy_description">Sichbarkeit:</string>
     <string name="giftpage_privacy">public</string>
     <string name="giftpage_member_count_description">Anzahl Beteiligte:</string>
     <string name="giftpage_member_count">10 (8 fehlen)</string>
