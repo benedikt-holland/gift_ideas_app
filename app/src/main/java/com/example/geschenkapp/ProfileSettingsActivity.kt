@@ -245,38 +245,28 @@ class ProfileSettingsActivity : AppCompatActivity() {
     }
 
     private fun setDate(){
-        /*// create an OnDateSetListener
-        val dateSetListener = object : DatePickerDialog.OnDateSetListener {
-            override fun onDateSet(view: DatePicker, year: Int, monthOfYear: Int,
-                                   dayOfMonth: Int) {
-                calendar.set(Calendar.YEAR, year)
-                calendar.set(Calendar.MONTH, monthOfYear)
-                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                updateDateInView()
-            }
-        }
-
-        // when you click on the button, show DatePickerDialog that is set with OnDateSetListener
-        binding.tvDateOfBirth.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(view: View) {
-                DatePickerDialog(this@ProfileSettingsActivity,
-                    dateSetListener,
-                    // set DatePickerDialog to point to today's date when it loads up
-                    calendar.get(Calendar.YEAR),
-                    calendar.get(Calendar.MONTH)+1,
-                    calendar.get(Calendar.DAY_OF_MONTH)).show()
-            }
-
-        })*/
-
         val c = Calendar.getInstance()
         val year = c.get(Calendar.YEAR)
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
+        var mt = "0"
+        var d = "0"
+
 
         binding.tvDateOfBirth.setOnClickListener{
             val dpd = DatePickerDialog(this, DatePickerDialog.OnDateSetListener{view, mYear, mMonth, mDay ->
-                binding.tvDateOfBirth.setText(""+ mYear + "-" + (mMonth+1) +"-"+ mDay )
+                val month2 = mMonth + 1
+                if(month2<10){
+                    mt = "0" + month2
+                } else{
+                    mt = month2.toString()
+                }
+                if(mDay<10){
+                    d = "0" + mDay
+                } else{
+                    d = mDay.toString()
+                }
+                binding.tvDateOfBirth.setText(""+ mYear + "-" + mt + "-"+ d )
             }, year, month, day)
             dpd.show()
         }
