@@ -29,7 +29,7 @@
     <string name="tab_right">Friends</string>
 
     <!--profilesettings-->
-    <string name="speichern">Savae</string>
+    <string name="speichern">Save</string>
     <string name="firstName">Firstname</string>
     <string name="lastName">Lastname</string>
     <string name="dateOfBirth">Date of Birth</string>
