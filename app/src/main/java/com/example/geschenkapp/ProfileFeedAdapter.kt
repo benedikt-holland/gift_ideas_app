@@ -112,6 +112,17 @@ class ProfileFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
                 }
             }
         }
+
+        val btnCard = itemView.findViewById(R.id.cvGift) as CardView
+        btnCard.setOnClickListener {
+            var intent = Intent(itemView.context, GiftPageActivity::class.java)
+            var b = Bundle()
+            b.putInt("id", profileList[0].toInt())
+            intent.putExtras(b)
+            itemView.context.startActivity(intent)
+        }
+
+
     }
     fun updateVoteColor(btnDownvote: ImageButton, btnUpvote: ImageButton, like: String?) {
 

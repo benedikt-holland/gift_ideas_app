@@ -118,6 +118,7 @@ class DbConnector: ViewModel() {
                 "o.first_name AS owner_first_name, o.last_name AS owner_last_name, " +
                 "(SELECT COUNT(*) FROM members WHERE gift_id=g.id) AS member_count, " +
                 "SUM(l.likes) AS likes, " +
+                "(SELECT id FROM members WHERE user_id=$currentUserId AND gift_id=g.id) AS member_id, " +
                 "(SELECT likes FROM likes WHERE gift_id=g.id AND user_id=$currentUserId LIMIT 1) AS isLiked " +
                 "FROM gifts AS g " +
                 "LEFT JOIN users AS o ON g.owner_id=o.id " +
@@ -131,6 +132,22 @@ class DbConnector: ViewModel() {
         var result: ResultSet = statement.executeQuery()
         return result
 
+    }
+
+    suspend fun getGiftById(userId: Int, giftId: Int): ResultSet {
+        val query: String = "SELECT g.id, g.title, g.price, g.owner_id, g.user_id, g.is_wish, " +
+                "g.post_privacy, g.gift_link, g.gift_picture, g.is_closed, " +
+                "o.first_name AS owner_first_name, o.last_name AS owner_last_name, " +
+                "u.first_name AS user_first_name, u.last_name AS user_last_name, " +
+                "(SELECT COUNT(*) FROM members WHERE gift_id=g.id) AS member_count, " +
+                "(SELECT id FROM members WHERE user_id=$userId AND gift_id=g.id) AS member_id " +
+                "FROM gifts AS g " +
+                "LEFT JOIN users AS o ON g.owner_id=o.id " +
+                "LEFT JOIN users AS u ON g.user_id=u.id " +
+                "WHERE g.id =$giftId; "
+        var statement = connection.prepareStatement(query)
+        var result: ResultSet = statement.executeQuery()
+        return result
     }
 
     //Load members on gift page
@@ -226,4 +243,16 @@ class DbConnector: ViewModel() {
         var result: ResultSet = statement.executeQuery()
     }
 
+    suspend fun joinGift(userId: Int, giftId: Int): ResultSet {
+        val query = "CALL joinGift($userId, $giftId);"
+        var statement = connection.prepareCall(query)
+        val result: ResultSet = statement.executeQuery()
+        return result
+    }
+
+    suspend fun leaveGift(memberId: Int) {
+        val query = "DELETE FROM members WHERE id=$memberId;"
+        var statement = connection.prepareStatement(query)
+        statement.executeUpdate()
+    }
 }

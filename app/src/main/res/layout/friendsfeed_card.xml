@@ -2,7 +2,6 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cvFriend"
     android:layout_width="match_parent"
     android:layout_height="90dp"
@@ -23,7 +22,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
-            android:text="Vorname Nachname"
+            android:text="@string/profile_name"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/tvFeedDateofbirth"
@@ -35,7 +34,7 @@
             android:id="@+id/btnAddFavourite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="add Favourite"
+            android:contentDescription="@string/addFavorite"
             android:adjustViewBounds="true"
             android:background="@null"
             android:src="@drawable/ic_star"
@@ -48,7 +47,7 @@
             android:id="@+id/tvFeedDateofbirth"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="0. Geburtstag am 00.00"
+            android:text="@string/profile_date_of_birth"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -58,7 +57,7 @@
             android:id="@+id/tvCountGifts"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="0 Vorschläge"
+            android:text="@string/suggestionCount"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
