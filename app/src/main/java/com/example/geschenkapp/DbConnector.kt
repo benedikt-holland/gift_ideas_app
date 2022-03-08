@@ -269,12 +269,17 @@ class DbConnector: ViewModel() {
         statement.executeUpdate()
     }
     fun editUser(userId: Int, firstName : String, lastName : String, dateOfBirth : LocalDate,
-                 email: String, profilePrivacy : Int, profilePicture : String){
+                 email: String, profilePrivacy : Int, profilePicture : String): ResultSet{
         val query : String = "UPDATE db.users SET first_name=\"$firstName\", last_name=\"$lastName\"," +
                 " date_of_birth=\"$dateOfBirth\", email=\"$email\", profile_privacy=$profilePrivacy, profile_picture=\"$profilePicture\"" +
                 " WHERE id=$userId;"
         var statement = connection.prepareStatement(query)
         statement.executeUpdate()
+
+        val query2 : String ="SELECT id, first_name, last_name, date_of_birth, email, profile_privacy, profile_picture FROM db.users WHERE id=$userId;"
+        var statement2 = connection.prepareStatement(query2)
+        var result: ResultSet = statement2.executeQuery()
+        return result
     }
 
     fun checkIfEmailExistsOnOtherUser( userId: Int, email: String):Boolean{

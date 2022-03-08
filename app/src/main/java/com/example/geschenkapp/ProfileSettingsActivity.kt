@@ -156,11 +156,16 @@ class ProfileSettingsActivity : AppCompatActivity() {
 
                     val userId = user.getInt("id")
 
-                    db.editUser(
+                    var tempUser = db.editUser(
                         userId, firstName, lastName,
                         dateOfBirth, email, profilePrivacy,
                         "$userId.png"
                     )
+
+                    tempUser.next()
+                    user = tempUser
+                    DataHolder.getInstance().user = user
+
                 } else {
                     Looper.prepare()
                     Toast.makeText(
