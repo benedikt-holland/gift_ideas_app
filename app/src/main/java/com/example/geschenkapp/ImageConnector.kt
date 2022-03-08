@@ -37,6 +37,7 @@ class ImageConnector : ViewModel() {
         var response: Response = client.newCall(request).execute()
         var byteStream = response.body?.byteStream()
         var bitmap : Bitmap = BitmapFactory.decodeStream(byteStream)
+        response.close()
         return bitmap
     }
 
@@ -58,7 +59,9 @@ class ImageConnector : ViewModel() {
         var request: Request = Request.Builder().url(postUrl).method("POST", requestBody)
             .addHeader("Authorization", auth).build()
         var response = client.newCall(request).execute()
-        return response.body.toString()
+        var string = response.body.toString()
+        response.close()
+        return string
 
     }
 }

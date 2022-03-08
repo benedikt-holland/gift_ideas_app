@@ -154,8 +154,7 @@ class ProfileSettingsActivity : AppCompatActivity() {
                     inputStream.close()
 
                     var imageConnector = ImageConnector()
-                    val response: String =
-                        imageConnector.postImage(uploadUri, auth, profilePicture, user.getInt("id"))
+                    imageConnector.postImage(uploadUri, auth, profilePicture, user.getInt("id"))
 
                     val userId = user.getInt("id")
 
