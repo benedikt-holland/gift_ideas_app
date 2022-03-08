@@ -52,6 +52,12 @@ class ProfileActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+
         setContentView(R.layout.activity_profile)
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.apply {
@@ -69,10 +75,6 @@ class ProfileActivity : AppCompatActivity() {
         profileFeedRv.layoutManager = LinearLayoutManager(profileFeedRv.context)
         profileFeedRv.setHasFixedSize(true)
         binding = ActivityProfileBinding.inflate(layoutInflater)
-    }
-
-    override fun onResume() {
-        super.onResume()
 
         //Get userId
         val b: Bundle? = intent.extras
