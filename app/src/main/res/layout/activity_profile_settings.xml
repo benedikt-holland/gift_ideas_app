@@ -163,7 +163,7 @@
 
 
         <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/tvDarkMode"
+            android:id="@+id/swDarkMode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -183,7 +183,7 @@
             android:background="@android:color/darker_gray"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvDarkMode" />
+            app:layout_constraintTop_toBottomOf="@id/swDarkMode" />
 
         <TextView
             android:id="@+id/tvProfilePrivacyDescription"

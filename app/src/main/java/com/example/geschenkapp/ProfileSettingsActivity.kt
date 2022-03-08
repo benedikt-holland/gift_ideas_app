@@ -1,15 +1,17 @@
 package com.example.geschenkapp
 
-import androidx.appcompat.app.AppCompatActivity
+import android.app.UiModeManager
 import android.os.Bundle
-import android.view.View
 import android.widget.*
-import com.example.geschenkapp.databinding.ActivityMainBinding
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import com.example.geschenkapp.databinding.ActivityProfileSettingsBinding
 import java.sql.ResultSet
 
+
 class ProfileSettingsActivity : AppCompatActivity() {
 
+    lateinit var uiModeManager: UiModeManager
     lateinit var user: ResultSet
     private var db = DbConnector()
     private lateinit var binding: ActivityProfileSettingsBinding
@@ -44,6 +46,7 @@ class ProfileSettingsActivity : AppCompatActivity() {
             Toast.makeText(this, R.string.saved, Toast.LENGTH_SHORT).show()
         }
 
+        getSwitchState()
 
     }
 
@@ -75,5 +78,28 @@ class ProfileSettingsActivity : AppCompatActivity() {
             // Apply the adapter to the spinner
             spinner.adapter = adapter
         }
+    }
+
+    private fun getSwitchState(){
+        binding = ActivityProfileSettingsBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+
+        binding.swDarkMode.setOnCheckedChangeListener { compoundButton, b ->
+            if (b){
+                // when switch button is checked
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                delegate.applyDayNight()
+            }else{
+                // if switch button is unchecked
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                delegate.applyDayNight()
+            }
+        }
+
+    }
+
+    override fun onNightModeChanged(mode: Int) {
+        super.onNightModeChanged(mode)
     }
 }
