@@ -43,6 +43,8 @@ class ProfileActivity : AppCompatActivity() {
     lateinit var db: DbConnector
     lateinit var profileFeedRv: RecyclerView
     lateinit var profileFeedAdapter: ProfileFeedAdapter
+    var friendUserId: Int = -1
+    lateinit var profileUser: ResultSet
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,19 +57,23 @@ class ProfileActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
             setDisplayShowHomeEnabled(true)
         }
+        user = DataHolder.getInstance().user
+        db = DbHolder.getInstance().db
+
+        profileFeedRv = findViewById(R.id.rvGiftFeed)
+        profileFeedRv.layoutManager = LinearLayoutManager(profileFeedRv.context)
+        profileFeedRv.setHasFixedSize(true)
+        binding = ActivityProfileBinding.inflate(layoutInflater)
     }
 
     override fun onResume() {
         super.onResume()
 
         //Get userId
-        var friendUserId: Int = -1
         val b: Bundle? = intent.extras
         if (b != null) {
             friendUserId = b.getInt("id")
         }
-        user = DataHolder.getInstance().user
-        db = DbHolder.getInstance().db
 
         //Show settings button for personal profile and add friend button for stranger profile
         var btnSettings: ImageButton = findViewById(R.id.btnSettings)
@@ -91,11 +97,6 @@ class ProfileActivity : AppCompatActivity() {
             ProfileTabAdapter(supportFragmentManager, lifecycle, user.getInt("id"), friendUserId)
         viewPager.adapter = adapter
 
-        profileFeedRv = findViewById(R.id.rvGiftFeed)
-        profileFeedRv.layoutManager = LinearLayoutManager(profileFeedRv.context)
-        profileFeedRv.setHasFixedSize(true)
-        binding = ActivityProfileBinding.inflate(layoutInflater)
-
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = tabArray[position]
         }.attach()
@@ -110,21 +111,25 @@ class ProfileActivity : AppCompatActivity() {
         uiScope.launch(Dispatchers.IO) {
 
             //Load user data
-            var profileUser: ResultSet = db.getUser(user.getInt("id"), friendUserId)
-            if (profileUser.next()) {
-                withContext(Dispatchers.Main) {
-                    tvName.text = if (profileUser.getString("last_name") != null) {
-                        profileUser.getString("first_name") + " " + profileUser.getString("last_name")
-                    } else {
-                        profileUser.getString("first_name")
-                    }
-                    try {
-                        tvDateofbirth.text = profileUser.getString("date_of_birth")
-                    } catch (e: SQLException) {
-                        tvDateofbirth.visibility = View.INVISIBLE
-                        println("User privacy settings hides date of birth")
+            try {
+                profileUser = db.getUser(user.getInt("id"), friendUserId)
+                if (!profileUser.isLast && profileUser.next()) {
+                    withContext(Dispatchers.Main) {
+                        tvName.text = if (profileUser.getString("last_name") != null) {
+                            profileUser.getString("first_name") + " " + profileUser.getString("last_name")
+                        } else {
+                            profileUser.getString("first_name")
+                        }
+                        try {
+                            tvDateofbirth.text = profileUser.getString("date_of_birth")
+                        } catch (e: SQLException) {
+                            tvDateofbirth.visibility = View.INVISIBLE
+                            println("User privacy settings hides date of birth")
+                        }
                     }
                 }
+            } catch (e: Exception) {
+                println("Unable to load user data")
             }
 
             //Load profile picture
