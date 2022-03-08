@@ -166,6 +166,7 @@ class GiftPageActivity  : AppCompatActivity() {
         /*giftPageCommentsRv = findViewById(R.id.rvGiftPageComments)
         giftPageCommentsRv.layoutManager = LinearLayoutManager(giftPageCommentsRv.context)
         giftPageCommentsRv.setHasFixedSize(true)*/
+        spinnerPostPrivacy()
 
     }
 
@@ -192,7 +193,7 @@ class GiftPageActivity  : AppCompatActivity() {
     }
 
     private fun spinnerPostPrivacy(){
-        val spinner: Spinner = findViewById(R.id.spPostPrivacy)
+        val spinner: Spinner = findViewById(R.id.spGiftpagePostPrivacy)
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter.createFromResource(
             this,

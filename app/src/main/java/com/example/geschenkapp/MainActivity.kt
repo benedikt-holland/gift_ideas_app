@@ -143,6 +143,34 @@ class MainActivity : AppCompatActivity() {
         getButtonClick()
 
     }
+
+    override fun onResume() {
+        super.onResume()
+        db = DbHolder.getInstance().db
+
+
+        val viewModelJob = SupervisorJob()
+        val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+        uiScope.launch(Dispatchers.IO) {
+            try {
+                userId = user.getInt("id")
+                loadFriendsFeed(userId)
+                try {
+                    friendsFeed = db.getFriendsFeed(userId)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+                try {
+                    giftFeed = db.getGiftFeedByMemberId(userId)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }  catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater: MenuInflater = menuInflater
         inflater.inflate(R.menu.toolbar, menu)
