@@ -166,6 +166,8 @@ class ProfileActivity : AppCompatActivity() {
                 println("Unable to set user data")
             }
 
+            loadGiftFeed(userId, friendUserId)
+
             //Load profile picture
             try {
                 var inputStream = assets.open("config.properties")
@@ -194,7 +196,6 @@ class ProfileActivity : AppCompatActivity() {
                 e.printStackTrace()
             }
 
-            loadGiftFeed(userId, friendUserId)
 
         }
         getButtonClick()
@@ -230,7 +231,7 @@ class ProfileActivity : AppCompatActivity() {
             b.putInt("profileUserId", friendUserId)
             intent.putExtras(b)
             intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-            startActivityIfNeeded(intent, 0)
+            startActivity(intent)
         }
     }
 
