@@ -151,6 +151,17 @@ class DbConnector: ViewModel() {
         return result
     }
 
+    suspend fun updateGift(giftId: Int?, title: String, price: Int, userId: Int, ownerId: Int, link: String, privacy: Int) {
+        val query: String
+        if(giftId!=null) {
+            query = "UPDATE gifts SET title='$title', price=$price, user_id=$userId, owner_id=$ownerId, gift_link='$link', post_privacy=$privacy WHERE id=$giftId;"
+        } else {
+            query = "INSERT INTO gifts (title, price, user_id, owner_id, gift_link, post_privacy) VALUES ('$title', $price, $userId, $ownerId, '$link', $privacy);"
+        }
+        var statement = connection.prepareStatement(query)
+        statement.executeUpdate()
+    }
+
     //Load members on gift page
     //Returns membership_id, first_name, last_name, max_price, is_fixed
     //No implemented privacy check
