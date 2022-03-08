@@ -70,6 +70,11 @@
     <string name="addFriend">add friend</string>
     <string name="floatingActionButton">Floating Action Button</string>
     <string name="gifts">Gifts</string>
+    <string name="dateOfBirth">01.01.1900</string>
+    <string name="hintDateOfBirth">Date of Birth</string>
+    <string name="register">Register</string>
+    <string name="hintFirstname">Firstname</string>
+    <string name="hintLastname">Lastname</string>
 
 
 </resources>

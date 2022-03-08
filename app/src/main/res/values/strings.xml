@@ -73,5 +73,11 @@
     <string name="floatingActionButton">Floating Action Button</string>
     <string name="gifts">Geschenke</string>
 
+    <!-- register-->
+    <string name="hintFirstname">Vorname</string>
+    <string name="hintLastname">Nachname</string>
+    <string name="hintDateOfBirth">Geburtstag</string>
+    <string name="dateOfBirth">01.01.1900</string>
+    <string name="register">Registrieren</string>
 
 </resources>
