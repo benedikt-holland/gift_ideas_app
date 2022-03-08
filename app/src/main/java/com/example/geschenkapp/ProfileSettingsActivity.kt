@@ -91,10 +91,20 @@ class ProfileSettingsActivity : AppCompatActivity() {
         spinnerProfilePrivacy()
         spinnerPostPrivacy()
 
+        getButtonClick()
 
+        setDate()
+    }
+
+    private fun getButtonClick(){
+
+        val btnSelectImage = findViewById(R.id.btnSelectImage) as Button
+        btnSelectImage.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            startActivityForResult(intent, 3)
+        }
         val btnSave = findViewById(R.id.btnSave) as Button
         btnSave.setOnClickListener {
-//            Toast.makeText(this, R.string.saved, Toast.LENGTH_SHORT).show()
 
             //Read Data from frontend
             val firstName: String = binding.etFirstName.text.toString()
@@ -127,9 +137,9 @@ class ProfileSettingsActivity : AppCompatActivity() {
 
 
             //Push new options to Database
-            val viewModelJob = SupervisorJob()
-            val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
-            uiScope.launch(Dispatchers.IO) {
+            val viewModelJob2 = SupervisorJob()
+            val uiScope2 = CoroutineScope(Dispatchers.Main + viewModelJob2)
+            uiScope2.launch(Dispatchers.IO) {
 
 
                 if (!db.checkIfEmailExistsOnOtherUser(user.getInt("id"), email)) {
@@ -146,13 +156,6 @@ class ProfileSettingsActivity : AppCompatActivity() {
                     var imageConnector = ImageConnector()
                     val response: String =
                         imageConnector.postImage(uploadUri, auth, profilePicture, user.getInt("id"))
-//                    Looper.prepare()
-//                    Toast.makeText(
-//                        this@ProfileSettingsActivity,
-//                        response.toString(),
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                    Looper.loop()
 
                     val userId = user.getInt("id")
 
@@ -175,17 +178,44 @@ class ProfileSettingsActivity : AppCompatActivity() {
                     ).show()
                     Looper.loop()
                 }
-
-
             }
-        }
-        val btnSelectImage = findViewById(R.id.btnSelectImage) as Button
-        btnSelectImage.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            startActivityForResult(intent, 3)
-        }
 
-        setDate()
+            binding.etFirstName.setText(user.getString("first_name"))
+            binding.etLastName.setText(user.getString("last_name"))
+            binding.tvDateOfBirth.setText(user.getString("date_of_birth"))
+            binding.etEmail.setText(user.getString("email"))
+
+            val ivProfilepicture = binding.ivProfilepicture
+
+
+            val viewModelJob = SupervisorJob()
+            val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+            uiScope.launch(Dispatchers.IO) {
+                var inputStream = assets.open("config.properties")
+                var props = Properties()
+                props.load(inputStream)
+                val profilePictureFileName = user.getString("profile_picture")
+
+                var auth = props.getProperty("API_AUTH", "")
+                var downloadUri = props.getProperty("API_DOWNLOAD", "") + profilePictureFileName
+                inputStream.close()
+
+                var imageConnector = ImageConnector()
+                profilePicture = imageConnector.getImage(downloadUri, auth)
+                withContext(Dispatchers.Main) {
+                    ivProfilepicture.setImageBitmap(profilePicture)
+                }
+            }
+
+
+
+            spinnerProfilePrivacy()
+            spinnerPostPrivacy()
+
+            getButtonClick()
+
+            setDate()
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -278,9 +308,4 @@ class ProfileSettingsActivity : AppCompatActivity() {
             dpd.show()
         }
     }
-    /*private fun updateDateInView() {
-        val myFormat = "yyyy/mm/dd" // mention the format you need
-        val sdf = SimpleDateFormat(myFormat, Locale.GERMAN)
-        binding.tvDateOfBirth.text = sdf.format(calendar.getTime())
-    }*/
 }
