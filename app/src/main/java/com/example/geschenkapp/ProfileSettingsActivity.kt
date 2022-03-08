@@ -33,7 +33,6 @@ class ProfileSettingsActivity : AppCompatActivity() {
     lateinit var db: DbConnector
     private lateinit var binding: ActivityProfileSettingsBinding
     private lateinit var profilePicture: Bitmap
-    var calendar = Calendar.getInstance()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -133,7 +132,6 @@ class ProfileSettingsActivity : AppCompatActivity() {
 
             //Convert date input to date
             val dateOfBirth = LocalDate.parse(dateOfBirthInput, DateTimeFormatter.ISO_DATE)
-            getSwitchState()
 
 
             //Push new options to Database
@@ -257,13 +255,13 @@ class ProfileSettingsActivity : AppCompatActivity() {
         }
     }
 
-    private fun getSwitchState() {
+    /*private fun getSwitchState() {
         binding = ActivityProfileSettingsBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
 
-        binding.swDarkMode.setOnCheckedChangeListener { compoundButton, b ->
-            if (b) {
+        binding.swDarkMode.setOnCheckedChangeListener { compoundButton, isChecked ->
+            if (isChecked) {
                 // when switch button is checked
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                 delegate.applyDayNight()
@@ -274,11 +272,11 @@ class ProfileSettingsActivity : AppCompatActivity() {
             }
         }
 
-    }
+    }*/
 
-    override fun onNightModeChanged(mode: Int) {
+    /*override fun onNightModeChanged(mode: Int) {
         super.onNightModeChanged(mode)
-    }
+    }*/
 
     private fun setDate(){
         val c = Calendar.getInstance()
