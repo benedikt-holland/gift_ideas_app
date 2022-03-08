@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">geschenkapp</string>
+    <string name="app_name" translatable="false">Geschenkapp</string>
     <string name="profile_picture">Profilbild</string>
     <string name="share">Teilen</string>
     <string name="back">Zurück</string>
