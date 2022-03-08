@@ -18,6 +18,7 @@
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
+            android:windowSoftInputMode="adjustPan"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,24 +28,28 @@
         </activity>
         <activity
             android:name=".ProfileSettingsActivity"
+            android:windowSoftInputMode="adjustPan"
             android:exported="false"
             android:label="@string/title_activity_profile_settings"
             android:parentActivityName=".ProfileActivity"
             android:theme="@style/Theme.Geschenkapp.NoActionBar" />
         <activity
             android:name=".NotificationActivity"
+            android:windowSoftInputMode="adjustPan"
             android:exported="true"
             android:label="@string/title_activity_notification"
             android:parentActivityName=".MainActivity"
             android:theme="@style/Theme.Geschenkapp.NoActionBar" />
         <activity
             android:name=".ProfileActivity"
+            android:windowSoftInputMode="adjustPan"
             android:exported="true"
             android:label="@string/title_activity_profile"
             android:parentActivityName=".MainActivity"
             android:theme="@style/Theme.Geschenkapp.NoActionBar" />
         <activity
             android:name=".GiftPageActivity"
+            android:windowSoftInputMode="adjustPan"
             android:exported="true"
             android:label="@string/title_activity_giftpage"
             android:parentActivityName=".ProfileActivity"
