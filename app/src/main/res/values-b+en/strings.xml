@@ -29,7 +29,7 @@
     <string name="tab_right">Friends</string>
 
     <!--profilesettings-->
-    <string name="speichern">Savae</string>
+    <string name="speichern">Save</string>
     <string name="firstName">Firstname</string>
     <string name="lastName">Lastname</string>
     <string name="dateOfBirth">Date of Birth</string>
@@ -37,7 +37,7 @@
     <string name="profilePrivacy">Privacy</string>
     <string name="giftPrivacy">Post Visability</string>
     <string name="profilePicture">profile picture</string>
-    <string name="defaultDateOfBirth">01.01.2000</string>
+    <string name="defaultDateOfBirth">click here</string>
     <string name="defaultEmail">firstname@lastname.com</string>
     <string name="defaultFirstname">Hans</string>
     <string name="defaultLastname">Müller</string>
