@@ -20,10 +20,12 @@ class GiftPageActivity  : AppCompatActivity() {
     private var giftId: Int = -1
     private var memberId: Int? = null
     private var userId: Int = -1
+    private var profileUserId: Int = -1
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        var isNew = false
         setContentView(R.layout.activity_giftpage)
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.apply {
@@ -36,7 +38,9 @@ class GiftPageActivity  : AppCompatActivity() {
         val b: Bundle? = intent.extras
         if (b != null) {
             giftId = b.getInt("id")
+            profileUserId = b.getInt("profileUserId")
         }
+        isNew = giftId == 0
         user = DataHolder.getInstance().user
         db = DbHolder.getInstance().db
 
@@ -82,50 +86,61 @@ class GiftPageActivity  : AppCompatActivity() {
                         } else {
                             title = gift.getString("user_first_name")
                         }
+                        tvPrivacy.text = when (gift.getInt("post_privacy")) {
+                            0 -> {
+                                getString(R.string.postPrivacyPublic)
+                            }
+                            1 -> {
+                                getString(R.string.postPrivacyOnlyFriendsOfOwner)
+                            }
+                            2 -> {
+                                getString(R.string.postPrivacyOnlyFriendsOfOwnerHiddenMembers)
+                            }
+                            else -> {
+                                getString(R.string.postPrivacyHidden)
+                            }
+                        }
+                        tvMemberCount.text = gift.getString("member_count")
                     }
-                    spPrivacy.setSelection(gift.getInt("post_privacy"))
-//                    spPrivacy.text = when (gift.getInt("post_privacy")) {
-//                        0 -> {
-//                            "Öffentlich"
-//                        }
-//                        1 -> {
-//                            "Nur Freunde"
-//                        }
-//                        2 -> {
-//                            "Nur Freunde"
-//                        }
-//                        else -> {
-//                            "Unsichtbar"
-//                        }
-//                    }
-                    tvMemberCount.text = gift.getString("member_count")
-
-                    updateJoinButtonColor(btnJoin, gift.getInt("member_id"), gift.getInt("owner_id"))
+                }
+                    if(!isNew) {
+                        updateJoinButtonColor(
+                            btnJoin,
+                            gift.getInt("member_id"),
+                            gift.getInt("owner_id")
+                        )
+                    } else {
+                        updateJoinButtonColor(btnJoin, null, userId)
+                    }
                     btnJoin.setOnClickListener {
                         val viewModelJob = SupervisorJob()
                         val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
                         uiScope.launch(Dispatchers.IO) {
-                            if (userId == gift.getInt("owner_id")) {
+                            if (isNew || userId == gift.getInt("owner_id")) {
                                 val profilePrivacyArray: Array<String> =
                                     resources.getStringArray(R.array.profile_privacy_array)
-                                var profilePrivacy: Int = -1
+                                var postPrivacy: Int = 0
                                 for (i in profilePrivacyArray.indices) {
-                                    if (profilePrivacyArray[i].contains(spPrivacy.selectedItem.toString())) {
-                                        profilePrivacy = i
+                                    if (profilePrivacyArray[i].contains(tvPrivacy.text.toString())) {
+                                        postPrivacy = i
                                     }
                                 }
                                 try {
-                                    db.updateGift(
-                                        giftId,
-                                        tvName.text.toString(),
-                                        tvPrice!!.text.toString().toInt(),
-                                        gift.getInt("user_id"),
-                                        userId,
-                                        tvLink.text.toString(),
-                                        profilePrivacy
-                                    )
+                                        db.updateGift(
+                                            if(isNew) null else giftId,
+                                            tvName.text.toString(),
+                                            tvPrice!!.text.toString().toInt(),
+                                            profileUserId,
+                                            userId,
+                                            tvLink.text.toString(),
+                                            postPrivacy
+                                        )
                                 } catch (e: Exception) {
-                                    Toast.makeText(this@GiftPageActivity, "Update failed, please try again", Toast.LENGTH_LONG).show()
+                                    Toast.makeText(
+                                        this@GiftPageActivity,
+                                        "Update failed, please try again",
+                                        Toast.LENGTH_LONG
+                                    ).show()
                                 }
                             } else {
                                 var memberCount: Int = gift.getInt("member_count")
@@ -182,7 +197,7 @@ class GiftPageActivity  : AppCompatActivity() {
     override fun onBackPressed() {
         var intent = Intent(this, ProfileActivity::class.java)
         var b = Bundle()
-        b.putInt("id", userId)
+        b.putInt("id", profileUserId)
         intent.putExtras(b)
         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
         startActivityIfNeeded(intent, 0)
