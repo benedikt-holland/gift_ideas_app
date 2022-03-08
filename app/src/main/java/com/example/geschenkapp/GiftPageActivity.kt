@@ -35,14 +35,15 @@ class GiftPageActivity  : AppCompatActivity() {
             setDisplayShowHomeEnabled(true)
         }
 
+        user = DataHolder.getInstance().user
+        db = DbHolder.getInstance().db
+
         val b: Bundle? = intent.extras
         if (b != null) {
             giftId = b.getInt("id")
             profileUserId = b.getInt("profileUserId")
         }
         isNew = giftId == 0
-        user = DataHolder.getInstance().user
-        db = DbHolder.getInstance().db
 
         val tvName: TextView = findViewById(R.id.tvName)
         val tvPrice: TextView = findViewById(R.id.tvPrice)
@@ -68,7 +69,7 @@ class GiftPageActivity  : AppCompatActivity() {
                     } else {
                         tvOwner.text = gift.getString("owner_first_name")
                     }
-                    if(gift.getInt("owner_id")==userId) {
+                    if (gift.getInt("owner_id") == userId) {
                         tvName.isEnabled = true
                         tvPrice.isEnabled = true
                         tvLink.isEnabled = true
@@ -86,24 +87,11 @@ class GiftPageActivity  : AppCompatActivity() {
                         } else {
                             title = gift.getString("user_first_name")
                         }
-                        tvPrivacy.text = when (gift.getInt("post_privacy")) {
-                            0 -> {
-                                getString(R.string.postPrivacyPublic)
-                            }
-                            1 -> {
-                                getString(R.string.postPrivacyOnlyFriendsOfOwner)
-                            }
-                            2 -> {
-                                getString(R.string.postPrivacyOnlyFriendsOfOwnerHiddenMembers)
-                            }
-                            else -> {
-                                getString(R.string.postPrivacyHidden)
-                            }
-                        }
-                        tvMemberCount.text = gift.getString("member_count")
                     }
-                }
-                    if(!isNew) {
+
+                    spPrivacy.setSelection(gift.getInt("post_privacy"))
+                    tvMemberCount.text = gift.getString("member_count")
+                    if (!isNew) {
                         updateJoinButtonColor(
                             btnJoin,
                             gift.getInt("member_id"),
@@ -121,20 +109,20 @@ class GiftPageActivity  : AppCompatActivity() {
                                     resources.getStringArray(R.array.profile_privacy_array)
                                 var postPrivacy: Int = 0
                                 for (i in profilePrivacyArray.indices) {
-                                    if (profilePrivacyArray[i].contains(tvPrivacy.text.toString())) {
+                                    if (profilePrivacyArray[i].contains(spPrivacy.selectedItem.toString())) {
                                         postPrivacy = i
                                     }
                                 }
                                 try {
-                                        db.updateGift(
-                                            if(isNew) null else giftId,
-                                            tvName.text.toString(),
-                                            tvPrice!!.text.toString().toInt(),
-                                            profileUserId,
-                                            userId,
-                                            tvLink.text.toString(),
-                                            postPrivacy
-                                        )
+                                    db.updateGift(
+                                        if (isNew) null else giftId,
+                                        tvName.text.toString(),
+                                        tvPrice!!.text.toString().toInt(),
+                                        profileUserId,
+                                        userId,
+                                        tvLink.text.toString(),
+                                        postPrivacy
+                                    )
                                 } catch (e: Exception) {
                                     Toast.makeText(
                                         this@GiftPageActivity,
@@ -172,8 +160,8 @@ class GiftPageActivity  : AppCompatActivity() {
                         }
                     }
                 }
+                }
             }
-        }
 
         /*giftPageCommentsRv = findViewById(R.id.rvGiftPageComments)
         giftPageCommentsRv.layoutManager = LinearLayoutManager(giftPageCommentsRv.context)
