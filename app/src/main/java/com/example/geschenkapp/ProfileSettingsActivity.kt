@@ -26,7 +26,7 @@ class ProfileSettingsActivity : AppCompatActivity() {
 
     lateinit var uiModeManager: UiModeManager
     lateinit var user: ResultSet
-    private var db = DbConnector()
+    lateinit var db: DbConnector
     private lateinit var binding: ActivityProfileSettingsBinding
     private lateinit var profilePicture: Bitmap
 
@@ -47,6 +47,8 @@ class ProfileSettingsActivity : AppCompatActivity() {
         setContentView(view)
 
         user = DataHolder.getInstance().user
+
+
         db = DbHolder.getInstance().db
 
 
@@ -115,7 +117,7 @@ class ProfileSettingsActivity : AppCompatActivity() {
 
             //Convert date input to date
             val dateOfBirth = LocalDate.parse(dateOfBirthInput, DateTimeFormatter.ISO_DATE)
-        getSwitchState()
+            getSwitchState()
 
 
             //Push new options to Database
@@ -213,17 +215,17 @@ class ProfileSettingsActivity : AppCompatActivity() {
         }
     }
 
-    private fun getSwitchState(){
+    private fun getSwitchState() {
         binding = ActivityProfileSettingsBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
 
         binding.swDarkMode.setOnCheckedChangeListener { compoundButton, b ->
-            if (b){
+            if (b) {
                 // when switch button is checked
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                 delegate.applyDayNight()
-            }else{
+            } else {
                 // if switch button is unchecked
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                 delegate.applyDayNight()
