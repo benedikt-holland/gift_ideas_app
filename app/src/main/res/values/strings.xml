@@ -29,6 +29,23 @@
     <string name="tab_center">Events</string>
     <string name="tab_right">Freunde</string>
 
+    <!--profilesettings-->
+    <string name="speichern">Speichern</string>
+    <string name="firstName">Vorname</string>
+    <string name="lastName">Nachname</string>
+    <string name="dateOfBirth">Geburtstag</string>
+    <string name="darkMode">Darkmode</string>
+    <string name="profilePrivacy">Privatsphäre</string>
+    <string name="giftPrivacy">Post Sichtbarkeit</string>
+    <string name="profilePicture">Profilbild</string>
+    <string name="defaultDateOfBirth">01.01.2000</string>
+    <string name="defaultEmail">Hans@Müller.de</string>
+    <string name="defaultFirstname">Hans</string>
+    <string name="defaultLastname">Müller</string>
+    <string name="uploadPicture">Bild hochladen</string>
+    <string name="saved">gespeichert</string>
+
+
     <!--giftpage-->
     <string name="giftpage_name_description">Name:</string>
     <string name="giftpage_name">Buch</string>
@@ -70,5 +87,18 @@
     <string name="addFriend">Freund hinzufügen</string>
     <string name="floatingActionButton">Floating Action Button</string>
     <string name="gifts">Geschenke</string>
+
+    <!--profile privacy array-->
+    <string name="profilePrivacyPublic">öffentlich</string>
+    <string name="profilePrivacyHideFeed">Feed verstecken</string>
+    <string name="profilePrivacyNameAndProfilePicture">Name und Profilbild</string>
+    <string name="profilePrivacyName">nur Name</string>
+    <string name="profilePrivacyHidden">alles verstecken</string>
+
+    <!--post privacy array-->
+    <string name="postPrivacyPublic">öffentlich, verstecke Teilnehmer</string>
+    <string name="postPrivacyOnlyFriendsOfOwner">nur Freunde des Erstellers</string>
+    <string name="postPrivacyOnlyFriendsOfOwnerHiddenMembers">nur Freunde des Erstellers, verstecke Teilnehmer</string>
+    <string name="postPrivacyHidden">versteckt, nur über Link teilbar</string>
 
 </resources>
