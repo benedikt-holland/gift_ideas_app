@@ -18,25 +18,27 @@
         android:src="@drawable/ic_image"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tToolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/tToolbar"
+        android:contentDescription="@string/gift_picture" />
 
     <TextView
         android:id="@+id/tvNameDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         android:text="@string/giftpage_name_description"
         android:textSize="17sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ivGiftPicture" />
 
-    <TextView
+    <EditText
         android:id="@+id/tvName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
         android:text="@string/giftpage_name"
         android:textSize="17sp"
+        android:inputType="none"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ivGiftPicture" />
 
@@ -54,21 +56,22 @@
         android:id="@+id/tvPriceDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:text="@string/giftpage_price_description"
         android:textSize="17sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/vSeparator1" />
 
-    <TextView
+    <EditText
         android:id="@+id/tvPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
         android:text="@string/giftpage_price"
         android:textSize="17sp"
+        android:inputType="none"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/vSeparator1" />
 
@@ -86,21 +89,22 @@
         android:id="@+id/tvLinkDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:text="@string/giftpage_link_description"
         android:textSize="17sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/vSeparator2" />
 
-    <TextView
+    <EditText
         android:id="@+id/tvLink"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
         android:text="@string/giftpage_link"
         android:textSize="17sp"
+        android:inputType="none"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/vSeparator2" />
 
@@ -118,7 +122,7 @@
         android:id="@+id/tvOwnerDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:text="@string/giftpage_owner_description"
         android:textSize="17sp"
@@ -130,7 +134,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
         android:text="@string/giftpage_owner"
         android:textSize="17sp"
         app:layout_constraintRight_toRightOf="parent"
@@ -150,22 +154,22 @@
         android:id="@+id/tvPrivacyDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:text="@string/giftpage_privacy_description"
         android:textSize="17sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/vSeparator4" />
 
-    <TextView
-        android:id="@+id/tvPrivacy"
-        android:layout_width="wrap_content"
+    <Spinner
+        android:id="@+id/spGiftpagePostPrivacy"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        android:text="@string/giftpage_privacy"
-        android:textSize="17sp"
-        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginEnd="10dp"
+        android:gravity="end"
+        android:textAlignment="viewEnd"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/vSeparator4" />
 
     <View
@@ -176,13 +180,13 @@
         android:background="@android:color/darker_gray"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvPrivacy" />
+        app:layout_constraintTop_toBottomOf="@id/spGiftpagePostPrivacy" />
 
     <TextView
         android:id="@+id/tvMemberCountDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:text="@string/giftpage_member_count_description"
         android:textSize="17sp"
@@ -194,7 +198,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
         android:text="@string/giftpage_member_count"
         android:textSize="17sp"
         app:layout_constraintRight_toRightOf="parent"
@@ -212,19 +216,20 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvGiftPageComments"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/btnJoin"
+        app:layout_constraintTop_toBottomOf="@id/tvMemberCount"
+        app:layout_constraintVertical_bias="1.0"
+        tools:layout_editor_absoluteX="25dp"
+        tools:listitem="@layout/giftpage_comments_card"
+        tools:itemCount="5"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!--
-      <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@id/btnJoin"
-            app:layout_constraintTop_toBottomOf="@id/tvMemberCount"
-            app:layout_constraintVertical_bias="1.0"
-            tools:itemCount="5"
-            tools:layout_editor_absoluteX="25dp"
-            tools:listitem="@layout/card_view_design" />
+
 
     -->

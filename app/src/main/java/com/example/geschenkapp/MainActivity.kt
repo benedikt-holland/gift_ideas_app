@@ -1,6 +1,8 @@
 package com.example.geschenkapp
 
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
+import android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import java.sql.ResultSet
@@ -67,6 +69,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         //bottom navigation bar
+        binding.bottomNavigation.selectedItemId = R.id.ic_bottom_nav_home
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             Log.d("MainActivity", "item clicked")
             when (item.itemId) {
@@ -75,12 +78,17 @@ class MainActivity : AppCompatActivity() {
                     var b = Bundle()
                     b.putInt("id", userId)
                     intent.putExtras(b)
-                    startActivity(intent)
+                    intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                    startActivityIfNeeded(intent, 0)
                 }
                 R.id.ic_bottom_nav_notifications -> {
                     Log.d("NotificationActivity", "notification")
                     val intent = Intent(this, NotificationActivity::class.java)
-                    startActivity(intent)
+                    intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                    startActivityIfNeeded(intent, 0)
+                }
+                R.id.ic_bottom_nav_home -> {
+                    true
                 }
                 else -> {
                     Log.d("MainActivity", "item not found")
@@ -89,6 +97,7 @@ class MainActivity : AppCompatActivity() {
             true
 
         }
+
         //set notification number
         binding.bottomNavigation.getOrCreateBadge(R.id.ic_bottom_nav_notifications).apply {
             number = 10
@@ -101,6 +110,33 @@ class MainActivity : AppCompatActivity() {
 
         binding.search.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
+                if(query!=null) {
+                    try {
+                        val viewModelJob = SupervisorJob()
+                        val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+                        uiScope.launch(Dispatchers.IO) {
+                                val profile: ResultSet = db.searchUser(userId, query)
+                                withContext(Dispatchers.Main) {
+                                    try {
+                                        profile.next()
+                                        var intent =
+                                            Intent(this@MainActivity, ProfileActivity::class.java)
+                                        var b = Bundle()
+                                        b.putInt("id", profile.getInt("id"))
+                                        intent.putExtras(b)
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                                        startActivityIfNeeded(intent, 0)
+                                    } catch (e: Exception) {
+                                        Toast.makeText(
+                                            this@MainActivity,
+                                            "Can't find user $query! Try searching for their email.",
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                    }
+                            }
+                        }
+                    } catch (e: Exception) {}
+                }
                 return false
             }
 
@@ -113,29 +149,6 @@ class MainActivity : AppCompatActivity() {
 
         getButtonClick()
 
-
-        /**
-        // getting the recyclerview by its id
-        val recyclerview = findViewById<RecyclerView>(R.id.recyclerview)
-
-        // this creates a vertical layout Manager
-        recyclerview.layoutManager = LinearLayoutManager(this)
-
-        // ArrayList of class ItemsViewModel
-        val data = ArrayList<ItemsViewModel>()
-
-        // This loop will create 20 Views containing
-        // the image with the count of view
-        for (i in 1..20) {
-            data.add(ItemsViewModel(R.drawable.ic_profile, "Item " + i))
-        }
-
-        // This will pass the ArrayList to our Adapter
-        val adapter = CustomAdapter(data)
-
-        // Setting the Adapter with the recyclerview
-        recyclerview.adapter = adapter
-        **/
     }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater: MenuInflater = menuInflater
@@ -190,6 +203,7 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "gift", Toast.LENGTH_SHORT).show()
         }
     }
+
 }
 
 fun unloadResultSet(resultSet: ResultSet): ArrayList<ArrayList<String>> {

@@ -5,15 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ImageButton
+import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import java.util.*
-import kotlin.collections.ArrayList
 
-//class CustomAdapter(private var mList: ArrayList<ItemsViewModel>) : RecyclerView.Adapter<CustomAdapter.ViewHolder>(), Filterable {
-class FriendsFeedAdapter(private var friendsList: ArrayList<ArrayList<String>>) : RecyclerView.Adapter<FriendsFeedAdapter.FriendsFeedViewHolder>(), Filterable {
-
+class GiftpageCommentsAdapter(private var friendsList: ArrayList<ArrayList<String>>) : RecyclerView.Adapter<GiftpageCommentsAdapter.FriendsFeedViewHolder>() {
     //test array
     var friendsFilterList = ArrayList<ArrayList<String>>()
     init {
@@ -23,8 +20,6 @@ class FriendsFeedAdapter(private var friendsList: ArrayList<ArrayList<String>>) 
     }
     // create new views
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FriendsFeedViewHolder {
-        // inflates the card_view_design view
-        // that is used to hold list item
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.friendsfeed_card, parent, false)
 
@@ -33,61 +28,16 @@ class FriendsFeedAdapter(private var friendsList: ArrayList<ArrayList<String>>) 
 
     // binds the list items to a view
     override fun onBindViewHolder(holderFriendsFeed: FriendsFeedViewHolder, position: Int) {
-
-        //val ItemsViewModel = mList[position]
-        //holder.bind(mList[position])
         holderFriendsFeed.bind(friendsFilterList[position])
-
-        // sets the image to the imageview from our itemHolder class
-        //holder.imageView.setImageResource(ItemsViewModel.image)
-
-        // sets the text to the textview from our itemHolder class
-        //holder.textView.text = ItemsViewModel.text
 
     }
 
     // return the number of the items in the list
     override fun getItemCount(): Int {
-        //return mList.size
         return friendsFilterList.size
     }
 
-    override fun getFilter(): Filter {
-        return object : Filter() {
-            override fun performFiltering(constraint: CharSequence?): FilterResults {
-                val charSearch = constraint.toString()
-                val resultList = ArrayList<ArrayList<String>>()
-                if (charSearch.isEmpty()) {
-                    for (row in friendsList) {
-                        resultList.add(row)
-                    }
-                } else {
-                    for (row in friendsList) {
-                        val name = if(row[3]!=null) {
-                           row[2] + " " + row[3]
-                        } else {
-                            row[2]
-                        }
-                        if (row[2].lowercase(Locale.ROOT).contains(charSearch.lowercase(Locale.ROOT)) || (row[3]!=null && row[3].lowercase(Locale.ROOT).contains(charSearch.lowercase(Locale.ROOT))) ||
-                            name.lowercase(Locale.ROOT).contains(charSearch.lowercase(Locale.ROOT))) {
-                            resultList.add(row)
-                        }
-                    }
-                }
-                friendsFilterList = resultList
-                val filterResults = FilterResults()
-                filterResults.values = friendsFilterList
-                return filterResults
-            }
 
-            @Suppress("UNCHECKED_CAST")
-            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                friendsFilterList = results?.values as ArrayList<ArrayList<String>>
-                notifyDataSetChanged()
-            }
-
-        }
-    }
     // Holds the views for adding it to image and text
     class FriendsFeedViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
         fun bind(friendsList: ArrayList<String>) {
@@ -123,6 +73,5 @@ class FriendsFeedAdapter(private var friendsList: ArrayList<ArrayList<String>>) 
             }
         }
     }
-
-
 }
+

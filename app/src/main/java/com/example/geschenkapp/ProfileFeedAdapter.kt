@@ -30,6 +30,11 @@ class ProfileFeedAdapter(private var profileFeed: ArrayList<ArrayList<String>> =
     override fun getItemCount(): Int {
         return profileFeed.size
     }
+
+    fun updateData(newFeed: ArrayList<ArrayList<String>>) {
+        profileFeed = newFeed
+        notifyDataSetChanged()
+    }
 }
 
 class ProfileFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
@@ -42,6 +47,7 @@ class ProfileFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             val tvGiftName: TextView = itemView.findViewById(R.id.tvGiftName)
             val tvGiftPrice: TextView = itemView.findViewById(R.id.tvGiftPrice)
             val tvGiftOwner: TextView = itemView.findViewById(R.id.tvGiftOwner)
+            val tvGiftMemberCount: TextView = itemView.findViewById(R.id.tvGiftMemberCount)
 
             tvGiftName.text = profileList[1]
             tvGiftPrice.text = profileList[2] + "€"
@@ -50,25 +56,35 @@ class ProfileFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             } else {
                 profileList[8]
             }
-            tvVotes.text = profileList[10]
+            tvGiftMemberCount.text = profileList[10] + " Teilnehmer"
+            tvVotes.text = profileList[11]
+            when(profileList[13]) {
+                null -> 0
+            }
         }
         val btnDownvote = itemView.findViewById(R.id.btnDownvote) as ImageButton
         val btnUpvote = itemView.findViewById(R.id.btnUpvote) as ImageButton
-        updateVoteColor(btnDownvote, btnUpvote, profileList[10].toInt())
+        updateVoteColor(btnDownvote, btnUpvote, profileList[13])
         btnUpvote.setOnClickListener {
             val viewModelJob = SupervisorJob()
             val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
             uiScope.launch(Dispatchers.IO) {
-                var likes = db.likeGift(user.getInt("id"), profileList[0].toInt(), 1)
+                val vote = if (profileList[13]=="1") {
+                    0
+                } else {
+                    1
+                }
+                var likes = db.likeGift(user.getInt("id"), profileList[0].toInt(), vote)
                 withContext(Dispatchers.Main) {
                     try {
                         likes.next()
-                        profileList[10] = likes.getInt(1).toString()
-                        tvVotes.text = profileList[10]
+                        profileList[11] = likes.getInt(1).toString()
+                        tvVotes.text = profileList[11]
+                        profileList[13] = vote.toString()
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
-                    updateVoteColor(btnDownvote, btnUpvote, profileList[10].toInt())
+                    updateVoteColor(btnDownvote, btnUpvote, profileList[13])
                 }
             }
         }
@@ -77,30 +93,47 @@ class ProfileFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             val viewModelJob = SupervisorJob()
             val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
             uiScope.launch(Dispatchers.IO) {
-                var likes = db.likeGift(user.getInt("id"), profileList[0].toInt(), -1)
+                val vote = if (profileList[13]=="-1") {
+                    0
+                } else {
+                    -1
+                }
+                var likes = db.likeGift(user.getInt("id"), profileList[0].toInt(), vote)
                 withContext(Dispatchers.Main) {
                     try {
                         likes.next()
-                        profileList[10] = likes.getInt(1).toString()
-                        tvVotes.text = profileList[10]
+                        profileList[11] = likes.getInt(1).toString()
+                        tvVotes.text = profileList[11]
+                        profileList[13] = vote.toString()
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
-                    updateVoteColor(btnDownvote, btnUpvote, profileList[10].toInt())
+                    updateVoteColor(btnDownvote, btnUpvote, profileList[13])
                 }
             }
         }
-    }
-    fun updateVoteColor(btnDownvote: ImageButton, btnUpvote: ImageButton, like: Int) {
 
-        when(like) {
+        val btnCard = itemView.findViewById(R.id.cvGift) as CardView
+        btnCard.setOnClickListener {
+            var intent = Intent(itemView.context, GiftPageActivity::class.java)
+            var b = Bundle()
+            b.putInt("id", profileList[0].toInt())
+            intent.putExtras(b)
+            itemView.context.startActivity(intent)
+        }
+
+
+    }
+    fun updateVoteColor(btnDownvote: ImageButton, btnUpvote: ImageButton, like: String?) {
+
+        if (like!=null) when(like.toInt()) {
             -1 -> {
                 btnDownvote.setColorFilter(Color.argb(255, 255, 0, 0))
                 btnUpvote.setColorFilter(Color.argb(255, 0, 0, 0))
             }
             0 -> {
-                btnUpvote.setColorFilter(Color.argb(255, 0, 0, 0))
                 btnDownvote.setColorFilter(Color.argb(255, 0, 0, 0))
+                btnUpvote.setColorFilter(Color.argb(255, 0, 0, 0))
             }
             1 -> {
                 btnDownvote.setColorFilter(Color.argb(255, 0, 0, 0))

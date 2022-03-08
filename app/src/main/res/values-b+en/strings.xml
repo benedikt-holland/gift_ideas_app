@@ -1,16 +1,16 @@
 <resources>
     <string name="app_name">geschenkapp</string>
-    <string name="profile_picture">Profilbild</string>
-    <string name="share">Teilen</string>
-    <string name="back">Zurück</string>
+    <string name="profile_picture">profile picture</string>
+    <string name="share">Share</string>
+    <string name="back">Back</string>
 
     <!--search-->
-    <string name="search_hint">Suche nach Personen</string>
+    <string name="search_hint">search for persons</string>
 
     <!-- bottom navigation bar-->
     <string name="home">Home</string>
-    <string name="profile">Profil</string>
-    <string name="notifications">Benachrichtigungen</string>
+    <string name="profile">Profile</string>
+    <string name="notifications">Notifications</string>
     <string name="title_activity_profile">ProfileActivity</string>
     <string name="title_activity_profile_settings">ProfileSettingsActivity</string>
     <string name="title_activity_notification">NotificationActivity</string>
@@ -23,13 +23,38 @@
     <string name="previous">Previous</string>
 
     <!--profile-->
-    <string name="profile_name">Vorname Nachname</string>
-    <string name="profile_date_of_birth">21. Geburtstag am 27.Mai</string>
-    <string name="tab_left">Wunschliste</string>
+    <string name="profile_name">Firstname Lastname</string>
+    <string name="profile_date_of_birth">21th birthday: 05/27</string>
+    <string name="tab_left">Wishlist</string>
     <string name="tab_center">Events</string>
-    <string name="tab_right">Freunde</string>
+    <string name="tab_right">Friends</string>
 
-    <!--profilesettings-->
+    <!--giftpage-->
+    <string name="giftpage_name_description">Name:</string>
+    <string name="giftpage_name">Book</string>
+    <string name="giftpage_price_description">Price:</string>
+    <string name="giftpage_price">12€</string>
+    <string name="giftpage_link_description">Link:</string>
+    <string name="giftpage_link">http://google.com</string>
+    <string name="giftpage_owner_description">By:</string>
+    <string name="giftpage_owner">Hans</string>
+    <string name="giftpage_privacy_description">Privacy:</string>
+    <string name="giftpage_privacy">Public</string>
+    <string name="giftpage_member_count_description">Member Count:</string>
+    <string name="giftpage_member_count">10 (8 missing)</string>
+    <string name="join">Join</string>
+
+    <!--loginpage-->
+    <string name="login">Login</string>
+    <string name="email">E-Mail</string>
+    <string name="password">Password</string>
+    <string name="noEmailError">Please enter your E-Mail!</string>
+    <string name="noPasswordError">Please enter your password!</string>
+    <string name="wrongCredentials">E-Mail or password incorrect!</string>
+
+    <string name="gifts">Gifts</string>
+
+<!--    TODO Übersetzten-->
     <string name="speichern">Speichern</string>
     <string name="firstName">Vorname</string>
     <string name="lastName">Nachname</string>
@@ -46,38 +71,10 @@
     <string name="saved">gespeichert</string>
     <string name="emailDuplicate">Eingegebene Email existiert bereits. Bitte geben Sie eine andere ein.</string>
     <string name="emptyString">Felder dürfen nicht lMaeer sein</string>
-
-
-    <!--giftpage-->
-    <string name="giftpage_name_description">Name:</string>
-    <string name="giftpage_name">Buch</string>
-    <string name="giftpage_price_description">Preis:</string>
-    <string name="giftpage_price">12€</string>
-    <string name="giftpage_link_description">Link:</string>
-    <string name="giftpage_link">http://google.com</string>
-    <string name="giftpage_owner_description">Von:</string>
-    <string name="giftpage_owner">Hans</string>
-    <string name="giftpage_privacy_description">Sichbarkeit:</string>
-    <string name="giftpage_privacy">public</string>
-    <string name="giftpage_member_count_description">Anzahl Beteiligte:</string>
-    <string name="giftpage_member_count">10 (8 fehlen)</string>
-    <string name="join">Teilnehmen</string>
     <string name="gift_picture">Bild von Geschenk</string>
-
-    <!--loginpage-->
-    <string name="login">Anmelden</string>
-    <string name="email">E-Mail</string>
-    <string name="password">Passwort</string>
-    <string name="noEmailError">Bitte trage eine E-Mail ein!</string>
-    <string name="noPasswordError">Bitte trage ein Passwort ein!</string>
-    <string name="wrongCredentials">Ihre E-Mail-Adresse und Ihr Kennwort stimmen nicht überein!</string>
     <string name="defaultEmailLogin">Hans@Müller.de</string>
     <string name="defaultPasswordLogin">password</string>
-
-    <!--comments-->
     <string name="comment">Ich finde diese Idee sehr gut, lasst uns zusammenlegen! rubzoiunwezinw rhegnpuw bzuiz rzjbiwornuzqw  zjnwiz wetzn</string>
-
-    <!--card views-->
     <string name="giftidea">Geschenkidee</string>
     <string name="addFavorite">add Favorite</string>
     <string name="giftfeed_price">0€</string>
@@ -88,9 +85,6 @@
     <string name="settingsButton">Einstellungen</string>
     <string name="addFriend">Freund hinzufügen</string>
     <string name="floatingActionButton">Floating Action Button</string>
-    <string name="gifts">Geschenke</string>
-
-    <!--profile privacy array-->
     <string name="profilePrivacyPublic">öffentlich</string>
     <string name="profilePrivacyHideFeed">Feed verstecken</string>
     <string name="profilePrivacyNameAndProfilePicture">Name und Profilbild</string>
