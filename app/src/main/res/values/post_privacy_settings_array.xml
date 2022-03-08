@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="post_privacy_array">
+        <item>@string/postPrivacyPublic</item>
+        <item>@string/postPrivacyOnlyFriendsOfOwner</item>
+        <item>@string/postPrivacyOnlyFriendsOfOwnerHiddenMembers</item>
+        <item>@string/postPrivacyHidden</item>
+    </string-array>
+</resources>

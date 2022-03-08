@@ -3,9 +3,7 @@ package com.example.geschenkapp
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -46,7 +44,7 @@ class GiftPageActivity  : AppCompatActivity() {
         val tvPrice: TextView = findViewById(R.id.tvPrice)
         val tvLink: TextView = findViewById(R.id.tvLink)
         val tvOwner: TextView = findViewById(R.id.tvOwner)
-        val tvPrivacy: TextView = findViewById(R.id.tvPrivacy)
+        val spPrivacy: Spinner = findViewById(R.id.spGiftpagePostPrivacy)
         val tvMemberCount: TextView = findViewById(R.id.tvMemberCount)
         val btnJoin: Button = findViewById(R.id.btnJoin)
 
@@ -58,13 +56,24 @@ class GiftPageActivity  : AppCompatActivity() {
             if (gift.next()) {
                 withContext(Dispatchers.Main) {
                     tvName.text = gift.getString("title")
-                    tvPrice.text = gift.getString("price") + "€"
+                    tvPrice.text = gift.getString("price")
                     tvLink.text = gift.getString("gift_link")
                     if (gift.getString("owner_last_name") != null) {
                         tvOwner.text =
                             gift.getString("owner_first_name") + " " + gift.getString("owner_last_name")
                     } else {
                         tvOwner.text = gift.getString("owner_first_name")
+                    }
+                    if(gift.getInt("owner_id")==userId) {
+                        tvName.isEnabled = true
+                        tvPrice.isEnabled = true
+                        tvLink.isEnabled = true
+                        tvPrivacy.isEnabled = true
+                    } else {
+                        tvName.isEnabled = false
+                        tvPrice.isEnabled = false
+                        tvLink.isEnabled = false
+                        tvPrivacy.isEnabled = false
                     }
                     supportActionBar?.apply {
                         if (gift.getString("user_last_name") != null) {
@@ -90,26 +99,60 @@ class GiftPageActivity  : AppCompatActivity() {
                     }
                     tvMemberCount.text = gift.getString("member_count")
 
-                    updateJoinButtonColor(btnJoin, gift.getInt("member_id"))
+                    updateJoinButtonColor(btnJoin, gift.getInt("member_id"), gift.getInt("owner_id"))
                     btnJoin.setOnClickListener {
                         val viewModelJob = SupervisorJob()
                         val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
                         uiScope.launch(Dispatchers.IO) {
-                            try {
-                                memberId = gift.getInt("member_id")
-                            } catch (e: Exception) {
-                                memberId = null
-                            }
-                            if(memberId != null) {
-                                db.leaveGift(memberId!!)
-                                memberId = null
+                            if (userId == gift.getInt("owner_id")) {
+                                val profilePrivacyArray: Array<String> =
+                                    resources.getStringArray(R.array.profile_privacy_array)
+                                var profilePrivacy: Int = -1
+                                for (i in profilePrivacyArray.indices) {
+                                    if (profilePrivacyArray[i].contains(tvPrivacy.text.toString())) {
+                                        profilePrivacy = i
+                                    }
+                                }
+                                try {
+                                    db.updateGift(
+                                        giftId,
+                                        tvName.text.toString(),
+                                        tvPrice!!.text.toString().toInt(),
+                                        gift.getInt("user_id"),
+                                        userId,
+                                        tvLink.text.toString(),
+                                        profilePrivacy
+                                    )
+                                } catch (e: Exception) {
+                                    Toast.makeText(this@GiftPageActivity, "Update failed, please try again", Toast.LENGTH_LONG).show()
+                                }
                             } else {
-                                val memberSet: ResultSet = db.joinGift(userId, giftId)
-                                if (memberSet.next()) {
-                                    memberId = memberSet.getInt(1)
+                                var memberCount: Int = gift.getInt("member_count")
+                                try {
+                                    memberId = gift.getInt("member_id")
+                                } catch (e: Exception) {
+                                    memberId = null
+                                }
+                                if (memberId != null && memberId != 0) {
+                                    db.leaveGift(memberId!!)
+                                    memberCount -= 1
+                                    memberId = null
+                                } else {
+                                    val memberSet: ResultSet = db.joinGift(userId, giftId)
+                                    if (memberSet.next()) {
+                                        memberId = memberSet.getInt(1)
+                                    }
+                                    memberCount += 1
+                                }
+                                withContext(Dispatchers.Main) {
+                                    updateJoinButtonColor(
+                                        btnJoin,
+                                        memberId,
+                                        gift.getInt("owner_id")
+                                    )
+                                    tvMemberCount.text = memberCount.toString()
                                 }
                             }
-                            updateJoinButtonColor(btnJoin, memberId)
                         }
                     }
                 }
@@ -122,8 +165,11 @@ class GiftPageActivity  : AppCompatActivity() {
 
     }
 
-    fun updateJoinButtonColor(btnJoin: Button, memberId: Int?) {
-        if(memberId!=null) {
+    fun updateJoinButtonColor(btnJoin: Button, memberId: Int?, ownerId: Int) {
+        if (ownerId == userId) {
+            btnJoin.text = "Änderungen speichern"
+            btnJoin.setBackgroundColor(Color.argb(255, 0, 191, 255))
+        } else if(memberId!=null && memberId!=0) {
             btnJoin.text = "Verlassen"
             btnJoin.setBackgroundColor(Color.argb(255, 255, 0, 0))
         } else {
@@ -139,6 +185,21 @@ class GiftPageActivity  : AppCompatActivity() {
         intent.putExtras(b)
         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
         startActivityIfNeeded(intent, 0)
+    }
+
+    private fun spinnerPostPrivacy(){
+        val spinner: Spinner = findViewById(R.id.spPostPrivacy)
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.post_privacy_array,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Apply the adapter to the spinner
+            spinner.adapter = adapter
+        }
     }
 
 

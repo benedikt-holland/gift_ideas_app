@@ -110,6 +110,33 @@ class MainActivity : AppCompatActivity() {
 
         binding.search.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
+                if(query!=null) {
+                    try {
+                        val viewModelJob = SupervisorJob()
+                        val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+                        uiScope.launch(Dispatchers.IO) {
+                                val profile: ResultSet = db.searchUser(userId, query)
+                                withContext(Dispatchers.Main) {
+                                    try {
+                                        profile.next()
+                                        var intent =
+                                            Intent(this@MainActivity, ProfileActivity::class.java)
+                                        var b = Bundle()
+                                        b.putInt("id", profile.getInt("id"))
+                                        intent.putExtras(b)
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                                        startActivityIfNeeded(intent, 0)
+                                    } catch (e: Exception) {
+                                        Toast.makeText(
+                                            this@MainActivity,
+                                            "Can't find user $query! Try searching for their email.",
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                    }
+                            }
+                        }
+                    } catch (e: Exception) {}
+                }
                 return false
             }
 

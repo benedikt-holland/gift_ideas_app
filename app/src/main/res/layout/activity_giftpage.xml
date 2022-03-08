@@ -31,13 +31,14 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ivGiftPicture" />
 
-    <TextView
+    <EditText
         android:id="@+id/tvName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
         android:text="@string/giftpage_name"
         android:textSize="17sp"
+        android:inputType="none"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ivGiftPicture" />
 
@@ -62,7 +63,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/vSeparator1" />
 
-    <TextView
+    <EditText
         android:id="@+id/tvPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -70,6 +71,7 @@
         android:layout_marginEnd="10dp"
         android:text="@string/giftpage_price"
         android:textSize="17sp"
+        android:inputType="none"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/vSeparator1" />
 
@@ -94,7 +96,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/vSeparator2" />
 
-    <TextView
+    <EditText
         android:id="@+id/tvLink"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -102,6 +104,7 @@
         android:layout_marginEnd="10dp"
         android:text="@string/giftpage_link"
         android:textSize="17sp"
+        android:inputType="none"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/vSeparator2" />
 
@@ -158,15 +161,15 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/vSeparator4" />
 
-    <TextView
-        android:id="@+id/tvPrivacy"
-        android:layout_width="wrap_content"
+    <Spinner
+        android:id="@+id/spGiftpagePostPrivacy"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
-        android:text="@string/giftpage_privacy"
-        android:textSize="17sp"
-        app:layout_constraintRight_toRightOf="parent"
+        android:gravity="end"
+        android:textAlignment="viewEnd"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/vSeparator4" />
 
     <View
@@ -177,7 +180,7 @@
         android:background="@android:color/darker_gray"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvPrivacy" />
+        app:layout_constraintTop_toBottomOf="@id/spGiftpagePostPrivacy" />
 
     <TextView
         android:id="@+id/tvMemberCountDescription"

@@ -63,7 +63,13 @@ class FriendsFeedAdapter(private var friendsList: ArrayList<ArrayList<String>>) 
                     }
                 } else {
                     for (row in friendsList) {
-                        if (row[1].lowercase(Locale.ROOT).contains(charSearch.lowercase(Locale.ROOT))) {
+                        val name = if(row[3]!=null) {
+                           row[2] + " " + row[3]
+                        } else {
+                            row[2]
+                        }
+                        if (row[2].lowercase(Locale.ROOT).contains(charSearch.lowercase(Locale.ROOT)) || (row[3]!=null && row[3].lowercase(Locale.ROOT).contains(charSearch.lowercase(Locale.ROOT))) ||
+                            name.lowercase(Locale.ROOT).contains(charSearch.lowercase(Locale.ROOT))) {
                             resultList.add(row)
                         }
                     }
