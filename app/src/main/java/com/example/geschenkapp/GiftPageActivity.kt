@@ -3,10 +3,7 @@ package com.example.geschenkapp
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -47,7 +44,7 @@ class GiftPageActivity  : AppCompatActivity() {
         val tvPrice: TextView = findViewById(R.id.tvPrice)
         val tvLink: TextView = findViewById(R.id.tvLink)
         val tvOwner: TextView = findViewById(R.id.tvOwner)
-        val tvPrivacy: TextView = findViewById(R.id.tvPrivacy)
+        val spPrivacy: Spinner = findViewById(R.id.spGiftpagePostPrivacy)
         val tvMemberCount: TextView = findViewById(R.id.tvMemberCount)
         val btnJoin: Button = findViewById(R.id.btnJoin)
 
@@ -188,6 +185,21 @@ class GiftPageActivity  : AppCompatActivity() {
         intent.putExtras(b)
         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
         startActivityIfNeeded(intent, 0)
+    }
+
+    private fun spinnerPostPrivacy(){
+        val spinner: Spinner = findViewById(R.id.spPostPrivacy)
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.post_privacy_array,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Apply the adapter to the spinner
+            spinner.adapter = adapter
+        }
     }
 
 
