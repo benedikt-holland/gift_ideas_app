@@ -15,7 +15,7 @@
         android:layout_marginRight="50dp"
         android:layout_marginBottom="20dp"
 
-        android:hint="@string/hintFirstname"
+        android:hint="@string/firstName"
         app:layout_constraintBottom_toTopOf="@id/tfLastname">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -33,7 +33,7 @@
         android:layout_marginRight="50dp"
         android:layout_marginBottom="20dp"
 
-        android:hint="@string/hintLastname"
+        android:hint="@string/lastName"
         app:layout_constraintBottom_toTopOf="@id/tfDateofbirth">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -51,14 +51,14 @@
         android:layout_marginRight="50dp"
         android:layout_marginTop="20dp"
 
-        android:hint="@string/hintDateOfBirth"
+        android:hint="@string/dateOfBirth"
         app:layout_constraintBottom_toTopOf="@id/btnRegister"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/dateOfBirth" />
+            android:text="@string/defaultDateOfBirth" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout

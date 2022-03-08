@@ -28,6 +28,21 @@
     <string name="tab_center">Events</string>
     <string name="tab_right">Friends</string>
 
+    <!--profilesettings-->
+    <string name="speichern">Savae</string>
+    <string name="firstName">Firstname</string>
+    <string name="lastName">Lastname</string>
+    <string name="dateOfBirth">Date of Birth</string>
+    <string name="darkMode">Darkmode</string>
+    <string name="profilePrivacy">Privacy</string>
+    <string name="giftPrivacy">Post Visability</string>
+    <string name="profilePicture">profile picture</string>
+    <string name="defaultDateOfBirth">01.01.2000</string>
+    <string name="defaultFirstname">Hans</string>
+    <string name="defaultLastname">Müller</string>
+    <string name="uploadPicture">upload picture</string>
+    <string name="saved">saved</string>
+
     <!--giftpage-->
     <string name="giftpage_name_description">Name:</string>
     <string name="giftpage_name">Book</string>
@@ -69,11 +84,22 @@
     <string name="addFriend">add friend</string>
     <string name="floatingActionButton">Floating Action Button</string>
     <string name="gifts">Gifts</string>
-    <string name="dateOfBirth">01.01.1900</string>
-    <string name="hintDateOfBirth">Date of Birth</string>
+
+    <!--profile privacy array-->
+    <string name="profilePrivacyPublic">public</string>
+    <string name="profilePrivacyHideFeed">hide feed</string>
+    <string name="profilePrivacyNameAndProfilePicture">name and profile picture</string>
+    <string name="profilePrivacyName">only name</string>
+    <string name="profilePrivacyHidden">hide everything</string>
+
+    <!--post privacy array-->
+    <string name="postPrivacyPublic">public, hidden members</string>
+    <string name="postPrivacyOnlyFriendsOfOwner">only friends of owner</string>
+    <string name="postPrivacyOnlyFriendsOfOwnerHiddenMembers">only friends of owner, hidden members</string>
+    <string name="postPrivacyHidden">hidden, only shareable via link</string>
+
+    <!-- register-->
     <string name="register">Register</string>
-    <string name="hintFirstname">Firstname</string>
-    <string name="hintLastname">Lastname</string>
 
 
 </resources>
