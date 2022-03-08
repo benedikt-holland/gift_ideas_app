@@ -38,7 +38,7 @@
     <string name="profilePrivacy">Privatsphäre</string>
     <string name="giftPrivacy">Post Sichtbarkeit</string>
     <string name="profilePicture">Profilbild</string>
-    <string name="defaultDateOfBirth">Geburtsdatum wählen</string>
+    <string name="defaultDateOfBirth">2000-01-01</string>
     <string name="defaultEmail">vorname@nachname.de</string>
     <string name="defaultFirstname">Vorname</string>
     <string name="defaultLastname">Nachname</string>
@@ -50,17 +50,17 @@
 
     <!--giftpage-->
     <string name="giftpage_name_description">Name:</string>
-    <string name="giftpage_name">Buch</string>
+    <string name="giftpage_name">Geschenktitel</string>
     <string name="giftpage_price_description">Preis:</string>
-    <string name="giftpage_price">12€</string>
+    <string name="giftpage_price">0</string>
     <string name="giftpage_link_description">Link:</string>
-    <string name="giftpage_link">http://google.com</string>
+    <string name="giftpage_link">http://xyz.com</string>
     <string name="giftpage_owner_description">Von:</string>
-    <string name="giftpage_owner">Hans</string>
+    <string name="giftpage_owner">Vorname</string>
     <string name="giftpage_privacy_description">Sichbarkeit:</string>
     <string name="giftpage_privacy">public</string>
     <string name="giftpage_member_count_description">Anzahl Beteiligte:</string>
-    <string name="giftpage_member_count">10 (8 fehlen)</string>
+    <string name="giftpage_member_count">0</string>
     <string name="join">Teilnehmen</string>
     <string name="gift_picture">Bild von Geschenk</string>
 
@@ -100,10 +100,10 @@
     <string name="profilePrivacyHidden">alles verstecken</string>
 
     <!--post privacy array-->
-    <string name="postPrivacyPublic">öffentlich, verstecke Teilnehmer</string>
-    <string name="postPrivacyOnlyFriendsOfOwner">nur Freunde des Erstellers</string>
-    <string name="postPrivacyOnlyFriendsOfOwnerHiddenMembers">nur Freunde des Erstellers, verstecke Teilnehmer</string>
-    <string name="postPrivacyHidden">versteckt, nur über Link teilbar</string>
+    <string name="postPrivacyPublic">Öffentlich</string>
+    <string name="postPrivacyOnlyFriendsOfOwner">Privat</string>
+    <string name="postPrivacyOnlyFriendsOfOwnerHiddenMembers">Privat, versteckte Teilnehmer</string>
+    <string name="postPrivacyHidden">Unsichtbar</string>
 
 	<!-- register-->
     <string name="register">Registrieren</string>

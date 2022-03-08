@@ -16,6 +16,7 @@ import java.util.*
 class LoginActivity : AppCompatActivity() {
 
     lateinit var user: ResultSet
+    private var db = DbConnector()
     private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,13 +25,39 @@ class LoginActivity : AppCompatActivity() {
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
         val view = binding.root
+
+
+        val viewModelJob = SupervisorJob()
+        val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+        uiScope.launch(Dispatchers.IO) {
+            try {
+                var inputStream = assets.open("config.properties")
+                var props = Properties()
+                props.load(inputStream)
+                var usr = props.getProperty("MYSQL_USER", "")
+                var pwd = props.getProperty("MYSQL_PWD", "")
+                var url = props.getProperty("MYSQL_URL", "")
+                inputStream.close()
+                db.connect(url, usr, pwd)
+                DbHolder.getInstance().db = db
+            } catch (e: FileNotFoundException) {
+                System.err.println("Missing config.properties file in app/src/main/assets/ containing database credentials")
+            }
+        }
         setContentView(view)
         getButtonClick()
     }
 
     private fun getButtonClick() {
-        val btnSettings = findViewById(R.id.btnLogin) as Button
-        btnSettings.setOnClickListener {
+        val btnRegister = findViewById(R.id.btnRegister) as Button
+        btnRegister.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
+        }
+
+
+        val btnLogin = findViewById(R.id.btnLogin) as Button
+        btnLogin.setOnClickListener {
 
             val email = binding.tfEmail.editText?.text.toString()
             if (email == "") {
@@ -53,23 +80,16 @@ class LoginActivity : AppCompatActivity() {
             val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
             uiScope.launch(Dispatchers.IO) {
                 try {
-                    var inputStream = assets.open("config.properties")
-                    var props = Properties()
-                    props.load(inputStream)
-                    var usr = props.getProperty("MYSQL_USER", "")
-                    var pwd = props.getProperty("MYSQL_PWD", "")
-                    var url = props.getProperty("MYSQL_URL", "")
-                    inputStream.close()
 
-                    var db = DbConnector()
-                    db.connect(url, usr, pwd)
+
+
                     var tempUser = db.loginUser(email, password)
 
                     if(tempUser != null){
                         tempUser.next()
                         user = tempUser
                         DataHolder.getInstance().user = user
-                        DbHolder.getInstance().db = db
+
 
                         val intent = Intent(this@LoginActivity, MainActivity::class.java)
                         startActivity(intent)
@@ -82,8 +102,6 @@ class LoginActivity : AppCompatActivity() {
 
                     }
 
-                } catch (e: FileNotFoundException) {
-                    System.err.println("Missing config.properties file in app/src/main/assets/ containing database credentials")
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }

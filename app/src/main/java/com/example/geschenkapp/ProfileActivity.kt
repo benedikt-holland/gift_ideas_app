@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.geschenkapp.exceptions.NoUserException
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import java.io.FileNotFoundException
@@ -42,6 +43,7 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var binding: ActivityProfileBinding
     private lateinit var profilePicture: Bitmap
     lateinit var user: ResultSet
+    private var userId: Int = -1
     lateinit var db: DbConnector
     lateinit var profileFeedRv: RecyclerView
     lateinit var profileFeedAdapter: ProfileFeedAdapter
@@ -61,6 +63,7 @@ class ProfileActivity : AppCompatActivity() {
         }
         user = DataHolder.getInstance().user
         db = DbHolder.getInstance().db
+        userId = user.getInt("id")
 
         profileFeedRv = findViewById(R.id.rvGiftFeed)
         profileFeedRv.layoutManager = LinearLayoutManager(profileFeedRv.context)
@@ -81,7 +84,7 @@ class ProfileActivity : AppCompatActivity() {
         var btnSettings: ImageButton = findViewById(R.id.btnSettings)
         var btnAddFriend: ImageButton = findViewById(R.id.btnAddFriend)
         var tabArray = initTabArray
-        if (friendUserId == user.getInt("id")) {
+        if (friendUserId == userId) {
             tabArray = initTabArray.slice(1..3).toTypedArray()
             btnSettings.visibility = View.VISIBLE
             btnAddFriend.visibility = View.GONE
@@ -96,7 +99,7 @@ class ProfileActivity : AppCompatActivity() {
         tabLayout = findViewById(R.id.profileTabLayout)
         viewPager = findViewById(R.id.profileViewPager)
         val adapter =
-            ProfileTabAdapter(supportFragmentManager, lifecycle, user.getInt("id"), friendUserId)
+            ProfileTabAdapter(supportFragmentManager, lifecycle, userId, friendUserId)
         viewPager.adapter = adapter
 
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
@@ -114,24 +117,53 @@ class ProfileActivity : AppCompatActivity() {
 
             //Load user data
             try {
-                profileUser = db.getUser(user.getInt("id"), friendUserId)
-                if (!profileUser.isLast && profileUser.next()) {
-                    withContext(Dispatchers.Main) {
-                        tvName.text = if (profileUser.getString("last_name") != null) {
-                            profileUser.getString("first_name") + " " + profileUser.getString("last_name")
+                profileUser = db.getUser(userId, friendUserId)
+            } catch (e: Exception) {
+                println("Unable to load user data")
+                e.printStackTrace()
+            }
+            try {
+                if (!profileUser.isLast) {
+                    profileUser.next()
+                }
+                withContext(Dispatchers.Main) {
+                    tvName.text = if (profileUser.getString("last_name") != null) {
+                        profileUser.getString("first_name") + " " + profileUser.getString("last_name")
+                    } else {
+                        profileUser.getString("first_name")
+                    }
+                    try {
+                        tvDateofbirth.text = profileUser.getString("date_of_birth")
+                    } catch (e: SQLException) {
+                        tvDateofbirth.visibility = View.INVISIBLE
+                        println("User privacy settings hides date of birth")
+                    }
+                }
+
+                //Set friend button status
+                var isFriend: Boolean = profileUser.getInt("is_friend") == 1
+                updateAddFriendButtonColor(btnAddFriend, isFriend)
+
+
+                btnAddFriend.setOnClickListener {
+                    val viewModelJob = SupervisorJob()
+                    val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+                    uiScope.launch(Dispatchers.IO) {
+                        if  (!isFriend) {
+                            db.addFriend(friendUserId, userId)
+                            isFriend = true
                         } else {
-                            profileUser.getString("first_name")
+                            db.removeFriend(friendUserId, userId)
+                            isFriend = false
                         }
-                        try {
-                            tvDateofbirth.text = profileUser.getString("date_of_birth")
-                        } catch (e: SQLException) {
-                            tvDateofbirth.visibility = View.INVISIBLE
-                            println("User privacy settings hides date of birth")
+                        withContext(Dispatchers.Main) {
+                            updateAddFriendButtonColor(btnAddFriend, isFriend)
+                            profileFeedAdapter.notifyDataSetChanged()
                         }
                     }
                 }
             } catch (e: Exception) {
-                println("Unable to load user data")
+                println("Unable to set user data")
             }
 
             //Load profile picture
@@ -158,28 +190,7 @@ class ProfileActivity : AppCompatActivity() {
                 e.printStackTrace()
             }
 
-            //Set friend button status
-            var isFriend: Boolean = profileUser.getInt("is_friend") == 1
-            updateAddFriendButtonColor(btnAddFriend, isFriend)
-            btnAddFriend.setOnClickListener {
-                val viewModelJob = SupervisorJob()
-                val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
-                uiScope.launch(Dispatchers.IO) {
-                    if  (!isFriend) {
-                        db.addFriend(friendUserId, user.getInt("id"))
-                        isFriend = true
-                    } else {
-                        db.removeFriend(friendUserId, user.getInt("id"))
-                        isFriend = false
-                    }
-                    withContext(Dispatchers.Main) {
-                        updateAddFriendButtonColor(btnAddFriend, isFriend)
-                        profileFeedAdapter.notifyDataSetChanged()
-                    }
-                }
-            }
-
-            loadGiftFeed(user.getInt("id"), friendUserId)
+            loadGiftFeed(userId, friendUserId)
 
         }
         getButtonClick()
@@ -207,6 +218,15 @@ class ProfileActivity : AppCompatActivity() {
         btnSettings.setOnClickListener {
             val intent = Intent(this, ProfileSettingsActivity::class.java)
             startActivity(intent)
+        }
+        val btnAddGift: FloatingActionButton = findViewById(R.id.fabAddGift)
+        btnAddGift.setOnClickListener {
+            var intent = Intent(this, GiftPageActivity::class.java)
+            var b = Bundle()
+            b.putInt("profileUserId", friendUserId)
+            intent.putExtras(b)
+            intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+            startActivityIfNeeded(intent, 0)
         }
     }
 

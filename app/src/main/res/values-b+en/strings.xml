@@ -37,7 +37,7 @@
     <string name="profilePrivacy">Privacy</string>
     <string name="giftPrivacy">Post Visability</string>
     <string name="profilePicture">profile picture</string>
-    <string name="defaultDateOfBirth">select date of birth</string>
+    <string name="defaultDateOfBirth">2000-01-01</string>
     <string name="defaultEmail">firstname@lastname.com</string>
     <string name="defaultFirstname">Hans</string>
     <string name="defaultLastname">Müller</string>

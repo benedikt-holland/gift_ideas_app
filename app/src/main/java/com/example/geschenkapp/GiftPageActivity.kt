@@ -20,10 +20,12 @@ class GiftPageActivity  : AppCompatActivity() {
     private var giftId: Int = -1
     private var memberId: Int? = null
     private var userId: Int = -1
+    private var profileUserId: Int = -1
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        var isNew = false
         setContentView(R.layout.activity_giftpage)
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.apply {
@@ -33,12 +35,15 @@ class GiftPageActivity  : AppCompatActivity() {
             setDisplayShowHomeEnabled(true)
         }
 
+        user = DataHolder.getInstance().user
+        db = DbHolder.getInstance().db
+
         val b: Bundle? = intent.extras
         if (b != null) {
             giftId = b.getInt("id")
+            profileUserId = b.getInt("profileUserId")
         }
-        user = DataHolder.getInstance().user
-        db = DbHolder.getInstance().db
+        isNew = giftId == 0
 
         val tvName: TextView = findViewById(R.id.tvName)
         val tvPrice: TextView = findViewById(R.id.tvPrice)
@@ -64,7 +69,7 @@ class GiftPageActivity  : AppCompatActivity() {
                     } else {
                         tvOwner.text = gift.getString("owner_first_name")
                     }
-                    if(gift.getInt("owner_id")==userId) {
+                    if (gift.getInt("owner_id") == userId) {
                         tvName.isEnabled = true
                         tvPrice.isEnabled = true
                         tvLink.isEnabled = true
@@ -83,49 +88,47 @@ class GiftPageActivity  : AppCompatActivity() {
                             title = gift.getString("user_first_name")
                         }
                     }
-                    spPrivacy.setSelection(gift.getInt("post_privacy"))
-//                    spPrivacy.text = when (gift.getInt("post_privacy")) {
-//                        0 -> {
-//                            "Öffentlich"
-//                        }
-//                        1 -> {
-//                            "Nur Freunde"
-//                        }
-//                        2 -> {
-//                            "Nur Freunde"
-//                        }
-//                        else -> {
-//                            "Unsichtbar"
-//                        }
-//                    }
-                    tvMemberCount.text = gift.getString("member_count")
 
-                    updateJoinButtonColor(btnJoin, gift.getInt("member_id"), gift.getInt("owner_id"))
+                    spPrivacy.setSelection(gift.getInt("post_privacy"))
+                    tvMemberCount.text = gift.getString("member_count")
+                    if (!isNew) {
+                        updateJoinButtonColor(
+                            btnJoin,
+                            gift.getInt("member_id"),
+                            gift.getInt("owner_id")
+                        )
+                    } else {
+                        updateJoinButtonColor(btnJoin, null, userId)
+                    }
                     btnJoin.setOnClickListener {
                         val viewModelJob = SupervisorJob()
                         val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
                         uiScope.launch(Dispatchers.IO) {
-                            if (userId == gift.getInt("owner_id")) {
+                            if (isNew || userId == gift.getInt("owner_id")) {
                                 val profilePrivacyArray: Array<String> =
                                     resources.getStringArray(R.array.profile_privacy_array)
-                                var profilePrivacy: Int = -1
+                                var postPrivacy: Int = 0
                                 for (i in profilePrivacyArray.indices) {
                                     if (profilePrivacyArray[i].contains(spPrivacy.selectedItem.toString())) {
-                                        profilePrivacy = i
+                                        postPrivacy = i
                                     }
                                 }
                                 try {
                                     db.updateGift(
-                                        giftId,
+                                        if (isNew) null else giftId,
                                         tvName.text.toString(),
                                         tvPrice!!.text.toString().toInt(),
-                                        gift.getInt("user_id"),
+                                        profileUserId,
                                         userId,
                                         tvLink.text.toString(),
-                                        profilePrivacy
+                                        postPrivacy
                                     )
                                 } catch (e: Exception) {
-                                    Toast.makeText(this@GiftPageActivity, "Update failed, please try again", Toast.LENGTH_LONG).show()
+                                    Toast.makeText(
+                                        this@GiftPageActivity,
+                                        "Update failed, please try again",
+                                        Toast.LENGTH_LONG
+                                    ).show()
                                 }
                             } else {
                                 var memberCount: Int = gift.getInt("member_count")
@@ -157,8 +160,8 @@ class GiftPageActivity  : AppCompatActivity() {
                         }
                     }
                 }
+                }
             }
-        }
 
         /*giftPageCommentsRv = findViewById(R.id.rvGiftPageComments)
         giftPageCommentsRv.layoutManager = LinearLayoutManager(giftPageCommentsRv.context)
@@ -182,7 +185,7 @@ class GiftPageActivity  : AppCompatActivity() {
     override fun onBackPressed() {
         var intent = Intent(this, ProfileActivity::class.java)
         var b = Bundle()
-        b.putInt("id", userId)
+        b.putInt("id", profileUserId)
         intent.putExtras(b)
         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
         startActivityIfNeeded(intent, 0)
