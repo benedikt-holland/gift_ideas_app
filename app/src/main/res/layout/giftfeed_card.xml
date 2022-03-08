@@ -64,12 +64,24 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/tvGiftMemberCount"
+            android:textSize="20sp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10sp"
+            android:text="0 Teilnehmer"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnDownvote" />
+
+
+        <TextView
             android:id="@+id/tvGiftOwner"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/profile_name"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tvGiftMemberCount"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView

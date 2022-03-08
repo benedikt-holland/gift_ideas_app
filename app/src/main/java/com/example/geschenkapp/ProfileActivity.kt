@@ -2,6 +2,8 @@ package com.example.geschenkapp
 
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Color
+import android.media.Image
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
@@ -156,6 +158,25 @@ class ProfileActivity : AppCompatActivity() {
                 e.printStackTrace()
             }
 
+            //Set friend button status
+            updateAddFriendButtonColor(btnAddFriend, profileUser.getInt("is_friend"))
+            btnAddFriend.setOnClickListener {
+                val viewModelJob = SupervisorJob()
+                val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+                uiScope.launch(Dispatchers.IO) {
+                    if (profileUser.getInt("is_friend") == 0) {
+                        db.addFriend(friendUserId, user.getInt("id"))
+                        profileUser.updateInt("is_friend", 1)
+                    } else {
+                        db.removeFriend(friendUserId, user.getInt("id"))
+                        profileUser.updateInt("is_friend", 0)
+                    }
+                    withContext(Dispatchers.Main) {
+                        updateAddFriendButtonColor(btnAddFriend, profileUser.getInt("is_friend"))
+                    }
+                }
+            }
+
             loadGiftFeed(user.getInt("id"), friendUserId)
 
         }
@@ -191,9 +212,20 @@ class ProfileActivity : AppCompatActivity() {
         val giftFeed = db.getGiftFeedByUserId(userId, friendUserId)
         val giftFeedArray = unloadResultSet(giftFeed)
         withContext(Dispatchers.Main) {
-            profileFeedAdapter = ProfileFeedAdapter(giftFeedArray)
-            profileFeedRv.adapter = profileFeedAdapter
-            profileFeedAdapter.notifyDataSetChanged()
+            if (profileFeedRv.adapter==null) {
+                profileFeedAdapter = ProfileFeedAdapter(giftFeedArray)
+                profileFeedRv.adapter = profileFeedAdapter
+            } else {
+                profileFeedAdapter.updateData(giftFeedArray)
+            }
+        }
+    }
+
+    fun updateAddFriendButtonColor(btnAddFriend: ImageButton, isFriend: Int) {
+        if (isFriend==1) {
+            btnAddFriend.setColorFilter(Color.argb(255, 50, 205, 50))
+        } else {
+            btnAddFriend.setColorFilter(Color.argb(255, 0, 0, 0))
         }
     }
 
