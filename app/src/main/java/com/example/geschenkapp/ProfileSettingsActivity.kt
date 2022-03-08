@@ -245,7 +245,7 @@ class ProfileSettingsActivity : AppCompatActivity() {
     }
 
     private fun setDate(){
-        // create an OnDateSetListener
+        /*// create an OnDateSetListener
         val dateSetListener = object : DatePickerDialog.OnDateSetListener {
             override fun onDateSet(view: DatePicker, year: Int, monthOfYear: Int,
                                    dayOfMonth: Int) {
@@ -263,15 +263,27 @@ class ProfileSettingsActivity : AppCompatActivity() {
                     dateSetListener,
                     // set DatePickerDialog to point to today's date when it loads up
                     calendar.get(Calendar.YEAR),
-                    calendar.get(Calendar.MONTH),
+                    calendar.get(Calendar.MONTH)+1,
                     calendar.get(Calendar.DAY_OF_MONTH)).show()
             }
 
-        })
+        })*/
+
+        val c = Calendar.getInstance()
+        val year = c.get(Calendar.YEAR)
+        val month = c.get(Calendar.MONTH)
+        val day = c.get(Calendar.DAY_OF_MONTH)
+
+        binding.tvDateOfBirth.setOnClickListener{
+            val dpd = DatePickerDialog(this, DatePickerDialog.OnDateSetListener{view, mYear, mMonth, mDay ->
+                binding.tvDateOfBirth.setText(""+ mYear + "-" + (mMonth+1) +"-"+ mDay )
+            }, year, month, day)
+            dpd.show()
+        }
     }
-    private fun updateDateInView() {
-        val myFormat = "yyyy-mm-dd" // mention the format you need
+    /*private fun updateDateInView() {
+        val myFormat = "yyyy/mm/dd" // mention the format you need
         val sdf = SimpleDateFormat(myFormat, Locale.GERMAN)
         binding.tvDateOfBirth.text = sdf.format(calendar.getTime())
-    }
+    }*/
 }
