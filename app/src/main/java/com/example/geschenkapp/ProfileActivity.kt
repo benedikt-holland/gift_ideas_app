@@ -166,12 +166,18 @@ class ProfileActivity : AppCompatActivity() {
                 println("Unable to set user data")
             }
 
+            loadGiftFeed(userId, friendUserId)
+
             //Load profile picture
             try {
                 var inputStream = assets.open("config.properties")
                 var props = Properties()
                 props.load(inputStream)
-                val profilePictureFileName = user.getString("profile_picture")
+
+                //
+                val profilePictureFileName = profileUser.getString("profile_picture")
+                //
+
 
                 var auth = props.getProperty("API_AUTH", "")
                 var downloadUri = props.getProperty("API_DOWNLOAD", "") + profilePictureFileName
@@ -190,7 +196,6 @@ class ProfileActivity : AppCompatActivity() {
                 e.printStackTrace()
             }
 
-            loadGiftFeed(userId, friendUserId)
 
         }
         getButtonClick()
@@ -226,7 +231,7 @@ class ProfileActivity : AppCompatActivity() {
             b.putInt("profileUserId", friendUserId)
             intent.putExtras(b)
             intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-            startActivityIfNeeded(intent, 0)
+            startActivity(intent)
         }
     }
 

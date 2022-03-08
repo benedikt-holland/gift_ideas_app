@@ -48,17 +48,18 @@
 
     <!--giftpage-->
     <string name="giftpage_name_description">Name:</string>
-    <string name="giftpage_name">Book</string>
+    <string name="giftpage_name">name of gift</string>
     <string name="giftpage_price_description">Price:</string>
-    <string name="giftpage_price">12€</string>
+    <string name="giftpage_price">0</string>
+    <string name="currency">€</string>
     <string name="giftpage_link_description">Link:</string>
-    <string name="giftpage_link">http://google.com</string>
+    <string name="giftpage_link">http://xyz.com</string>
     <string name="giftpage_owner_description">By:</string>
-    <string name="giftpage_owner">Hans</string>
+    <string name="giftpage_owner">Vorname Nachname</string>
     <string name="giftpage_privacy_description">Privacy:</string>
-    <string name="giftpage_privacy">Public</string>
+    <string name="giftpage_privacy">public</string>
     <string name="giftpage_member_count_description">Member Count:</string>
-    <string name="giftpage_member_count">10 (8 missing)</string>
+    <string name="giftpage_member_count">0</string>
     <string name="join">Join</string>
     <string name="gift_picture">picture of the gift</string>
 
@@ -96,10 +97,10 @@
     <string name="profilePrivacyHidden">hide everything</string>
 
     <!--post privacy array-->
-    <string name="postPrivacyPublic">public, hidden members</string>
-    <string name="postPrivacyOnlyFriendsOfOwner">only friends of owner</string>
-    <string name="postPrivacyOnlyFriendsOfOwnerHiddenMembers">only friends of owner, hidden members</string>
-    <string name="postPrivacyHidden">hidden, only shareable via link</string>
+    <string name="postPrivacyPublic">public</string>
+    <string name="postPrivacyOnlyFriendsOfOwner">private</string>
+    <string name="postPrivacyOnlyFriendsOfOwnerHiddenMembers">private</string>
+    <string name="postPrivacyHidden">hidden</string>
 
     <!-- register-->
     <string name="register">Register</string>

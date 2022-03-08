@@ -53,6 +53,7 @@
     <string name="giftpage_name">Geschenktitel</string>
     <string name="giftpage_price_description">Preis:</string>
     <string name="giftpage_price">0</string>
+    <string name="currency">€</string>
     <string name="giftpage_link_description">Link:</string>
     <string name="giftpage_link">http://xyz.com</string>
     <string name="giftpage_owner_description">Von:</string>
@@ -80,7 +81,7 @@
     <!--card views-->
     <string name="giftidea">Geschenkidee</string>
     <string name="addFavorite">add Favorite</string>
-    <string name="giftfeed_price">0€</string>
+    <string name="giftfeed_price">0</string>
     <string name="likeCount">0</string>
     <string name="suggestionCount">0 Vorschläge</string>
 
@@ -96,8 +97,8 @@
     <string name="profilePrivacyPublic">öffentlich</string>
     <string name="profilePrivacyHideFeed">Feed verstecken</string>
     <string name="profilePrivacyNameAndProfilePicture">Name und Profilbild</string>
-    <string name="profilePrivacyName">nur Name</string>
-    <string name="profilePrivacyHidden">alles verstecken</string>
+    <string name="profilePrivacyName">Nur Name</string>
+    <string name="profilePrivacyHidden">unsichtbar</string>
 
     <!--post privacy array-->
     <string name="postPrivacyPublic">Öffentlich</string>
