@@ -43,6 +43,10 @@
     <string name="giftpage_member_count_description">Member Count:</string>
     <string name="giftpage_member_count">10 (8 missing)</string>
     <string name="join">Join</string>
+    <string name="gift_picture">picture of the gift</string>
+
+    <!--comments-->
+    <string name="comment">I like the idea! rubzoiunwezinw rhegnpuw bzuiz rzjbiwornuzqw  zjnwiz wetzn</string>
 
     <!--loginpage-->
     <string name="login">Login</string>
@@ -52,6 +56,19 @@
     <string name="noPasswordError">Please enter your password!</string>
     <string name="wrongCredentials">E-Mail or password incorrect!</string>
 
+    <!--card views-->
+    <string name="giftidea">gift idea</string>
+    <string name="addFavorite">add Favorite</string>
+    <string name="giftfeed_price">0€</string>
+    <string name="likeCount">0</string>
+    <string name="suggestionCount">0 suggestions</string>
+
+    <!--search friend-->
+    <string name="searchFriend">search friends</string>
+
+    <string name="settingsButton">Settings</string>
+    <string name="addFriend">add friend</string>
+    <string name="floatingActionButton">Floating Action Button</string>
     <string name="gifts">Gifts</string>
 
 

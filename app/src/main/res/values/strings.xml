@@ -52,8 +52,8 @@
     <string name="noEmailError">Bitte trage eine E-Mail ein!</string>
     <string name="noPasswordError">Bitte trage ein Passwort ein!</string>
     <string name="wrongCredentials">Ihre E-Mail-Adresse und Ihr Kennwort stimmen nicht überein!</string>
-    <string name="defaultEmail">Hans@Müller.de</string>
-    <string name="defaultPassword">password</string>
+    <string name="defaultEmail" translatable="false">Hans@Müller.de</string>
+    <string name="defaultPassword" translatable="false">password</string>
 
     <!--comments-->
     <string name="comment">Ich finde diese Idee sehr gut, lasst uns zusammenlegen! rubzoiunwezinw rhegnpuw bzuiz rzjbiwornuzqw  zjnwiz wetzn</string>
@@ -65,10 +65,13 @@
     <string name="likeCount">0</string>
     <string name="suggestionCount">0 Vorschläge</string>
 
+    <!--search friend-->
+    <string name="searchFriend">Suche Freunde</string>
 
     <string name="settingsButton">Einstellungen</string>
     <string name="addFriend">Freund hinzufügen</string>
     <string name="floatingActionButton">Floating Action Button</string>
     <string name="gifts">Geschenke</string>
+
 
 </resources>
