@@ -17,6 +17,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.geschenkapp.databinding.ActivityMainBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.*
 import java.io.FileNotFoundException
 import kotlin.collections.ArrayList
@@ -31,6 +32,7 @@ class MainActivity : AppCompatActivity() {
     private var db = DbConnector()
     private var userId: Int = -1
     private lateinit var binding: ActivityMainBinding
+    lateinit var bottomNavBar: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,35 +67,7 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar()
 
-        //bottom navigation bar
-        binding.bottomNavigation.selectedItemId = R.id.ic_bottom_nav_home
-        binding.bottomNavigation.setOnItemSelectedListener { item ->
-            Log.d("MainActivity", "item clicked")
-            when (item.itemId) {
-                R.id.ic_bottom_nav_profile -> {
-                    var intent = Intent(this, ProfileActivity::class.java)
-                    var b = Bundle()
-                    b.putInt("id", userId)
-                    intent.putExtras(b)
-                    intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-                    startActivityIfNeeded(intent, 0)
-                }
-                R.id.ic_bottom_nav_notifications -> {
-                    Log.d("NotificationActivity", "notification")
-                    val intent = Intent(this, NotificationActivity::class.java)
-                    intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-                    startActivityIfNeeded(intent, 0)
-                }
-                R.id.ic_bottom_nav_home -> {
-                    true
-                }
-                else -> {
-                    Log.d("MainActivity", "item not found")
-                }
-            }
-            true
 
-        }
 
         setNotificationNumber()
 
@@ -168,6 +142,35 @@ class MainActivity : AppCompatActivity() {
             }  catch (e: Exception) {
                 e.printStackTrace()
             }
+        }
+        //bottom navigation bar
+        binding.bottomNavigation.selectedItemId = R.id.ic_bottom_nav_home
+        binding.bottomNavigation.setOnItemSelectedListener { item ->
+            Log.d("MainActivity", "item clicked")
+            when (item.itemId) {
+                R.id.ic_bottom_nav_profile -> {
+                    var intent = Intent(this, ProfileActivity::class.java)
+                    var b = Bundle()
+                    b.putInt("id", userId)
+                    intent.putExtras(b)
+                    intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                    startActivityIfNeeded(intent, 0)
+                }
+                R.id.ic_bottom_nav_notifications -> {
+                    Log.d("NotificationActivity", "notification")
+                    val intent = Intent(this, NotificationActivity::class.java)
+                    intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                    startActivityIfNeeded(intent, 0)
+                }
+                R.id.ic_bottom_nav_home -> {
+                    true
+                }
+                else -> {
+                    Log.d("MainActivity", "item not found")
+                }
+            }
+            true
+
         }
     }
 
