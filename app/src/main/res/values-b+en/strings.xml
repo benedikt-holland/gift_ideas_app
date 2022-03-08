@@ -99,7 +99,7 @@
     <!--post privacy array-->
     <string name="postPrivacyPublic">public</string>
     <string name="postPrivacyOnlyFriendsOfOwner">private</string>
-    <string name="postPrivacyOnlyFriendsOfOwnerHiddenMembers">private</string>
+    <string name="postPrivacyOnlyFriendsOfOwnerHiddenMembers">private, hidden members</string>
     <string name="postPrivacyHidden">hidden</string>
 
     <!-- register-->
