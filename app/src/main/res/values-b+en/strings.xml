@@ -1,0 +1,58 @@
+<resources>
+    <string name="app_name">geschenkapp</string>
+    <string name="profile_picture">profile picture</string>
+    <string name="share">Share</string>
+    <string name="back">Back</string>
+
+    <!--search-->
+    <string name="search_hint">search for persons</string>
+
+    <!-- bottom navigation bar-->
+    <string name="home">Home</string>
+    <string name="profile">Profile</string>
+    <string name="notifications">Notifications</string>
+    <string name="title_activity_profile">ProfileActivity</string>
+    <string name="title_activity_profile_settings">ProfileSettingsActivity</string>
+    <string name="title_activity_notification">NotificationActivity</string>
+    <string name="title_activity_giftpage">GiftPageActivity</string>
+
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <!--profile-->
+    <string name="profile_name">Firstname Lastname</string>
+    <string name="profile_date_of_birth">21th birthday: 05/27</string>
+    <string name="tab_left">Wishlist</string>
+    <string name="tab_center">Events</string>
+    <string name="tab_right">Friends</string>
+
+    <!--giftpage-->
+    <string name="giftpage_name_description">Name:</string>
+    <string name="giftpage_name">Book</string>
+    <string name="giftpage_price_description">Price:</string>
+    <string name="giftpage_price">12€</string>
+    <string name="giftpage_link_description">Link:</string>
+    <string name="giftpage_link">http://google.com</string>
+    <string name="giftpage_owner_description">By:</string>
+    <string name="giftpage_owner">Hans</string>
+    <string name="giftpage_privacy_description">Privacy:</string>
+    <string name="giftpage_privacy">Public</string>
+    <string name="giftpage_member_count_description">Member Count:</string>
+    <string name="giftpage_member_count">10 (8 missing)</string>
+    <string name="join">Join</string>
+
+    <!--loginpage-->
+    <string name="login">Login</string>
+    <string name="email">E-Mail</string>
+    <string name="password">Password</string>
+    <string name="noEmailError">Please enter your E-Mail!</string>
+    <string name="noPasswordError">Please enter your password!</string>
+    <string name="wrongCredentials">E-Mail or password incorrect!</string>
+
+    <string name="gifts">Gifts</string>
+
+
+</resources>

@@ -53,7 +53,7 @@ class ProfileActivity : AppCompatActivity() {
         setContentView(R.layout.activity_profile)
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.apply {
-            title = "Profil"
+            title = getResources().getString(R.string.profile)
             // show back button on toolbar
             // on back button press, it will navigate to parent activity
             setDisplayHomeAsUpEnabled(true)

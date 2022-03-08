@@ -69,5 +69,6 @@
     <string name="settingsButton">Einstellungen</string>
     <string name="addFriend">Freund hinzufügen</string>
     <string name="floatingActionButton">Floating Action Button</string>
+    <string name="gifts">Geschenke</string>
 
 </resources>
