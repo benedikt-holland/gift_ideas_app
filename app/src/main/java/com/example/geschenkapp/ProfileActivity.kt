@@ -156,6 +156,8 @@ class ProfileActivity : AppCompatActivity() {
                             db.removeFriend(friendUserId, userId)
                             isFriend = false
                         }
+
+
                         withContext(Dispatchers.Main) {
                             updateAddFriendButtonColor(btnAddFriend, isFriend)
                             profileFeedAdapter.notifyDataSetChanged()
