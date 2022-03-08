@@ -39,10 +39,13 @@
     <string name="giftPrivacy">Post Sichtbarkeit</string>
     <string name="profilePicture">Profilbild</string>
     <string name="defaultDateOfBirth">01.01.2000</string>
-    <string name="defaultFirstname">Hans</string>
-    <string name="defaultLastname">Müller</string>
+    <string name="defaultEmail">vorname@nachname.de</string>
+    <string name="defaultFirstname">Vorname</string>
+    <string name="defaultLastname">Nachname</string>
     <string name="uploadPicture">Bild hochladen</string>
     <string name="saved">gespeichert</string>
+    <string name="emailDuplicate">Eingegebene Email existiert bereits. Bitte geben Sie eine andere ein.</string>
+    <string name="emptyString">Felder dürfen nicht leer sein</string>
 
 
     <!--giftpage-->
@@ -68,8 +71,8 @@
     <string name="noEmailError">Bitte trage eine E-Mail ein!</string>
     <string name="noPasswordError">Bitte trage ein Passwort ein!</string>
     <string name="wrongCredentials">Ihre E-Mail-Adresse und Ihr Kennwort stimmen nicht überein!</string>
-    <string name="defaultEmail" translatable="false">Hans@Müller.de</string>
-    <string name="defaultPassword" translatable="false">password</string>
+    <string name="defaultEmailLogin" translatable="false">Hans@Müller.de</string>
+    <string name="defaultPasswordLogin" translatable="false">password</string>
 
     <!--comments-->
     <string name="comment">Ich finde diese Idee sehr gut, lasst uns zusammenlegen! rubzoiunwezinw rhegnpuw bzuiz rzjbiwornuzqw  zjnwiz wetzn</string>

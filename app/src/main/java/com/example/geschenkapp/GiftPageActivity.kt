@@ -68,12 +68,12 @@ class GiftPageActivity  : AppCompatActivity() {
                         tvName.isEnabled = true
                         tvPrice.isEnabled = true
                         tvLink.isEnabled = true
-                        tvPrivacy.isEnabled = true
+                        spPrivacy.isEnabled = true
                     } else {
                         tvName.isEnabled = false
                         tvPrice.isEnabled = false
                         tvLink.isEnabled = false
-                        tvPrivacy.isEnabled = false
+                        spPrivacy.isEnabled = false
                     }
                     supportActionBar?.apply {
                         if (gift.getString("user_last_name") != null) {
@@ -83,20 +83,21 @@ class GiftPageActivity  : AppCompatActivity() {
                             title = gift.getString("user_first_name")
                         }
                     }
-                    tvPrivacy.text = when (gift.getInt("post_privacy")) {
-                        0 -> {
-                            "Öffentlich"
-                        }
-                        1 -> {
-                            "Nur Freunde"
-                        }
-                        2 -> {
-                            "Nur Freunde"
-                        }
-                        else -> {
-                            "Unsichtbar"
-                        }
-                    }
+                    spPrivacy.setSelection(gift.getInt("post_privacy"))
+//                    spPrivacy.text = when (gift.getInt("post_privacy")) {
+//                        0 -> {
+//                            "Öffentlich"
+//                        }
+//                        1 -> {
+//                            "Nur Freunde"
+//                        }
+//                        2 -> {
+//                            "Nur Freunde"
+//                        }
+//                        else -> {
+//                            "Unsichtbar"
+//                        }
+//                    }
                     tvMemberCount.text = gift.getString("member_count")
 
                     updateJoinButtonColor(btnJoin, gift.getInt("member_id"), gift.getInt("owner_id"))
@@ -109,7 +110,7 @@ class GiftPageActivity  : AppCompatActivity() {
                                     resources.getStringArray(R.array.profile_privacy_array)
                                 var profilePrivacy: Int = -1
                                 for (i in profilePrivacyArray.indices) {
-                                    if (profilePrivacyArray[i].contains(tvPrivacy.text.toString())) {
+                                    if (profilePrivacyArray[i].contains(spPrivacy.selectedItem.toString())) {
                                         profilePrivacy = i
                                     }
                                 }
