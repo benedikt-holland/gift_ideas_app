@@ -52,7 +52,7 @@
             android:windowSoftInputMode="adjustPan"
             android:exported="true"
             android:label="@string/title_activity_giftpage"
-            android:parentActivityName=".ProfileActivity"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/Theme.Geschenkapp.NoActionBar">
 
             <!-- <intent-filter> -->
