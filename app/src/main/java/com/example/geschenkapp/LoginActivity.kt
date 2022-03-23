@@ -24,6 +24,7 @@ class LoginActivity : AppCompatActivity() {
     lateinit var user: ResultSet
     private var db = DbConnector()
     private lateinit var binding: ActivityLoginBinding
+    private var dbConnected = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,20 +37,7 @@ class LoginActivity : AppCompatActivity() {
         val viewModelJob = SupervisorJob()
         val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
         uiScope.launch(Dispatchers.IO) {
-            try {
-                //Initate database connection and save to data holder
-                var inputStream = assets.open("config.properties")
-                var props = Properties()
-                props.load(inputStream)
-                var usr = props.getProperty("MYSQL_USER", "")
-                var pwd = props.getProperty("MYSQL_PWD", "")
-                var url = props.getProperty("MYSQL_URL", "")
-                inputStream.close()
-                db.connect(url, usr, pwd)
-                DbHolder.getInstance().db = db
-            } catch (e: FileNotFoundException) {
-                System.err.println("Missing config.properties file in app/src/main/assets/ containing database credentials")
-            }
+            connectToDatabase()
         }
         setContentView(view)
         getButtonClick()
@@ -59,6 +47,7 @@ class LoginActivity : AppCompatActivity() {
     private fun getButtonClick() {
         val btnRegister = findViewById(R.id.btnRegister) as Button
         btnRegister.setOnClickListener {
+
             if (checkForInternet(this)) {
                 val intent = Intent(this, RegisterActivity::class.java)
                 startActivity(intent)
@@ -72,60 +61,64 @@ class LoginActivity : AppCompatActivity() {
         btnLogin.setOnClickListener {
 
             if (checkForInternet(this)) {
-                val email = binding.tfEmail.editText?.text.toString()
-                if (email == "") {
-                    binding.tfEmail.error = getString(R.string.noEmailError)
-                    binding.tfEmail.isErrorEnabled = true
-                    return@setOnClickListener
-                } else {
-                    binding.tfEmail.isErrorEnabled = false
-                }
-                val password = binding.tfPassword.editText?.text.toString()
-                if (password == "") {
-                    binding.tfPassword.error = getString(R.string.noPasswordError)
-                    binding.tfPassword.isErrorEnabled = true
-                    return@setOnClickListener
-                } else {
-                    binding.tfPassword.isErrorEnabled = false
-                }
-
                 val viewModelJob = SupervisorJob()
                 val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
                 uiScope.launch(Dispatchers.IO) {
                     try {
-
-
-                        var tempUser = db.loginUser(email, password)
-
-                        if (tempUser != null) {
-                            tempUser.next()
-                            user = tempUser
-                            DataHolder.getInstance().user = user
-
-
-                            val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                            startActivity(intent)
-                        } else {
-
-                            withContext(Dispatchers.Main) {
-                                binding.tfPassword.error = getString(R.string.wrongCredentials)
-                                binding.tfPassword.isErrorEnabled = true
-                            }
-
-                        }
-
+                        db.getUserById(1)
+                        dbConnected = true
                     } catch (e: Exception) {
-                        e.printStackTrace()
+                        dbConnected = false
+                    }
+                    if (dbConnected == false) {
+                        connectToDatabase()
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(
+                                applicationContext,
+                                R.string.connecting,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                    withContext(Dispatchers.Main) {
+                        login()
                     }
                 }
             } else {
                 Toast.makeText(this, R.string.no_internet_connection, Toast.LENGTH_LONG).show()
+                dbConnected = false
             }
         }
     }
 
-    private fun checkForInternet(context: Context): Boolean {
+    private suspend fun connectToDatabase() {
+        try {
+            //Initiate database connection and save to data holder
+            var inputStream = assets.open("config.properties")
+            var props = Properties()
+            props.load(inputStream)
+            var usr = props.getProperty("MYSQL_USER", "")
+            var pwd = props.getProperty("MYSQL_PWD", "")
+            var url = props.getProperty("MYSQL_URL", "")
+            inputStream.close()
+            db.connect(url, usr, pwd)
+            DbHolder.getInstance().db = db
+            dbConnected = true
+        } catch (e: FileNotFoundException) {
+            System.err.println("Missing config.properties file in app/src/main/assets/ containing database credentials")
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                Toast.makeText(
+                    applicationContext,
+                    R.string.no_internet_connection,
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+            dbConnected = false
+        }
+    }
 
+    private fun checkForInternet(context: Context): Boolean {
         // register activity with the connectivity manager service
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -145,6 +138,49 @@ class LoginActivity : AppCompatActivity() {
                 connectivityManager.activeNetworkInfo ?: return false
             @Suppress("DEPRECATION")
             return networkInfo.isConnected
+        }
+    }
+
+    private fun login() {
+        val email = binding.tfEmail.editText?.text.toString()
+        if (email == "") {
+            binding.tfEmail.error = getString(R.string.noEmailError)
+            binding.tfEmail.isErrorEnabled = true
+            return
+        } else {
+            binding.tfEmail.isErrorEnabled = false
+        }
+        val password = binding.tfPassword.editText?.text.toString()
+        if (password == "") {
+            binding.tfPassword.error = getString(R.string.noPasswordError)
+            binding.tfPassword.isErrorEnabled = true
+            return
+        } else {
+            binding.tfPassword.isErrorEnabled = false
+        }
+
+        val viewModelJob = SupervisorJob()
+        val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+        uiScope.launch(Dispatchers.IO) {
+            try {
+                var tempUser = db.loginUser(email, password)
+
+                if (tempUser != null) {
+                    tempUser.next()
+                    user = tempUser
+                    DataHolder.getInstance().user = user
+
+                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                    startActivity(intent)
+                } else {
+                    withContext(Dispatchers.Main) {
+                        binding.tfPassword.error = getString(R.string.wrongCredentials)
+                        binding.tfPassword.isErrorEnabled = true
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 }

@@ -112,6 +112,7 @@
 
     <!--internet connection-->
     <string name="no_internet_connection">Keine Internetverbindung</string>
+    <string name="connecting">Verbinde</string>
 
 
 </resources>
