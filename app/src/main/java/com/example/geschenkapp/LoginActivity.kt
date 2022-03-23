@@ -97,7 +97,7 @@ class LoginActivity : AppCompatActivity() {
 
                         var tempUser = db.loginUser(email, password)
 
-                        if (tempUser != null) {
+                        if (tempUser.metaData.columnCount != 0) {
                             tempUser.next()
                             user = tempUser
                             DataHolder.getInstance().user = user
