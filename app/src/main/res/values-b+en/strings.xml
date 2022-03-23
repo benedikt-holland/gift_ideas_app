@@ -41,10 +41,11 @@
     <string name="defaultEmail">firstname@lastname.com</string>
     <string name="defaultFirstname">Hans</string>
     <string name="defaultLastname">Müller</string>
-    <string name="uploadPicture">upload picture</string>
+    <string name="uploadPicture">Edit Profilepicture</string>
     <string name="saved">saved</string>
     <string name="emailDuplicate">The entered E-Mail already exists. Please enter another E-Mail.</string>
     <string name="emptyString">fields must not be empty</string>
+    <string name="successfulSave">Saved</string>
 
     <!--giftpage-->
     <string name="giftpage_name_description">Name:</string>
