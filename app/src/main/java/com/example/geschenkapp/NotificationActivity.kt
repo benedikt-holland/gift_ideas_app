@@ -8,14 +8,24 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.coroutines.*
+import java.sql.ResultSet
 
 //Class for the notifications activity
 //Not implemented yet
 class NotificationActivity : AppCompatActivity() {
     lateinit var bottomNavBar: BottomNavigationView
+    lateinit var user: ResultSet
+    lateinit var db: DbConnector
+    lateinit var notificationsRv: RecyclerView
+    lateinit var notificationsAdapter: NotificationFeedAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        user = DataHolder.getInstance().user
+        db = DbHolder.getInstance().db
         setContentView(R.layout.activity_notification)
         //toolbar
         setSupportActionBar(findViewById(R.id.toolbar))
@@ -27,8 +37,43 @@ class NotificationActivity : AppCompatActivity() {
             setDisplayShowHomeEnabled(true)
         }
 
+        notificationsRv = findViewById(R.id.rvNotifications)
+        notificationsRv.layoutManager = LinearLayoutManager(notificationsRv.context)
+        notificationsRv.setHasFixedSize(true)
+
+
+        val viewModelJob = SupervisorJob()
+        val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+        uiScope.launch(Dispatchers.IO) {
+            loadNotifications(user.getInt("id"))
+        }
+
         useBottomNavBar()
     }
+
+    override fun onResume() {
+        super.onResume()
+        val viewModelJob = SupervisorJob()
+        val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+        uiScope.launch(Dispatchers.IO) {
+            loadNotifications(user.getInt("id"))
+        }
+    }
+
+    //Load notifications of selected user and load into recyclerview
+    suspend fun loadNotifications(userId: Int) {
+        val notificationsFeed = db.getNotificationFeed(userId)
+        val notificationsArray = unloadResultSet(notificationsFeed)
+        withContext(Dispatchers.Main) {
+            if (notificationsRv.adapter==null) {
+                notificationsAdapter = NotificationFeedAdapter(notificationsArray)
+                notificationsRv.adapter = notificationsAdapter
+            } else {
+                notificationsAdapter.updateData(notificationsArray)
+            }
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater: MenuInflater = menuInflater
         inflater.inflate(R.menu.toolbar, menu)

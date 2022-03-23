@@ -318,4 +318,30 @@ class DbConnector: ViewModel() {
         return result.next()
     }
 
+    suspend fun getNotificationFeed(userId: Int): ResultSet {
+        val query: String = "SELECT n.id, n.notification_type, u.first_name, u.last_name, g.title AS gift_title, n.friend_id, n.gift_id FROM notifications AS n " +
+                "LEFT JOIN users AS u ON u.id = n.friend_id " +
+                "LEFT JOIN gifts AS g ON g.id = n.gift_id " +
+                "WHERE n.user_id=$userId;"
+        var statement = connection.prepareStatement(query)
+        statement.execute()
+        var result: ResultSet = statement.resultSet
+        return result
+    }
+
+    suspend fun removeNotification(notificationId: Int) {
+        val query: String = "DELETE FROM notifications WHERE id=$notificationId;"
+        var statement = connection.prepareStatement(query)
+        statement.executeUpdate()
+    }
+
+    suspend fun getNotificationCount(userId: Int): Int {
+        val query: String = "SELECT COUNT(*) FROM notifications WHERE user_id=111;"
+        var statement = connection.prepareStatement(query)
+        statement.execute()
+        var result: ResultSet = statement.resultSet
+        result.next()
+        return result.getInt(1)
+    }
+
 }

@@ -115,5 +115,19 @@
     <string name="no_internet_connection">Keine Internetverbindung</string>
     <string name="connecting">Verbinde</string>
 
+    <!-- notifictations -->
+    <string name="notification">Benachrichtigung</string>
+    <string name="notification_text">Benachrichtigungstext</string>
+    <string name="friends_request">Freundschaftsanfrage</string>
+    <string name="gift_join_request">Beitrittsanfrage</string>
+    <string name="gift_change">Geschenk aktualisiert</string>
+    <string name="gift_deleted">Geschenk entfernt</string>
+    <string name="friends_request_text">möchte mit dir befreundet sein</string>
+    <string name="text_for">für</string>
+    <string name="text_would_like_to">möchte</string>
+    <string name="gift_join_text">beitreten</string>
+    <string name="gift_change_text">wurde bearbeitet</string>
+    <string name="gift_deleted_text">wurde gelöscht</string>
+
 
 </resources>

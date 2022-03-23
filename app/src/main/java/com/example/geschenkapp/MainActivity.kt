@@ -48,16 +48,7 @@ class MainActivity : AppCompatActivity() {
                 //Load friendsfeed and set recyclerview content
                 userId = user.getInt("id")
                 loadFriendsFeed(userId)
-                /*try {
-                    friendsFeed = db.getFriendsFeed(userId)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-                try {
-                    //giftFeed = db.getGiftFeedByMemberId(userId)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }*/
+                setNotificationNumber()
             }  catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -68,10 +59,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(view)
 
         setSupportActionBar()
-
-
-
-        setNotificationNumber()
 
         //Initiate and set content of friendsfeed recyclerview
         friendsFeedRv = findViewById(R.id.rvFriendsFeed)
@@ -135,17 +122,8 @@ class MainActivity : AppCompatActivity() {
             try {
                 //Reload friendsfeed on resume
                 userId = user.getInt("id")
-                loadFriendsFeed(userId)/*
-                try {
-                    friendsFeed = db.getFriendsFeed(userId)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-                try {
-                    giftFeed = db.getGiftFeedByMemberId(userId)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }*/
+                loadFriendsFeed(userId)
+                setNotificationNumber()
             }  catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -238,10 +216,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setNotificationNumber(){
-        binding.bottomNavigation.getOrCreateBadge(R.id.ic_bottom_nav_notifications).apply {
-            number = 10
-            isVisible = true
+    private suspend fun setNotificationNumber(){
+        val count = db.getNotificationCount(userId)
+        withContext(Dispatchers.Main) {
+            binding.bottomNavigation.getOrCreateBadge(R.id.ic_bottom_nav_notifications).apply {
+                number = count
+                isVisible = count != 0
+            }
         }
     }
 

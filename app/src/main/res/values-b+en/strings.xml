@@ -111,6 +111,18 @@
     <string name="no_internet_connection">No internet connection</string>
     <string name="connecting">Connecting</string>
 
-
+    <!-- notifictations -->
+    <string name="notification">Notification</string>
+    <string name="notification_text">Notification text</string>
+    <string name="friends_request">Friends request</string>
+    <string name="gift_join_request">Join request</string>
+    <string name="gift_change">Gift updated</string>
+    <string name="gift_deleted">Gift deleted</string>
+    <string name="friends_request_text">would like to be your friend</string>
+    <string name="text_for">for</string>
+    <string name="text_would_like_to">would like to join </string>
+    <string name="gift_join_text"></string>
+    <string name="gift_change_text">has been edited</string>
+    <string name="gift_deleted_text">has been deleted</string>
 
 </resources>
