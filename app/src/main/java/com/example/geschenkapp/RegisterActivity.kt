@@ -16,6 +16,10 @@ import java.sql.ResultSet
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import android.app.DatePickerDialog
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.widget.TextView
 import java.util.*
 
@@ -83,57 +87,85 @@ class RegisterActivity : AppCompatActivity() {
         val btnRegister = findViewById(R.id.btnRegister) as Button
         btnRegister.setOnClickListener {
 
-            //read values from frontend
-            var firstName = binding.tfFirstname.editText?.text.toString()
-            var lastName = binding.tfLastname.editText?.text.toString()
-            var dateOfBirthString = binding.tvDateOfBirth.text.toString()
-            var email = binding.tfEmail.editText?.text.toString()
-            var password = binding.tfPassword.editText?.text.toString()
+            if (checkForInternet(this)) {
+                //read values from frontend
+                var firstName = binding.tfFirstname.editText?.text.toString()
+                var lastName = binding.tfLastname.editText?.text.toString()
+                var dateOfBirthString = binding.tvDateOfBirth.text.toString()
+                var email = binding.tfEmail.editText?.text.toString()
+                var password = binding.tfPassword.editText?.text.toString()
 
 
-            //check if values are empty
-            if (firstName.equals("") || lastName.equals("") || dateOfBirthString.equals("") || email.equals(
-                    ""
-                ) || password.equals("")
-            ) {
-                Toast.makeText(
-                    this,
-                    R.string.emptyString,
-                    Toast.LENGTH_LONG
-                ).show()
-                return@setOnClickListener
-            }
-
-            val dateOfBirth = LocalDate.parse(dateOfBirthString, DateTimeFormatter.ISO_DATE)
-
-            val viewModelJob = SupervisorJob()
-            val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
-            uiScope.launch(Dispatchers.IO) {
-
-                //check if email is already in use
-                if (db.checkIfEmailExistsOnOtherUser(1, email)) {
-                    Looper.prepare()
+                //check if values are empty
+                if (firstName.equals("") || lastName.equals("") || dateOfBirthString.equals("") || email.equals(
+                        ""
+                    ) || password.equals("")
+                ) {
                     Toast.makeText(
-                        this@RegisterActivity,
-                        R.string.emailDuplicate,
+                        this,
+                        R.string.emptyString,
                         Toast.LENGTH_LONG
                     ).show()
-                    Looper.loop()
-                    return@launch
+                    return@setOnClickListener
                 }
 
+                val dateOfBirth = LocalDate.parse(dateOfBirthString, DateTimeFormatter.ISO_DATE)
 
-                var tempUser = db.createUser(firstName, lastName, dateOfBirth, email, password)
-                tempUser.next()
-                user = tempUser
-                DataHolder.getInstance().user = user
+                val viewModelJob = SupervisorJob()
+                val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+                uiScope.launch(Dispatchers.IO) {
+
+                    //check if email is already in use
+                    if (db.checkIfEmailExistsOnOtherUser(1, email)) {
+                        Looper.prepare()
+                        Toast.makeText(
+                            this@RegisterActivity,
+                            R.string.emailDuplicate,
+                            Toast.LENGTH_LONG
+                        ).show()
+                        Looper.loop()
+                        return@launch
+                    }
 
 
-                val intent = Intent(this@RegisterActivity, MainActivity::class.java)
-                startActivity(intent)
+                    var tempUser = db.createUser(firstName, lastName, dateOfBirth, email, password)
+                    tempUser.next()
+                    user = tempUser
+                    DataHolder.getInstance().user = user
+
+
+                    val intent = Intent(this@RegisterActivity, MainActivity::class.java)
+                    startActivity(intent)
+                }
+            } else {
+                Toast.makeText(this, R.string.no_internet_connection, Toast.LENGTH_LONG).show()
+
+
             }
+        }
+    }
+    private fun checkForInternet(context: Context): Boolean {
 
+        // register activity with the connectivity manager service
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            val network = connectivityManager.activeNetwork ?: return false
+            val activeNetwork =
+                connectivityManager.getNetworkCapabilities(network) ?: return false
+            return when {
+                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                else -> false
+            }
+        } else {
+            // if the android version is below M
+            @Suppress("DEPRECATION") val networkInfo =
+                connectivityManager.activeNetworkInfo ?: return false
+            @Suppress("DEPRECATION")
+            return networkInfo.isConnected
         }
     }
 }
