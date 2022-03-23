@@ -45,6 +45,7 @@
     <string name="saved">saved</string>
     <string name="emailDuplicate">The entered E-Mail already exists. Please enter another E-Mail.</string>
     <string name="emptyString">fields must not be empty</string>
+    <string name="successfulSave">Saved</string>
 
     <!--giftpage-->
     <string name="giftpage_name_description">Name:</string>

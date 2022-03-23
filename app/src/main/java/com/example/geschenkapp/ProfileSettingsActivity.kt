@@ -103,6 +103,8 @@ class ProfileSettingsActivity : AppCompatActivity() {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             startActivityForResult(intent, 3)
         }
+
+
         val btnSave = findViewById(R.id.btnSave) as Button
         btnSave.setOnClickListener {
 
@@ -178,41 +180,43 @@ class ProfileSettingsActivity : AppCompatActivity() {
                 }
             }
 
-            binding.etFirstName.setText(user.getString("first_name"))
-            binding.etLastName.setText(user.getString("last_name"))
-            binding.tvDateOfBirth.setText(user.getString("date_of_birth"))
-            binding.etEmail.setText(user.getString("email"))
+            Toast.makeText(this, R.string.successfulSave, Toast.LENGTH_SHORT).show()
 
-            val ivProfilepicture = binding.ivProfilepicture
+//            binding.etFirstName.setText(user.getString("first_name"))
+//            binding.etLastName.setText(user.getString("last_name"))
+//            binding.tvDateOfBirth.setText(user.getString("date_of_birth"))
+//            binding.etEmail.setText(user.getString("email"))
+
+//            val ivProfilepicture = binding.ivProfilepicture
+//
+//
+//            val viewModelJob = SupervisorJob()
+//            val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+//            uiScope.launch(Dispatchers.IO) {
+//                var inputStream = assets.open("config.properties")
+//                var props = Properties()
+//                props.load(inputStream)
+//                val profilePictureFileName = user.getString("profile_picture")
+//
+//                var auth = props.getProperty("API_AUTH", "")
+//                var downloadUri = props.getProperty("API_DOWNLOAD", "") + profilePictureFileName
+//                inputStream.close()
+//
+//                var imageConnector = ImageConnector()
+//                profilePicture = imageConnector.getImage(downloadUri, auth)
+//                withContext(Dispatchers.Main) {
+//                    ivProfilepicture.setImageBitmap(profilePicture)
+//                }
+//            }
 
 
-            val viewModelJob = SupervisorJob()
-            val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
-            uiScope.launch(Dispatchers.IO) {
-                var inputStream = assets.open("config.properties")
-                var props = Properties()
-                props.load(inputStream)
-                val profilePictureFileName = user.getString("profile_picture")
 
-                var auth = props.getProperty("API_AUTH", "")
-                var downloadUri = props.getProperty("API_DOWNLOAD", "") + profilePictureFileName
-                inputStream.close()
+//            spinnerProfilePrivacy()
+//            spinnerPostPrivacy()
 
-                var imageConnector = ImageConnector()
-                profilePicture = imageConnector.getImage(downloadUri, auth)
-                withContext(Dispatchers.Main) {
-                    ivProfilepicture.setImageBitmap(profilePicture)
-                }
-            }
+//            getButtonClick()
 
-
-
-            spinnerProfilePrivacy()
-            spinnerPostPrivacy()
-
-            getButtonClick()
-
-            setDate()
+//            setDate()
         }
     }
 
