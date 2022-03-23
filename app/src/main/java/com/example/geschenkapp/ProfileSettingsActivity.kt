@@ -181,10 +181,15 @@ class ProfileSettingsActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     ).show()
                     Looper.loop()
+                    return@launch
                 }
+                Looper.prepare()
+                Toast.makeText(this@ProfileSettingsActivity, R.string.successfulSave, Toast.LENGTH_SHORT).show()
+                Looper.loop()
+
             }
 
-            Toast.makeText(this, R.string.successfulSave, Toast.LENGTH_SHORT).show()
+
         }
     }
 
