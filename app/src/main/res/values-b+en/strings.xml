@@ -106,6 +106,9 @@
     <string name="register">Register</string>
     <string name="setDateOfBirth">select date of birth</string>
 
+    <!--internet connection-->
+    <string name="no_internet_connection">No internet connection</string>
+
 
 
 </resources>

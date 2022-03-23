@@ -1,10 +1,15 @@
 package com.example.geschenkapp
 
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.Toast
 import com.example.geschenkapp.databinding.ActivityLoginBinding
 import com.example.geschenkapp.databinding.ActivityMainBinding
 import kotlinx.coroutines.*
@@ -54,61 +59,92 @@ class LoginActivity : AppCompatActivity() {
     private fun getButtonClick() {
         val btnRegister = findViewById(R.id.btnRegister) as Button
         btnRegister.setOnClickListener {
-            val intent = Intent(this, RegisterActivity::class.java)
-            startActivity(intent)
+            if (checkForInternet(this)) {
+                val intent = Intent(this, RegisterActivity::class.java)
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, R.string.no_internet_connection, Toast.LENGTH_LONG).show()
+            }
         }
 
 
         val btnLogin = findViewById(R.id.btnLogin) as Button
         btnLogin.setOnClickListener {
 
-            val email = binding.tfEmail.editText?.text.toString()
-            if (email == "") {
-                binding.tfEmail.error = getString(R.string.noEmailError)
-                binding.tfEmail.isErrorEnabled = true
-                return@setOnClickListener
-            } else {
-                binding.tfEmail.isErrorEnabled = false
-            }
-            val password = binding.tfPassword.editText?.text.toString()
-            if (password == "") {
-                binding.tfPassword.error = getString(R.string.noPasswordError)
-                binding.tfPassword.isErrorEnabled = true
-                return@setOnClickListener
-            } else {
-                binding.tfPassword.isErrorEnabled = false
-            }
+            if (checkForInternet(this)) {
+                val email = binding.tfEmail.editText?.text.toString()
+                if (email == "") {
+                    binding.tfEmail.error = getString(R.string.noEmailError)
+                    binding.tfEmail.isErrorEnabled = true
+                    return@setOnClickListener
+                } else {
+                    binding.tfEmail.isErrorEnabled = false
+                }
+                val password = binding.tfPassword.editText?.text.toString()
+                if (password == "") {
+                    binding.tfPassword.error = getString(R.string.noPasswordError)
+                    binding.tfPassword.isErrorEnabled = true
+                    return@setOnClickListener
+                } else {
+                    binding.tfPassword.isErrorEnabled = false
+                }
 
-            val viewModelJob = SupervisorJob()
-            val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
-            uiScope.launch(Dispatchers.IO) {
-                try {
-
-
-
-                    var tempUser = db.loginUser(email, password)
-
-                    if(tempUser != null){
-                        tempUser.next()
-                        user = tempUser
-                        DataHolder.getInstance().user = user
+                val viewModelJob = SupervisorJob()
+                val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+                uiScope.launch(Dispatchers.IO) {
+                    try {
 
 
-                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                        startActivity(intent)
-                    }else{
+                        var tempUser = db.loginUser(email, password)
 
-                        withContext(Dispatchers.Main){
-                            binding.tfPassword.error = getString(R.string.wrongCredentials)
-                            binding.tfPassword.isErrorEnabled = true
+                        if (tempUser != null) {
+                            tempUser.next()
+                            user = tempUser
+                            DataHolder.getInstance().user = user
+
+
+                            val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                            startActivity(intent)
+                        } else {
+
+                            withContext(Dispatchers.Main) {
+                                binding.tfPassword.error = getString(R.string.wrongCredentials)
+                                binding.tfPassword.isErrorEnabled = true
+                            }
+
                         }
 
+                    } catch (e: Exception) {
+                        e.printStackTrace()
                     }
-
-                } catch (e: Exception) {
-                    e.printStackTrace()
                 }
+            } else {
+                Toast.makeText(this, R.string.no_internet_connection, Toast.LENGTH_LONG).show()
             }
+        }
+    }
+
+    private fun checkForInternet(context: Context): Boolean {
+
+        // register activity with the connectivity manager service
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            val network = connectivityManager.activeNetwork ?: return false
+            val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
+            return when {
+                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                else -> false
+            }
+        } else {
+            // if the android version is below M
+            @Suppress("DEPRECATION") val networkInfo =
+                connectivityManager.activeNetworkInfo ?: return false
+            @Suppress("DEPRECATION")
+            return networkInfo.isConnected
         }
     }
 }
