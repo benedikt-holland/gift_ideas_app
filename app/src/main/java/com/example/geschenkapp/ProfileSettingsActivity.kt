@@ -97,13 +97,17 @@ class ProfileSettingsActivity : AppCompatActivity() {
     }
 
     private fun getButtonClick(){
-
-        val btnSelectImage = findViewById(R.id.btnSelectImage) as Button
-        btnSelectImage.setOnClickListener {
+        val ivProfilepicture = findViewById(R.id.ivProfilepicture) as ImageView
+        ivProfilepicture.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             startActivityForResult(intent, 3)
         }
 
+        val tvChangeProfilepicture = findViewById(R.id.tvChangeProfilepicture) as TextView
+        tvChangeProfilepicture.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            startActivityForResult(intent, 3)
+        }
 
         val btnSave = findViewById(R.id.btnSave) as Button
         btnSave.setOnClickListener {
@@ -181,42 +185,6 @@ class ProfileSettingsActivity : AppCompatActivity() {
             }
 
             Toast.makeText(this, R.string.successfulSave, Toast.LENGTH_SHORT).show()
-
-//            binding.etFirstName.setText(user.getString("first_name"))
-//            binding.etLastName.setText(user.getString("last_name"))
-//            binding.tvDateOfBirth.setText(user.getString("date_of_birth"))
-//            binding.etEmail.setText(user.getString("email"))
-
-//            val ivProfilepicture = binding.ivProfilepicture
-//
-//
-//            val viewModelJob = SupervisorJob()
-//            val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
-//            uiScope.launch(Dispatchers.IO) {
-//                var inputStream = assets.open("config.properties")
-//                var props = Properties()
-//                props.load(inputStream)
-//                val profilePictureFileName = user.getString("profile_picture")
-//
-//                var auth = props.getProperty("API_AUTH", "")
-//                var downloadUri = props.getProperty("API_DOWNLOAD", "") + profilePictureFileName
-//                inputStream.close()
-//
-//                var imageConnector = ImageConnector()
-//                profilePicture = imageConnector.getImage(downloadUri, auth)
-//                withContext(Dispatchers.Main) {
-//                    ivProfilepicture.setImageBitmap(profilePicture)
-//                }
-//            }
-
-
-
-//            spinnerProfilePrivacy()
-//            spinnerPostPrivacy()
-
-//            getButtonClick()
-
-//            setDate()
         }
     }
 
@@ -259,29 +227,6 @@ class ProfileSettingsActivity : AppCompatActivity() {
             spinner.adapter = adapter
         }
     }
-
-    /*private fun getSwitchState() {
-        binding = ActivityProfileSettingsBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
-
-        binding.swDarkMode.setOnCheckedChangeListener { compoundButton, isChecked ->
-            if (isChecked) {
-                // when switch button is checked
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                delegate.applyDayNight()
-            } else {
-                // if switch button is unchecked
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                delegate.applyDayNight()
-            }
-        }
-
-    }*/
-
-    /*override fun onNightModeChanged(mode: Int) {
-        super.onNightModeChanged(mode)
-    }*/
 
     private fun setDate(){
         val c = Calendar.getInstance()
