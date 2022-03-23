@@ -110,8 +110,5 @@
     <string name="register">Registrieren</string>
     <string name="setDateOfBirth">Geburtsdatum wählen</string>
 
-    <!--internet connection-->
-    <string name="no_internet_connection">Keine Internetverbindung</string>
-
 
 </resources>
