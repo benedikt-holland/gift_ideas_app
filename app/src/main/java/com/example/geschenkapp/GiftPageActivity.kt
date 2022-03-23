@@ -54,10 +54,10 @@ class GiftPageActivity  : AppCompatActivity() {
         val tvMemberCount: TextView = findViewById(R.id.tvMemberCount)
         val btnJoin: Button = findViewById(R.id.btnJoin)
 
+        userId = user.getInt("id")
         val viewModelJob = SupervisorJob()
         val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
         uiScope.launch(Dispatchers.IO) {
-            userId = user.getInt("id")
             if (giftId > 0) {
                 //Get gift data from database
                 var gift = db.getGiftById(userId, giftId)
