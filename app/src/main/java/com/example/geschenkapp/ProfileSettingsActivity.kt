@@ -97,17 +97,36 @@ class ProfileSettingsActivity : AppCompatActivity() {
     }
 
     private fun getButtonClick(){
-        val tvLogout = findViewById(R.id.tvLogout) as TextView
-        tvLogout.setOnClickListener {
+        val tvDeleteAccount = findViewById(R.id.tvDeleteAccount) as TextView
+        tvDeleteAccount.setOnClickListener {
             val pref = getSharedPreferences("com.example.geschenkapp", MODE_PRIVATE)
             pref.edit().remove("email").commit()
             pref.edit().remove("password").commit()
+
+
+            val viewModelJob = SupervisorJob()
+            val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+            uiScope.launch(Dispatchers.IO) {
+                db.deleteAccount(user.getInt("id"))
+            }
 
 
             val intent = Intent(this, LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
 
+        }
+
+
+        val tvLogout = findViewById(R.id.tvLogout) as TextView
+        tvLogout.setOnClickListener {
+            val pref = getSharedPreferences("com.example.geschenkapp", MODE_PRIVATE)
+            pref.edit().remove("email").commit()
+            pref.edit().remove("password").commit()
+
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
         }
 
         val ivProfilepicture = findViewById(R.id.ivProfilepicture) as ImageView
