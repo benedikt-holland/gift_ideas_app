@@ -48,6 +48,8 @@
     <string name="emailDuplicate">Eingegebene Email existiert bereits. Bitte geben Sie eine andere ein.</string>
     <string name="emptyString">Felder dürfen nicht leer sein</string>
     <string name="successfulSave">Gespeichert</string>
+    <string name="logout">Ausloggen</string>
+    <string name="deleteAccount">Account löschen</string>
 
 
     <!--giftpage-->

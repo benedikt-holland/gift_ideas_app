@@ -7,10 +7,10 @@ import java.time.LocalDate
 
 
 //Connector for mysql database, contains all SQL Methods for backend
-class DbConnector: ViewModel() {
+class DbConnector : ViewModel() {
     private lateinit var connection: Connection
 
-    suspend fun connect(url : String, usr : String, pwd : String) {
+    suspend fun connect(url: String, usr: String, pwd: String) {
         connection = DriverManager.getConnection(
             url,
             usr,
@@ -46,9 +46,12 @@ class DbConnector: ViewModel() {
     //Create new account and log in
     //Returns user_id, first_name, last_name, date_of_birth, email, profile_privacy, profile_picture
     //Needed for settings
-    suspend fun createUser(FirstName: String, LastName: String, DateOfBirth: LocalDate,
-                   Email: String, UserPassword: String): ResultSet {
-        val query = "CALL addUser('$FirstName', '$LastName', '$DateOfBirth', '$Email', '$UserPassword');"
+    suspend fun createUser(
+        FirstName: String, LastName: String, DateOfBirth: LocalDate,
+        Email: String, UserPassword: String
+    ): ResultSet {
+        val query =
+            "CALL addUser('$FirstName', '$LastName', '$DateOfBirth', '$Email', '$UserPassword');"
         var statement = connection.prepareCall(query)
         var result: ResultSet = statement.executeQuery()
         return result
@@ -73,7 +76,7 @@ class DbConnector: ViewModel() {
     }
 
     //Get User from Id for new Activities
-    suspend fun getUserById(userId: Int): ResultSet{
+    suspend fun getUserById(userId: Int): ResultSet {
         val query: String = "SELECT id, first_name, last_name, date_of_birth, email, " +
                 "profile_privacy, profile_picture FROM users WHERE id=$userId;"
         var statement = connection.prepareStatement(query)
@@ -171,12 +174,22 @@ class DbConnector: ViewModel() {
     }
 
     //Update gift as owner
-    suspend fun updateGift(giftId: Int?, title: String, price: Int, userId: Int, ownerId: Int, link: String, privacy: Int) {
+    suspend fun updateGift(
+        giftId: Int?,
+        title: String,
+        price: Int,
+        userId: Int,
+        ownerId: Int,
+        link: String,
+        privacy: Int
+    ) {
         val query: String
-        if(giftId!=null) {
-            query = "UPDATE gifts SET title='$title', price=$price, user_id=$userId, owner_id=$ownerId, gift_link='$link', post_privacy=$privacy WHERE id=$giftId;"
+        if (giftId != null) {
+            query =
+                "UPDATE gifts SET title='$title', price=$price, user_id=$userId, owner_id=$ownerId, gift_link='$link', post_privacy=$privacy WHERE id=$giftId;"
         } else {
-            query = "INSERT INTO gifts (title, price, user_id, owner_id, gift_link, post_privacy) VALUES ('$title', $price, $userId, $ownerId, '$link', $privacy);"
+            query =
+                "INSERT INTO gifts (title, price, user_id, owner_id, gift_link, post_privacy) VALUES ('$title', $price, $userId, $ownerId, '$link', $privacy);"
         }
         var statement = connection.prepareStatement(query)
         statement.executeUpdate()
@@ -262,8 +275,10 @@ class DbConnector: ViewModel() {
     }
 
     //Create new gift idea
-    suspend fun insertGift(title: String, price: Int?=null, userId: Int, ownerId: Int?=null,
-                   postPrivacy: Int=0, giftPicture: String?=null, giftLink: String?=null) {
+    suspend fun insertGift(
+        title: String, price: Int? = null, userId: Int, ownerId: Int? = null,
+        postPrivacy: Int = 0, giftPicture: String? = null, giftLink: String? = null
+    ) {
         val query: String =
             "INSERT INTO gifts(title, price, user_id, owner_id, " +
                     "post_privacy, gift_picture, gift_link) " +
@@ -295,27 +310,38 @@ class DbConnector: ViewModel() {
     }
 
     //Edit own user data on settings page
-    suspend fun editUser(userId: Int, firstName : String, lastName : String, dateOfBirth : LocalDate,
-                 email: String, profilePrivacy : Int, profilePicture : String): ResultSet{
-        val query : String = "UPDATE db.users SET first_name=\"$firstName\", last_name=\"$lastName\"," +
-                " date_of_birth=\"$dateOfBirth\", email=\"$email\", profile_privacy=$profilePrivacy, profile_picture=\"$profilePicture\"" +
-                " WHERE id=$userId;"
+    suspend fun editUser(
+        userId: Int, firstName: String, lastName: String, dateOfBirth: LocalDate,
+        email: String, profilePrivacy: Int, profilePicture: String
+    ): ResultSet {
+        val query: String =
+            "UPDATE db.users SET first_name=\"$firstName\", last_name=\"$lastName\"," +
+                    " date_of_birth=\"$dateOfBirth\", email=\"$email\", profile_privacy=$profilePrivacy, profile_picture=\"$profilePicture\"" +
+                    " WHERE id=$userId;"
         var statement = connection.prepareStatement(query)
         statement.executeUpdate()
 
-        val query2 : String ="SELECT id, first_name, last_name, date_of_birth, email, profile_privacy, profile_picture FROM db.users WHERE id=$userId;"
+        val query2: String =
+            "SELECT id, first_name, last_name, date_of_birth, email, profile_privacy, profile_picture FROM db.users WHERE id=$userId;"
         var statement2 = connection.prepareStatement(query2)
         var result: ResultSet = statement2.executeQuery()
         return result
     }
 
     //Check if email exists on register page
-    suspend fun checkIfEmailExistsOnOtherUser( userId: Int, email: String):Boolean{
-        val query : String = "SELECT u.id FROM users AS u WHERE u.email = \"$email\" AND u.id != $userId;"
+    suspend fun checkIfEmailExistsOnOtherUser(userId: Int, email: String): Boolean {
+        val query: String =
+            "SELECT u.id FROM users AS u WHERE u.email = \"$email\" AND u.id != $userId;"
         var statement = connection.prepareStatement(query)
         statement.execute()
-        var result : ResultSet = statement.resultSet
+        var result: ResultSet = statement.resultSet
         return result.next()
+    }
+
+    suspend fun deleteAccount(userId: Int) {
+        val query: String = "DELETE FROM users WHERE users.id = $userId;"
+        var statement = connection.prepareStatement(query)
+        statement.execute()
     }
 
     suspend fun getNotificationFeed(userId: Int): ResultSet {

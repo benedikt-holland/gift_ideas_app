@@ -2,6 +2,7 @@ package com.example.geschenkapp
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
@@ -10,6 +11,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
 import com.example.geschenkapp.databinding.ActivityLoginBinding
 import com.example.geschenkapp.databinding.ActivityMainBinding
 import kotlinx.coroutines.*
@@ -27,19 +29,36 @@ class LoginActivity : AppCompatActivity() {
     private var dbConnected = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
         val view = binding.root
+        setContentView(view)
+    }
 
+    override fun onResume() {
+        super.onResume()
+
+        val pref = getSharedPreferences("com.example.geschenkapp", MODE_PRIVATE)
+
+        val email = pref.getString("email", null)
+        val password = pref.getString("password", null)
+
+        if (email != null && password != null){
+            binding.tfEmail.editText?.setText(email)
+            binding.tfPassword.editText?.setText(password)
+        }
 
         val viewModelJob = SupervisorJob()
         val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
         uiScope.launch(Dispatchers.IO) {
             connectToDatabase()
+            if (email != null && password != null){
+                login()
+            }
         }
-        setContentView(view)
         getButtonClick()
     }
 
@@ -165,10 +184,17 @@ class LoginActivity : AppCompatActivity() {
             try {
                 var tempUser = db.loginUser(email, password)
 
-                if (tempUser != null) {
+                if (tempUser.metaData.columnCount != 0) {
                     tempUser.next()
                     user = tempUser
                     DataHolder.getInstance().user = user
+                    val pref = getSharedPreferences("com.example.geschenkapp", MODE_PRIVATE)
+
+                    with(pref.edit()){
+                        putString("email", email)
+                        putString("password", password)
+                        apply()
+                    }
 
                     val intent = Intent(this@LoginActivity, MainActivity::class.java)
                     startActivity(intent)
