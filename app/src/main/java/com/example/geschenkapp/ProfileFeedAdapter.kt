@@ -125,6 +125,7 @@ class ProfileFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             var intent = Intent(itemView.context, GiftPageActivity::class.java)
             var b = Bundle()
             b.putInt("id", profileList[0].toInt())
+            b.putInt("profileUserId", profileList[14].toInt())
             intent.putExtras(b)
             itemView.context.startActivity(intent)
         }

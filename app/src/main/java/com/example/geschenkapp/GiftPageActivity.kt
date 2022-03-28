@@ -138,12 +138,16 @@ class GiftPageActivity  : AppCompatActivity() {
                                         tvLink.text.toString(),
                                         postPrivacy
                                     )
+                                    db.notifiyAll(2, user.getInt("id"), giftId)
                                 } catch (e: Exception) {
-                                    Toast.makeText(
-                                        this@GiftPageActivity,
-                                        "Update failed, please try again",
-                                        Toast.LENGTH_LONG
-                                    ).show()
+                                    e.printStackTrace()
+                                    withContext(Dispatchers.Main) {
+                                        Toast.makeText(
+                                            this@GiftPageActivity,
+                                            "Update failed, please try again",
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                    }
                                 }
                                 // If not owner
                             } else {
@@ -162,6 +166,7 @@ class GiftPageActivity  : AppCompatActivity() {
                                     memberCount -= 1
                                     joined = false
                                     isNotified = false
+                                    db.addNotification(4, user.getInt("id"), gift.getInt("owner_id"), giftId)
                                     //When user is not a member of gift -> Request Join
                                 } else if (!isNotified) {
                                     db.addNotification(1, gift.getInt("owner_id"), user.getInt("id"), giftId)

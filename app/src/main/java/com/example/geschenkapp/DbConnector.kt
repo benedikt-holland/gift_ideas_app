@@ -138,8 +138,8 @@ class DbConnector: ViewModel() {
                 "(SELECT COUNT(*) FROM members WHERE gift_id=g.id) AS member_count, " +
                 "SUM(l.likes) AS likes, " +
                 "(SELECT id FROM members WHERE user_id=$currentUserId AND gift_id=g.id) AS member_id, " +
-                "(SELECT likes FROM likes WHERE gift_id=g.id AND user_id=$currentUserId LIMIT 1) AS isLiked " +
-                "FROM gifts AS g " +
+                "(SELECT likes FROM likes WHERE gift_id=g.id AND user_id=$currentUserId LIMIT 1) AS isLiked, " +
+                "g.user_id FROM gifts AS g " +
                 "LEFT JOIN users AS o ON g.owner_id=o.id " +
                 "LEFT JOIN likes AS l ON g.id=l.gift_id " +
                 "WHERE g.user_id =$userId AND " +
@@ -372,6 +372,14 @@ class DbConnector: ViewModel() {
         } else {
             return 0
         }
+    }
+
+    suspend fun notifiyAll(notificationId: Int, userId: Int, giftId: Int) {
+        val query = "INSERT INTO notifications(notification_type, user_id, friend_id, gift_id) " +
+        "SELECT $notificationId, user_id, $userId, $giftId FROM members WHERE gift_id = $giftId " +
+                "AND NOT user_id = $userId;"
+        var statement = connection.prepareStatement(query)
+        statement.executeUpdate()
     }
 
 }

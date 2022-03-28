@@ -36,7 +36,7 @@ class NotificationFeedAdapter(private var notificationFeed: ArrayList<ArrayList<
     }
 
     override fun onBindViewHolder(holder: NotificationFeedViewHolder, position: Int) {
-        holder.bind(notificationFeed[position], position)
+        holder.bind(notificationFeed[position])
     }
 
     override fun getItemCount(): Int {
@@ -53,7 +53,7 @@ class NotificationFeedAdapter(private var notificationFeed: ArrayList<ArrayList<
 class NotificationFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     var db: DbConnector = DbHolder.getInstance().db
     var user: ResultSet = DataHolder.getInstance().user
-    fun bind(notificationsList: ArrayList<String>, position: Int) {
+    fun bind(notificationsList: ArrayList<String>) {
         //Set text view content
         if (notificationsList.isNotEmpty()) {
             //Add last name if exists
@@ -91,11 +91,11 @@ class NotificationFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
                         itemView.context.getString(R.string.gift_join_text)
                 2 -> notificationsList[4] + " " +
                         itemView.context.getString(R.string.text_for) + " " +
-                        name + " " +
+                        gift_username + " " +
                         itemView.context.getString(R.string.gift_change_text)
                 3 -> notificationsList[4] + " " +
                         itemView.context.getString(R.string.text_for) + " " +
-                        name + " " +
+                        gift_username + " " +
                         itemView.context.getString(R.string.gift_deleted_text)
                 4 -> name + " " +
                         itemView.context.getString(R.string.text_left) + " " +
@@ -143,7 +143,7 @@ class NotificationFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
                     }
                     db.removeNotificationById(notificationsList[0].toInt())
                 }
-                bindingAdapter!!.notifyItemRemoved(position)
+                bindingAdapter!!.notifyItemRemoved(bindingAdapterPosition)
             }
 
             btnDecline.setOnClickListener {
@@ -152,7 +152,7 @@ class NotificationFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
                 uiScope.launch(Dispatchers.IO) {
                     db.removeNotificationById(notificationsList[0].toInt())
                 }
-                bindingAdapter!!.notifyItemRemoved(position)
+                bindingAdapter!!.notifyItemRemoved(bindingAdapterPosition)
             }
         }
         //Set click listener for notification card
