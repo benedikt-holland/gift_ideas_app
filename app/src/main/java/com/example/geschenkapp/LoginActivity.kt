@@ -2,6 +2,7 @@ package com.example.geschenkapp
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
@@ -25,6 +26,7 @@ class LoginActivity : AppCompatActivity() {
     private var db = DbConnector()
     private lateinit var binding: ActivityLoginBinding
     private var dbConnected = false
+    private lateinit var pref: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,14 +34,30 @@ class LoginActivity : AppCompatActivity() {
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
         val view = binding.root
+        setContentView(view)
+    }
 
+    override fun onResume() {
+        super.onResume()
+
+        pref = getSharedPreferences("com.example.geschenkapp", MODE_PRIVATE)
+
+        val email = pref.getString("email", null)
+        val password = pref.getString("password", null)
+
+        if (email != null && password != null){
+            binding.tfEmail.editText?.setText(email)
+            binding.tfPassword.editText?.setText(password)
+        }
 
         val viewModelJob = SupervisorJob()
         val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
         uiScope.launch(Dispatchers.IO) {
             connectToDatabase()
+            if (email != null && password != null){
+                login()
+            }
         }
-        setContentView(view)
         getButtonClick()
     }
 
@@ -169,6 +187,12 @@ class LoginActivity : AppCompatActivity() {
                     tempUser.next()
                     user = tempUser
                     DataHolder.getInstance().user = user
+
+                    with(pref.edit()){
+                        putString("email", email)
+                        putString("password", password)
+                        apply()
+                    }
 
                     val intent = Intent(this@LoginActivity, MainActivity::class.java)
                     startActivity(intent)
