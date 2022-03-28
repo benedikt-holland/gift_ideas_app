@@ -48,6 +48,9 @@
     <string name="successfulSave">Saved</string>
     <string name="logout"><u>Logout</u></string>
     <string name="deleteAccount"><u>Delete Account</u></string>
+    <string name="deleteDialog">Do you really want to delete your account?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
     <!--giftpage-->
     <string name="giftpage_name_description">Name:</string>
