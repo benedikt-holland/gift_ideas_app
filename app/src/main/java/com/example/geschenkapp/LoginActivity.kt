@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
 import com.example.geschenkapp.databinding.ActivityLoginBinding
 import com.example.geschenkapp.databinding.ActivityMainBinding
 import kotlinx.coroutines.*
@@ -27,6 +28,7 @@ class LoginActivity : AppCompatActivity() {
     private var dbConnected = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
