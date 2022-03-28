@@ -49,7 +49,7 @@
     <string name="successfulSave">Gespeichert</string>
     <string name="logout"><u>Ausloggen</u></string>
     <string name="deleteAccount"><u>Account löschen</u></string>
-    <string name="deleteDialog">Möchtest du deinen Account wirklich löschen?</string>
+    <string name="deleteDialogAccount">Möchtest du deinen Account wirklich löschen?</string>
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
 
@@ -70,6 +70,7 @@
     <string name="join">Teilnehmen</string>
     <string name="gift_picture">Bild von Geschenk</string>
     <string name="deleteGift"><u>Geschenkidee löschen</u></string>
+    <string name="deleteDialogGift">Möchtest du diese Geschenkidee wirklich löschen?</string>
 
     <!--loginpage-->
     <string name="login">Anmelden</string>

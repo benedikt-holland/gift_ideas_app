@@ -1,5 +1,6 @@
 package com.example.geschenkapp
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -220,6 +221,7 @@ class GiftPageActivity  : AppCompatActivity() {
         giftPageCommentsRv.layoutManager = LinearLayoutManager(giftPageCommentsRv.context)
         giftPageCommentsRv.setHasFixedSize(true)*/
         spinnerPostPrivacy()
+        deleteGift()
 
     }
 
@@ -264,6 +266,24 @@ class GiftPageActivity  : AppCompatActivity() {
         }
     }
 
+    private fun deleteGift(){
+        val tvDeleteGift = findViewById(R.id.tvDeleteGift) as TextView
+        tvDeleteGift.setOnClickListener {
+            val builder = AlertDialog.Builder(this@GiftPageActivity)
+            builder.setMessage(R.string.deleteDialogGift)
+                .setCancelable(false)
+                .setPositiveButton(R.string.yes) { dialog, id ->
+                    // Delete selected note from database
+                    TODO()
+                }
+                .setNegativeButton(R.string.no) { dialog, id ->
+                    // Dismiss the dialog
+                    dialog.dismiss()
+                }
+            val alert = builder.create()
+            alert.show()
+        }
+    }
 
 
     /*suspend fun loadFriendsFeed(userId: Int) {

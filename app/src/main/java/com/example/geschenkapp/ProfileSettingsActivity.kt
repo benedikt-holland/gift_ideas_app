@@ -101,9 +101,9 @@ class ProfileSettingsActivity : AppCompatActivity() {
         val tvDeleteAccount = findViewById(R.id.tvDeleteAccount) as TextView
         tvDeleteAccount.setOnClickListener {
             val builder = AlertDialog.Builder(this@ProfileSettingsActivity)
-            builder.setMessage(R.string.deleteDialog)
+            builder.setMessage(R.string.deleteDialogAccount)
                 .setCancelable(false)
-                .setPositiveButton("Yes") { dialog, id ->
+                .setPositiveButton(R.string.yes) { dialog, id ->
                     // Delete selected note from database
                     val alert = builder.create()
                     alert.show()
@@ -121,14 +121,12 @@ class ProfileSettingsActivity : AppCompatActivity() {
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
                 }
-                .setNegativeButton("No") { dialog, id ->
+                .setNegativeButton(R.string.no) { dialog, id ->
                     // Dismiss the dialog
                     dialog.dismiss()
                 }
             val alert = builder.create()
             alert.show()
-
-
         }
 
 

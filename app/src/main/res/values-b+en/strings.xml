@@ -48,7 +48,7 @@
     <string name="successfulSave">Saved</string>
     <string name="logout"><u>Logout</u></string>
     <string name="deleteAccount"><u>Delete Account</u></string>
-    <string name="deleteDialog">Do you really want to delete your account?</string>
+    <string name="deleteDialogAccount">Do you really want to delete your account?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
 
@@ -69,7 +69,7 @@
     <string name="join">Join</string>
     <string name="gift_picture">picture of the gift</string>
     <string name="deleteGift"><u>Delete gift</u></string>
-
+    <string name="deleteDialogGift">Do you really want to delete this gift?</string>
 
     <!--comments-->
     <string name="comment">I like the idea! rubzoiunwezinw rhegnpuw bzuiz rzjbiwornuzqw  zjnwiz wetzn</string>
