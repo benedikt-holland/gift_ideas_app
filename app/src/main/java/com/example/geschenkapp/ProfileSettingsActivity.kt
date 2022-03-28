@@ -1,6 +1,7 @@
 package com.example.geschenkapp
 
 import android.app.ActionBar
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.UiModeManager
 import android.os.Bundle
@@ -99,22 +100,33 @@ class ProfileSettingsActivity : AppCompatActivity() {
     private fun getButtonClick(){
         val tvDeleteAccount = findViewById(R.id.tvDeleteAccount) as TextView
         tvDeleteAccount.setOnClickListener {
-            val pref = getSharedPreferences("com.example.geschenkapp", MODE_PRIVATE)
-            pref.edit().remove("email").commit()
-            pref.edit().remove("password").commit()
+            val builder = AlertDialog.Builder(this@ProfileSettingsActivity)
+            builder.setMessage(R.string.deleteDialogAccount)
+                .setCancelable(false)
+                .setPositiveButton(R.string.yes) { dialog, id ->
+                    // Delete selected note from database
+                    val alert = builder.create()
+                    alert.show()
+                    val pref = getSharedPreferences("com.example.geschenkapp", MODE_PRIVATE)
+                    pref.edit().remove("email").commit()
+                    pref.edit().remove("password").commit()
 
+                    val viewModelJob = SupervisorJob()
+                    val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+                    uiScope.launch(Dispatchers.IO) {
+                        db.deleteAccount(user.getInt("id"))
+                    }
 
-            val viewModelJob = SupervisorJob()
-            val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
-            uiScope.launch(Dispatchers.IO) {
-                db.deleteAccount(user.getInt("id"))
-            }
-
-
-            val intent = Intent(this, LoginActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-
+                    val intent = Intent(this, LoginActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                }
+                .setNegativeButton(R.string.no) { dialog, id ->
+                    // Dismiss the dialog
+                    dialog.dismiss()
+                }
+            val alert = builder.create()
+            alert.show()
         }
 
 

@@ -254,38 +254,31 @@
             android:id="@+id/tvLogout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:layout_marginStart="10dp"
             android:gravity="center"
             android:text="@string/logout"
             android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@id/vSeparator9"
             app:layout_constraintTop_toBottomOf="@+id/vSeparator7"
-            app:layout_constraintLeft_toLeftOf="parent" />
-
-        <View
-            android:id="@+id/vSeparator9"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="15dp"
-            android:background="@android:color/darker_gray"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvLogout" />
+            android:textColor="@color/primaryColor"/>
 
         <TextView
             android:id="@+id/tvDeleteAccount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:gravity="center"
             android:text="@string/deleteAccount"
             android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@id/vSeparator10"
-            app:layout_constraintTop_toBottomOf="@+id/vSeparator9"
-            app:layout_constraintLeft_toLeftOf="parent" />
+            app:layout_constraintTop_toTopOf="@id/tvLogout"
+            app:layout_constraintBottom_toBottomOf="@id/tvLogout"
+            app:layout_constraintRight_toRightOf="parent"
+           android:textColor="#ff0000"/>
 
         <View
-            android:id="@+id/vSeparator10"
+            android:id="@+id/vSeparator9"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="15dp"
@@ -304,7 +297,7 @@
             android:text="@string/speichern"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/vSeparator10" />
+            app:layout_constraintTop_toBottomOf="@id/vSeparator9" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

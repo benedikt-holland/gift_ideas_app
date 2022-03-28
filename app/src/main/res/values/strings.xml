@@ -43,14 +43,16 @@
     <string name="defaultEmail">vorname@nachname.de</string>
     <string name="defaultFirstname">Vorname</string>
     <string name="defaultLastname">Nachname</string>
-    <string name="uploadPicture">Profilbild ändern</string>
+    <string name="uploadPicture"><u>Profilbild ändern</u></string>
     <string name="saved">gespeichert</string>
     <string name="emailDuplicate">Eingegebene Email existiert bereits. Bitte geben Sie eine andere ein.</string>
     <string name="emptyString">Felder dürfen nicht leer sein</string>
     <string name="successfulSave">Gespeichert</string>
-    <string name="logout">Ausloggen</string>
-    <string name="deleteAccount">Account löschen</string>
-
+    <string name="logout"><u>Ausloggen</u></string>
+    <string name="deleteAccount"><u>Account löschen</u></string>
+    <string name="deleteDialogAccount">Möchtest du deinen Account wirklich löschen?</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
 
     <!--giftpage-->
     <string name="giftpage_name_description">Name:</string>
@@ -68,6 +70,8 @@
     <string name="giftpage_member_count">0</string>
     <string name="join">Teilnehmen</string>
     <string name="gift_picture">Bild von Geschenk</string>
+    <string name="deleteGift"><u>Geschenkidee löschen</u></string>
+    <string name="deleteDialogGift">Möchtest du diese Geschenkidee wirklich löschen?</string>
 
     <!--loginpage-->
     <string name="login">Anmelden</string>
