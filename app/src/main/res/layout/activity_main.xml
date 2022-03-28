@@ -23,18 +23,19 @@
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/search"
-        android:iconifiedByDefault="true"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/btnFavorites"
-        app:layout_constraintLeft_toLeftOf="parent"
         android:background="@android:color/transparent"
+        android:iconifiedByDefault="true"
         android:textCursorDrawable="@null"
         app:iconifiedByDefault="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:queryBackground="@null"
-        app:queryHint="@string/search_hint"/>
+        app:queryHint="@string/search_hint" />
 
+    <!--
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnFavorites"
         android:layout_width="wrap_content"
@@ -72,6 +73,7 @@
         android:background="?attr/selectableItemBackground"
         app:iconTint="@color/primaryTextColor"
         android:clickable="true"/>
+    -->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvFriendsFeed"

@@ -94,9 +94,9 @@ class FriendsFeedAdapter(private var friendsList: ArrayList<ArrayList<String>>) 
                 name.text = friendsList[2]
             }
             dateofbirth.text = friendsList[4]
-            count.text = friendsList[6] + " Vorschläge" //.getString(R.string.suggestionCount)
+            count.text = friendsList[6] + " " + itemView.context.getString(R.string.suggestionCount)
 
-            //On click listener for favourite function
+            /*On click listener for favourite function
             val btnStar = itemView.findViewById(R.id.btnAddFavourite) as ImageButton
             btnStar.setOnClickListener {
                 if (friendsList[5].toInt()==0) {
@@ -106,7 +106,7 @@ class FriendsFeedAdapter(private var friendsList: ArrayList<ArrayList<String>>) 
                     //btnStar.tint = Color.BLACK
                     friendsList[5] = "0"
                 }
-            }
+            }*/
 
             //On click listener for clicking on cards in recyclerview
             val btnCard = itemView.findViewById(R.id.cvFriend) as CardView

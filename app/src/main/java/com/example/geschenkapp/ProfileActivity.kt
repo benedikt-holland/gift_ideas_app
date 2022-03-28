@@ -3,7 +3,6 @@ package com.example.geschenkapp
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
-import android.media.Image
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
@@ -18,28 +17,22 @@ import android.widget.*
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
-import com.example.geschenkapp.exceptions.NoUserException
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
 import java.io.FileNotFoundException
 import java.lang.NullPointerException
 import java.sql.ResultSet
 import java.sql.SQLException
 
-//Possible tabs
+/*Possible tabs
 var initTabArray = arrayOf(
     "Geschenke",
     "Wunschliste",
     "Events",
     "Freunde"
-)
+)*/
 
 class ProfileActivity : AppCompatActivity() {
-    lateinit var tabLayout: TabLayout
-    lateinit var viewPager: ViewPager2
     lateinit var bottomNavBar: BottomNavigationView
     private lateinit var binding: ActivityProfileBinding
     private lateinit var profilePicture: Bitmap
@@ -90,18 +83,17 @@ class ProfileActivity : AppCompatActivity() {
         //Show settings button for personal profile and add friend button for stranger profile
         var btnSettings: ImageButton = findViewById(R.id.btnSettings)
         var btnAddFriend: ImageButton = findViewById(R.id.btnAddFriend)
-        var tabArray = initTabArray
         if (friendUserId == userId) {
-            tabArray = initTabArray.slice(1..3).toTypedArray()
+            //tabArray = initTabArray.slice(1..3).toTypedArray()
             btnSettings.visibility = View.VISIBLE
             btnAddFriend.visibility = View.GONE
         } else {
-            tabArray = initTabArray.slice(0..2).toTypedArray()
+            //tabArray = initTabArray.slice(0..2).toTypedArray()
             btnSettings.visibility = View.GONE
             btnAddFriend.visibility = View.VISIBLE
         }
         useBottomNavBar()
-        //Set tabs for profile page
+        /*Set tabs for profile page
         //Hide 'friends' tab for stranger profile and 'gifts' tab for personal profile
         tabLayout = findViewById(R.id.profileTabLayout)
         viewPager = findViewById(R.id.profileViewPager)
@@ -112,6 +104,7 @@ class ProfileActivity : AppCompatActivity() {
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = tabArray[position]
         }.attach()
+        */
 
         //Fill textviews with userdata
         var tvName: TextView = findViewById(R.id.tvName)
@@ -133,6 +126,13 @@ class ProfileActivity : AppCompatActivity() {
                 if (!profileUser.isLast) {
                     profileUser.next()
                 }
+
+                //Set friend button status
+                var isFriend: Boolean = profileUser.getInt("is_friend") == 1
+                val notificationId: Int = db.getNotificationId(0, friendUserId, userId)
+                var isNotified: Boolean = notificationId!=0
+                updateAddFriendButtonColor(btnAddFriend, isFriend, isNotified)
+
                 withContext(Dispatchers.Main) {
                     tvName.text = if (profileUser.getString("last_name") != null) {
                         profileUser.getString("first_name") + " " + profileUser.getString("last_name")
@@ -145,28 +145,42 @@ class ProfileActivity : AppCompatActivity() {
                         tvDateofbirth.visibility = View.INVISIBLE
                         println("User privacy settings hides date of birth")
                     }
+                    val btnAddGift: FloatingActionButton = findViewById(R.id.fabAddGift)
+                    if (isFriend || profileUser.getInt("profile_privacy")==0) {
+                        btnAddGift.visibility = View.VISIBLE
+                    } else {
+                        btnAddGift.visibility = View.GONE
+                    }
                 }
-
-                //Set friend button status
-                var isFriend: Boolean = profileUser.getInt("is_friend") == 1
-                updateAddFriendButtonColor(btnAddFriend, isFriend)
 
                 //Listener for friend add buttton
                 btnAddFriend.setOnClickListener {
                     val viewModelJob = SupervisorJob()
                     val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
                     uiScope.launch(Dispatchers.IO) {
-                        if  (!isFriend) {
+                        if (!isFriend && profileUser.getInt("profile_privacy") == 0) {
+                            //No friends request for public profiles
                             db.addFriend(friendUserId, userId)
                             isFriend = true
+                            isNotified = false
+                        } else if (!isFriend && !isNotified) {
+                            //Send friends request
+                            db.addNotification(0, friendUserId, userId)
+                            isNotified = true
+                        } else if (!isFriend && isNotified){
+                            //Cancel friends request
+                            db.removeNotificationById(notificationId)
+                            isNotified = false
                         } else {
+                            //Remove friend
                             db.removeFriend(friendUserId, userId)
                             isFriend = false
+                            isNotified = false
                         }
 
 
                         withContext(Dispatchers.Main) {
-                            updateAddFriendButtonColor(btnAddFriend, isFriend)
+                            updateAddFriendButtonColor(btnAddFriend, isFriend, isNotified)
                             profileFeedAdapter.notifyDataSetChanged()
                         }
                     }
@@ -265,9 +279,11 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     //Update Color of add friend button according to friendship status
-    fun updateAddFriendButtonColor(btnAddFriend: ImageButton, isFriend: Boolean) {
+    fun updateAddFriendButtonColor(btnAddFriend: ImageButton, isFriend: Boolean, isNotified: Boolean) {
         if (isFriend) {
             btnAddFriend.setColorFilter(Color.argb(255, 50, 205, 50))
+        } else if(isNotified) {
+            btnAddFriend.setColorFilter(Color.argb(255, 0, 191, 255))
         } else {
             btnAddFriend.setColorFilter(Color.argb(255, 0, 0, 0))
         }

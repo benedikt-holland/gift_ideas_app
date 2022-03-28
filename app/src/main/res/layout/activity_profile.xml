@@ -76,6 +76,7 @@
         android:visibility="gone"
         android:contentDescription="@string/addFriend" />
 
+    <!--
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/profileTabLayout"
         android:layout_width="match_parent"
@@ -105,18 +106,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profileTabLayout"
         android:layout_centerInParent="true" />
+      -->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvGiftFeed"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="39dp"
         app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/profileTabLayout"
-        tools:itemCount="4"
+        app:layout_constraintTop_toBottomOf="@+id/tvProfileDateofbirth"
         app:layout_editor_absoluteX="0dp"
-        tools:listitem="@layout/giftfeed_card"/>
+        tools:itemCount="4"
+        tools:listitem="@layout/giftfeed_card" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAddGift"

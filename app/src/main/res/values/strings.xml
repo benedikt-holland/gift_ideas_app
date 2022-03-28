@@ -28,6 +28,7 @@
     <string name="tab_left">Wunschliste</string>
     <string name="tab_center">Events</string>
     <string name="tab_right">Freunde</string>
+    <string name="members">Teilnehmer</string>
 
     <!--profilesettings-->
     <string name="speichern">Speichern</string>
@@ -122,12 +123,18 @@
     <string name="gift_join_request">Beitrittsanfrage</string>
     <string name="gift_change">Geschenk aktualisiert</string>
     <string name="gift_deleted">Geschenk entfernt</string>
+    <string name="gift_left">Geschenkidee verlassen</string>
     <string name="friends_request_text">möchte mit dir befreundet sein</string>
     <string name="text_for">für</string>
     <string name="text_would_like_to">möchte</string>
     <string name="gift_join_text">beitreten</string>
     <string name="gift_change_text">wurde bearbeitet</string>
-    <string name="gift_deleted_text">wurde gelöscht</string>
+    <string name="gift_deleted_text">wurde entfernt</string>
+    <string name="text_left">hat</string>
+    <string name="text_left2">verlassen</string>
+    <string name="button_delete">Entfernen</string>
+    <string name="button_accept">Annehmen</string>
+    <string name="button_decline">Ablehnen</string>
 
 
 </resources>

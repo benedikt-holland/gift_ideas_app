@@ -30,7 +30,7 @@ class NotificationActivity : AppCompatActivity() {
         //toolbar
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.apply {
-            title = "Benachrichtigungen"
+            title = getString(R.string.notifications)
             // show back button on toolbar
             // on back button press, it will navigate to parent activity
             setDisplayHomeAsUpEnabled(true)

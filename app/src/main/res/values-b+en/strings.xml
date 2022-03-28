@@ -4,7 +4,7 @@
     <string name="back">Back</string>
 
     <!--search-->
-    <string name="search_hint">search for persons</string>
+    <string name="search_hint">search for people</string>
 
     <!-- bottom navigation bar-->
     <string name="home">Home</string>
@@ -27,6 +27,7 @@
     <string name="tab_left">Wishlist</string>
     <string name="tab_center">Events</string>
     <string name="tab_right">Friends</string>
+    <string name="members">members</string>
 
     <!--profilesettings-->
     <string name="speichern">Save</string>
@@ -80,7 +81,7 @@
     <string name="addFavorite">add Favorite</string>
     <string name="giftfeed_price">0€</string>
     <string name="likeCount">0</string>
-    <string name="suggestionCount">0 suggestions</string>
+    <string name="suggestionCount">suggestions</string>
 
     <!--search friend-->
     <string name="searchFriend">search friends</string>
@@ -116,13 +117,18 @@
     <string name="notification_text">Notification text</string>
     <string name="friends_request">Friends request</string>
     <string name="gift_join_request">Join request</string>
-    <string name="gift_change">Gift updated</string>
-    <string name="gift_deleted">Gift deleted</string>
+    <string name="gift_change">Gift edited</string>
+    <string name="gift_deleted">Gift removed</string>
+    <string name="gift_left">User left gift</string>
     <string name="friends_request_text">would like to be your friend</string>
     <string name="text_for">for</string>
     <string name="text_would_like_to">would like to join </string>
     <string name="gift_join_text"></string>
     <string name="gift_change_text">has been edited</string>
-    <string name="gift_deleted_text">has been deleted</string>
-
+    <string name="gift_deleted_text">has been removed</string>
+    <string name="text_left">has left</string>
+    <string name="text_left2"></string>
+    <string name="button_delete">Delete</string>
+    <string name="button_accept">Accept</string>
+    <string name="button_decline">Decline</string>
 </resources>

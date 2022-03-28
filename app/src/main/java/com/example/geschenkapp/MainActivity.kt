@@ -106,7 +106,7 @@ class MainActivity : AppCompatActivity() {
 
         })
 
-        getButtonClick()
+        //getButtonClick()
 
     }
 
@@ -204,7 +204,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    //Register Actionbar buttons, not implemented yet
+    /*Register Actionbar buttons, not implemented yet
     private fun getButtonClick(){
         val btnStar = findViewById(R.id.btnFavorites) as Button
         btnStar.setOnClickListener {
@@ -214,7 +214,7 @@ class MainActivity : AppCompatActivity() {
         btnGift.setOnClickListener {
             Toast.makeText(this, "gift", Toast.LENGTH_SHORT).show()
         }
-    }
+    }*/
 
     private suspend fun setNotificationNumber(){
         val count = db.getNotificationCount(userId)

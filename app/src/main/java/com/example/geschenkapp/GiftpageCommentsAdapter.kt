@@ -54,6 +54,7 @@ class GiftpageCommentsAdapter(private var friendsList: ArrayList<ArrayList<Strin
             dateofbirth.text = friendsList[4]
             count.text = friendsList[6] + " Vorschläge"
 
+            /*
             val btnStar = itemView.findViewById(R.id.btnAddFavourite) as ImageButton
             btnStar.setOnClickListener {
                 if (friendsList[5].toInt()==0) {
@@ -63,7 +64,7 @@ class GiftpageCommentsAdapter(private var friendsList: ArrayList<ArrayList<Strin
                     //btnStar.tint = Color.BLACK
                     friendsList[5] = "0"
                 }
-            }
+            }*/
 
             val btnCard = itemView.findViewById(R.id.cvFriend) as CardView
             btnCard.setOnClickListener {

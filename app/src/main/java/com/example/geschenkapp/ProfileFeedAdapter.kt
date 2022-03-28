@@ -58,7 +58,7 @@ class ProfileFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             } else {
                 profileList[8]
             }
-            tvGiftMemberCount.text = profileList[10] + " Teilnehmer"
+            tvGiftMemberCount.text = profileList[10] + " " + itemView.context.getString(R.string.members)
             tvVotes.text = profileList[11]
             when(profileList[13]) {
                 null -> 0
