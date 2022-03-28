@@ -181,41 +181,6 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/etEmail" />
 
-        <TextView
-            android:id="@+id/tvDarkModeDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:gravity="center"
-            android:text="@string/darkMode"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@id/vSeparator5"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/vSeparator4" />
-
-
-        <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/swDarkMode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:checked="false"
-            android:gravity="center"
-            app:layout_constraintBottom_toTopOf="@id/vSeparator5"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/vSeparator4" />
-
-        <View
-            android:id="@+id/vSeparator5"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="15dp"
-            android:background="@android:color/darker_gray"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/swDarkMode" />
 
         <TextView
             android:id="@+id/tvProfilePrivacyDescription"
@@ -228,7 +193,7 @@
             android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@id/vSeparator6"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/vSeparator5" />
+            app:layout_constraintTop_toBottomOf="@id/vSeparator4" />
 
         <Spinner
             android:id="@+id/spProfilePrivacy"
@@ -240,7 +205,7 @@
             android:textAlignment="viewEnd"
             app:layout_constraintBottom_toTopOf="@+id/vSeparator6"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/vSeparator5" />
+            app:layout_constraintTop_toBottomOf="@id/vSeparator4" />
 
         <View
             android:id="@+id/vSeparator6"
@@ -285,7 +250,49 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/spPostPrivacy" />
 
+        <TextView
+            android:id="@+id/tvLogout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:gravity="center"
+            android:text="@string/logout"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@id/vSeparator9"
+            app:layout_constraintTop_toBottomOf="@+id/vSeparator7"
+            app:layout_constraintLeft_toLeftOf="parent" />
 
+        <View
+            android:id="@+id/vSeparator9"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="15dp"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvLogout" />
+
+        <TextView
+            android:id="@+id/tvDeleteAccount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:gravity="center"
+            android:text="@string/deleteAccount"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@id/vSeparator10"
+            app:layout_constraintTop_toBottomOf="@+id/vSeparator9"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <View
+            android:id="@+id/vSeparator10"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="15dp"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvDeleteAccount" />
 
         <Button
             android:id="@+id/btnSave"
@@ -297,7 +304,7 @@
             android:text="@string/speichern"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/vSeparator7" />
+            app:layout_constraintTop_toBottomOf="@id/vSeparator10" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
