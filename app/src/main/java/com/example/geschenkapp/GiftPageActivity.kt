@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.*
 import java.sql.ResultSet
+import java.sql.SQLException
 
 //Class for gift detail page
 class GiftPageActivity  : AppCompatActivity() {
@@ -62,6 +63,12 @@ class GiftPageActivity  : AppCompatActivity() {
                 //Get gift data from database
                 var gift = db.getGiftById(userId, giftId)
                 gift.next()
+                val notificationId: Int = db.getNotificationId(
+                    1,
+                    gift.getInt("owner_id"),
+                    user.getInt("id"),
+                    giftId
+                )
                 withContext(Dispatchers.Main) {
                     //Set text view content
                     tvName.text = gift.getString("title")
@@ -94,6 +101,7 @@ class GiftPageActivity  : AppCompatActivity() {
                             title = gift.getString("user_first_name")
                         }
                     }
+                    var isNotified: Boolean = notificationId != 0
 
                     //Preselect privacy settings spinner
                     spPrivacy.setSelection(gift.getInt("post_privacy"))
@@ -102,7 +110,8 @@ class GiftPageActivity  : AppCompatActivity() {
                         updateJoinButtonColor(
                             btnJoin,
                             gift.getInt("member_id"),
-                            gift.getInt("owner_id")
+                            gift.getInt("owner_id"),
+                            isNotified
                         )
                     btnJoin.setOnClickListener {
                         val viewModelJob = SupervisorJob()
@@ -144,28 +153,30 @@ class GiftPageActivity  : AppCompatActivity() {
                                 } catch (e: Exception) {
                                     memberId = null
                                 }
+                                val notificationId: Int = db.getNotificationId(1, gift.getInt("owner_id"), user.getInt("id"), giftId)
+                                var isNotified: Boolean = notificationId != 0
                                 //When user is a member of gift -> Leave
-                                val joined: Boolean
-                                if (memberId != null && memberId != 0) {
+                                var joined: Boolean = memberId!=0 && memberId!=null
+                                if (joined) {
                                     db.leaveGift(memberId!!)
                                     memberCount -= 1
-                                    memberId = null
                                     joined = false
-                                    //When user is not a member of gift -> Join
+                                    isNotified = false
+                                    //When user is not a member of gift -> Request Join
+                                } else if (!isNotified) {
+                                    db.addNotification(1, gift.getInt("owner_id"), user.getInt("id"), giftId)
+                                    isNotified = true
                                 } else {
-                                    val memberSet: ResultSet = db.joinGift(userId, giftId)
-                                    if (memberSet.next()) {
-                                        memberId = memberSet.getInt(1)
-                                    }
-                                    memberCount += 1
-                                    joined = true
+                                    db.removeNotificationById(notificationId)
+                                    isNotified = false
                                 }
                                 withContext(Dispatchers.Main) {
                                     //Update Text and color of join button
                                     updateJoinButtonColor(
                                         btnJoin,
                                         if(joined) 1 else 0,
-                                        gift.getInt("owner_id")
+                                        gift.getInt("owner_id"),
+                                        isNotified
                                     )
                                     //Update member count
                                     tvMemberCount.text = memberCount.toString()
@@ -225,16 +236,19 @@ class GiftPageActivity  : AppCompatActivity() {
 
     //Sets Join button text and color according to
     // Red 'Leave' if member, Green 'Join' if no member, Blue 'Save changes' if owner
-    fun updateJoinButtonColor(btnJoin: Button, memberId: Int?, ownerId: Int) {
+    fun updateJoinButtonColor(btnJoin: Button, memberId: Int?, ownerId: Int, isNotified: Boolean = false) {
         if (ownerId == userId) {
             btnJoin.text = "Änderungen speichern"
             btnJoin.setBackgroundColor(Color.argb(255, 0, 191, 255))
         } else if(memberId!=null && memberId!=0) {
             btnJoin.text = "Verlassen"
             btnJoin.setBackgroundColor(Color.argb(255, 255, 0, 0))
-        } else {
+        } else if(!isNotified) {
             btnJoin.text = "Teilnehmen"
             btnJoin.setBackgroundColor(Color.argb(255, 50, 205, 50))
+        } else {
+            btnJoin.text = "Angefragt"
+            btnJoin.setBackgroundColor(Color.argb(255, 0, 191, 255))
         }
     }
 

@@ -365,7 +365,8 @@ class DbConnector: ViewModel() {
         if (giftId!=null) query += " AND gift_id=$giftId"
         query += ";"
         var statement = connection.prepareStatement(query)
-        var result: ResultSet = statement.executeQuery()
+        statement.execute()
+        var result: ResultSet = statement.resultSet
         if (result.next()) {
             return result.getInt(1)
         } else {
