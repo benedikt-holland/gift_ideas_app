@@ -67,6 +67,7 @@
     <string name="giftpage_member_count">0</string>
     <string name="join">Teilnehmen</string>
     <string name="gift_picture">Bild von Geschenk</string>
+    <string name="deleteGift"><u>Geschenkidee löschen</u></string>
 
     <!--loginpage-->
     <string name="login">Anmelden</string>
