@@ -319,18 +319,26 @@ class DbConnector: ViewModel() {
     }
 
     suspend fun getNotificationFeed(userId: Int): ResultSet {
-        val query: String = "SELECT n.id, n.notification_type, u.first_name, u.last_name, g.title AS gift_title, n.friend_id, n.gift_id FROM notifications AS n " +
+        val query: String = "SELECT n.id, n.notification_type, u.first_name, u.last_name, " +
+                "g.title AS gift_title, n.friend_id, n.gift_id, o.first_name, o.last_name FROM notifications AS n  " +
                 "LEFT JOIN users AS u ON u.id = n.friend_id " +
-                "LEFT JOIN gifts AS g ON g.id = n.gift_id " +
-                "WHERE n.user_id=$userId;"
+                "LEFT JOIN gifts AS g ON g.id = n.gift_id  " +
+                "LEFT JOIN users AS o ON o.id = g.user_id " +
+                "WHERE n.user_id=$userId ORDER BY n.id DESC;"
         var statement = connection.prepareStatement(query)
         statement.execute()
         var result: ResultSet = statement.resultSet
         return result
     }
 
-    suspend fun removeNotification(notificationId: Int) {
+    suspend fun removeNotificationById(notificationId: Int) {
         val query: String = "DELETE FROM notifications WHERE id=$notificationId;"
+        var statement = connection.prepareStatement(query)
+        statement.executeUpdate()
+    }
+
+    suspend fun removeAllNotifications(userId: Int) {
+        val query: String = "DELETE FROM notifications WHERE user_id=$userId;"
         var statement = connection.prepareStatement(query)
         statement.executeUpdate()
     }
@@ -342,6 +350,27 @@ class DbConnector: ViewModel() {
         var result: ResultSet = statement.resultSet
         result.next()
         return result.getInt(1)
+    }
+
+    suspend fun addNotification(notificationId: Int, userId: Int, friendId: Int, giftId: Int?=null) {
+        val query = "INSERT INTO notifications (notification_type, user_id, friend_id, gift_id) " +
+                "VALUES($notificationId, $userId, $friendId, $giftId);"
+        var statement = connection.prepareStatement(query)
+        statement.executeUpdate()
+    }
+
+    suspend fun getNotificationId(notificationId: Int, userId: Int, friendId: Int, giftId: Int?=null): Int {
+        var query = "SELECT id FROM notifications WHERE notification_type=$notificationId " +
+                "AND user_id=$userId AND friend_id=$friendId"
+        if (giftId!=null) query += " AND gift_id=$giftId"
+        query += ";"
+        var statement = connection.prepareStatement(query)
+        var result: ResultSet = statement.executeQuery()
+        if (result.next()) {
+            return result.getInt(1)
+        } else {
+            return 0
+        }
     }
 
 }

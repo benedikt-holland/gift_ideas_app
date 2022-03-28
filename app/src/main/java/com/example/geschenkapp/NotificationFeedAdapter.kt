@@ -1,10 +1,13 @@
 package com.example.geschenkapp
 
+import android.content.Intent
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.*
 import java.sql.ResultSet
@@ -12,11 +15,16 @@ import java.sql.ResultSet
 //Adapter for gift cards on profile page
 class NotificationFeedAdapter(private var notificationFeed: ArrayList<ArrayList<String>> = ArrayList<ArrayList<String>>()): RecyclerView.Adapter<NotificationFeedViewHolder>() {
     /* notificationFeed
-        0 -> Notification Type: Int
-        1 -> User name: String
-        2 -> Gift name: String
-        3 -> User Id: Int
-        4 -> Gift Id: Int
+        0 -> Notification Id: Int
+            0: Friends request, 1: gift join request, 2: Gift change notification, 3: Gift delete notification, 4: Gift leave
+        1 -> Notification Type: Int
+        2 -> User first name: String
+        3 -> User last name: String
+        4 -> Gift name: String
+        5 -> User Id: Int
+        6 -> Gift Id: Int
+        7 -> Profile user first name: String
+        8 -> Profile user last name: String
      */
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -28,7 +36,7 @@ class NotificationFeedAdapter(private var notificationFeed: ArrayList<ArrayList<
     }
 
     override fun onBindViewHolder(holder: NotificationFeedViewHolder, position: Int) {
-        holder.bind(notificationFeed[position])
+        holder.bind(notificationFeed[position], position)
     }
 
     override fun getItemCount(): Int {
@@ -45,7 +53,7 @@ class NotificationFeedAdapter(private var notificationFeed: ArrayList<ArrayList<
 class NotificationFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     var db: DbConnector = DbHolder.getInstance().db
     var user: ResultSet = DataHolder.getInstance().user
-    fun bind(notificationsList: ArrayList<String>) {
+    fun bind(notificationsList: ArrayList<String>, position: Int) {
         //Set text view content
         if (notificationsList.isNotEmpty()) {
             //Add last name if exists
@@ -53,6 +61,14 @@ class NotificationFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
                 " " + notificationsList[3]
             } else {
                 ""
+            }
+            var gift_username = ""
+            if (notificationsList[7]!=null) {
+                gift_username = notificationsList[7] + if (notificationsList[8] != null) {
+                    " " + notificationsList[8]
+                } else {
+                    ""
+                }
             }
             val tvNotification: TextView = itemView.findViewById(R.id.tvNotification)
             val tvNotificationText: TextView = itemView.findViewById(R.id.tvNotificationText)
@@ -62,13 +78,31 @@ class NotificationFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
                 1 -> itemView.context.getString(R.string.gift_join_request)
                 2 -> itemView.context.getString(R.string.gift_change)
                 3 -> itemView.context.getString(R.string.gift_deleted)
+                4 -> itemView.context.getString(R.string.gift_left)
                 else -> tvNotification.text
             }
             tvNotificationText.text = when(notificationsList[1].toInt()) {
                 0 -> name + " " + itemView.context.getString(R.string.friends_request_text)
-                1 -> name + " " + itemView.context.getString(R.string.text_would_like_to) + " " + notificationsList[3] + " " + itemView.context.getString(R.string.gift_join_text)
-                2 -> notificationsList[3] + " " + itemView.context.getString(R.string.text_for) + " " + name + " " + itemView.context.getString(R.string.gift_change_text)
-                3 -> notificationsList[3] + " " + itemView.context.getString(R.string.text_for) + " " + name + " " + itemView.context.getString(R.string.gift_deleted_text)
+                1 -> name + " " +
+                        itemView.context.getString(R.string.text_would_like_to) + " " +
+                        notificationsList[4] + " " +
+                        itemView.context.getString(R.string.text_for) + " " +
+                        gift_username + " " +
+                        itemView.context.getString(R.string.gift_join_text)
+                2 -> notificationsList[4] + " " +
+                        itemView.context.getString(R.string.text_for) + " " +
+                        name + " " +
+                        itemView.context.getString(R.string.gift_change_text)
+                3 -> notificationsList[4] + " " +
+                        itemView.context.getString(R.string.text_for) + " " +
+                        name + " " +
+                        itemView.context.getString(R.string.gift_deleted_text)
+                4 -> name + " " +
+                        itemView.context.getString(R.string.text_left) + " " +
+                        notificationsList[4] + " " +
+                        itemView.context.getString(R.string.text_for) + " " +
+                        gift_username + " " +
+                        itemView.context.getString(R.string.text_left2)
                 else -> tvNotificationText.text
             }
         }
@@ -87,8 +121,9 @@ class NotificationFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
                 val viewModelJob = SupervisorJob()
                 val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
                 uiScope.launch(Dispatchers.IO) {
-                    db.removeNotification(notificationsList[0].toInt())
+                    db.removeNotificationById(notificationsList[0].toInt())
                 }
+                bindingAdapter!!.notifyItemRemoved(position)
             }
 
         } else {
@@ -103,18 +138,44 @@ class NotificationFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
                 val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
                 uiScope.launch(Dispatchers.IO) {
                     when (notificationsList[1].toInt()) {
-                        0 -> db.addFriend(user.getInt("id"), notificationsList[4].toInt())
-                        1 -> db.joinGift(notificationsList[4].toInt(), notificationsList[5].toInt())
+                        0 -> db.addFriend(user.getInt("id"), notificationsList[5].toInt())
+                        1 -> db.joinGift(notificationsList[5].toInt(), notificationsList[6].toInt())
                     }
-                    db.removeNotification(notificationsList[0].toInt())
+                    db.removeNotificationById(notificationsList[0].toInt())
                 }
+                bindingAdapter!!.notifyItemRemoved(position)
             }
 
             btnDecline.setOnClickListener {
                 val viewModelJob = SupervisorJob()
                 val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
                 uiScope.launch(Dispatchers.IO) {
-                    db.removeNotification(notificationsList[0].toInt())
+                    db.removeNotificationById(notificationsList[0].toInt())
+                }
+                bindingAdapter!!.notifyItemRemoved(position)
+            }
+        }
+        //Set click listener for notification card
+        val btnCard = itemView.findViewById(R.id.cvNotification) as CardView
+        btnCard.setOnClickListener {
+            when(notificationsList[1].toInt()) {
+                //Do nothing
+                3 -> {}
+                //Open gift page
+                2 -> {
+                    var intent = Intent(itemView.context, GiftPageActivity::class.java)
+                    var b = Bundle()
+                    b.putInt("id", notificationsList[6].toInt())
+                    intent.putExtras(b)
+                    itemView.context.startActivity(intent)
+                }
+                //Open profile page
+                else -> {
+                    var intent = Intent(itemView.context, ProfileActivity::class.java)
+                    var b = Bundle()
+                    b.putInt("id", notificationsList[5].toInt())
+                    intent.putExtras(b)
+                    itemView.context.startActivity(intent)
                 }
             }
         }

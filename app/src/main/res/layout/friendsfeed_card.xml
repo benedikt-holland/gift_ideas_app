@@ -26,10 +26,11 @@
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/tvFeedDateofbirth"
-            app:layout_constraintEnd_toStartOf="@+id/btnAddFavourite"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <!--
         <ImageButton
             android:id="@+id/btnAddFavourite"
             android:layout_width="wrap_content"
@@ -42,6 +43,7 @@
             app:layout_constraintBottom_toTopOf="@+id/tvCountGifts"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+        -->
 
         <TextView
             android:id="@+id/tvFeedDateofbirth"

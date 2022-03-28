@@ -2,6 +2,7 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cvGift"
     android:layout_width="match_parent"
     android:layout_height="90dp"
@@ -24,7 +25,6 @@
             android:text="@string/giftidea"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/tvGiftOwner"
             app:layout_constraintEnd_toStartOf="@+id/tvGiftPrice"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -57,19 +57,19 @@
             android:id="@+id/tvGiftPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="10sp"
             android:text="@string/giftfeed_price"
             android:textSize="20sp"
-            android:layout_marginEnd="10sp"
             app:layout_constraintEnd_toStartOf="@+id/btnUpvote"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tvGiftMemberCount"
-            android:textSize="20sp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10sp"
             android:text="0 Teilnehmer"
+            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btnDownvote" />
 
@@ -88,8 +88,8 @@
             android:id="@+id/tvVotes"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/likeCount"
             android:gravity="center"
+            android:text="@string/likeCount"
             android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@+id/btnDownvote"
             app:layout_constraintEnd_toEndOf="@id/btnUpvote"
