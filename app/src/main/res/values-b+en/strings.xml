@@ -41,13 +41,13 @@
     <string name="defaultEmail">firstname@lastname.com</string>
     <string name="defaultFirstname">Hans</string>
     <string name="defaultLastname">Müller</string>
-    <string name="uploadPicture">Edit Profilepicture</string>
+    <string name="uploadPicture"><u>Edit Profilepicture</u></string>
     <string name="saved">saved</string>
     <string name="emailDuplicate">The entered E-Mail already exists. Please enter another E-Mail.</string>
     <string name="emptyString">fields must not be empty</string>
     <string name="successfulSave">Saved</string>
-    <string name="logout">Logout</string>
-    <string name="deleteAccount">delete Account</string>
+    <string name="logout"><u>Logout</u></string>
+    <string name="deleteAccount"><u>Delete Account</u></string>
 
     <!--giftpage-->
     <string name="giftpage_name_description">Name:</string>

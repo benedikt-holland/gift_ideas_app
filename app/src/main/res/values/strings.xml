@@ -42,13 +42,13 @@
     <string name="defaultEmail">vorname@nachname.de</string>
     <string name="defaultFirstname">Vorname</string>
     <string name="defaultLastname">Nachname</string>
-    <string name="uploadPicture">Profilbild ändern</string>
+    <string name="uploadPicture"><u>Profilbild ändern</u></string>
     <string name="saved">gespeichert</string>
     <string name="emailDuplicate">Eingegebene Email existiert bereits. Bitte geben Sie eine andere ein.</string>
     <string name="emptyString">Felder dürfen nicht leer sein</string>
     <string name="successfulSave">Gespeichert</string>
-    <string name="logout">Ausloggen</string>
-    <string name="deleteAccount">Account löschen</string>
+    <string name="logout"><u>Ausloggen</u></string>
+    <string name="deleteAccount"><u>Account löschen</u></string>
 
 
     <!--giftpage-->
