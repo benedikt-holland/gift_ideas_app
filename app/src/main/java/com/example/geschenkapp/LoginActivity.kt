@@ -27,7 +27,6 @@ class LoginActivity : AppCompatActivity() {
     private var db = DbConnector()
     private lateinit var binding: ActivityLoginBinding
     private var dbConnected = false
-    private lateinit var pref: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
@@ -42,7 +41,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        pref = getSharedPreferences("com.example.geschenkapp", MODE_PRIVATE)
+        val pref = getSharedPreferences("com.example.geschenkapp", MODE_PRIVATE)
 
         val email = pref.getString("email", null)
         val password = pref.getString("password", null)
@@ -189,6 +188,7 @@ class LoginActivity : AppCompatActivity() {
                     tempUser.next()
                     user = tempUser
                     DataHolder.getInstance().user = user
+                    val pref = getSharedPreferences("com.example.geschenkapp", MODE_PRIVATE)
 
                     with(pref.edit()){
                         putString("email", email)
