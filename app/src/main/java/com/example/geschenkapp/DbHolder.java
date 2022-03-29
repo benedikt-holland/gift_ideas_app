@@ -1,6 +1,7 @@
 package com.example.geschenkapp;
 
-//Data holder for database connector in order to access database accross activities
+//Data holder for database connector in order to access database across activities
+@SuppressWarnings("unused")
 public class DbHolder {
     private DbConnector db;
     public DbConnector getDb() {return db;}

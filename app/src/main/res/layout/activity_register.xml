@@ -8,9 +8,9 @@
     android:theme="@style/Theme.Geschenkapp">
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tfFirstname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/tfFirstname"
 
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
@@ -84,7 +84,6 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tfDateOfBirth"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
@@ -105,10 +104,10 @@
         android:id="@+id/tvDateOfBirth"
         android:layout_width="wrap_content"
         android:layout_height="55dp"
-        android:layout_marginLeft="50dp"
+        android:layout_marginStart="50dp"
 
         android:layout_marginTop="20dp"
-        android:layout_marginRight="60dp"
+        android:layout_marginEnd="60dp"
         android:textAlignment="gravity"
         android:gravity="center"
 

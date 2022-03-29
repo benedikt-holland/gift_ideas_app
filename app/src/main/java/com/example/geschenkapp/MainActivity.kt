@@ -2,38 +2,31 @@ package com.example.geschenkapp
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
-import android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import java.sql.ResultSet
-import java.util.*
 import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.geschenkapp.databinding.ActivityMainBinding
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.*
-import java.io.FileNotFoundException
 import kotlin.collections.ArrayList
 
 
 class MainActivity : AppCompatActivity() {
     lateinit var user: ResultSet
-    lateinit var friendsFeed: ResultSet
-    lateinit var giftFeed: ResultSet
+    private lateinit var friendsFeed: ResultSet
+    private lateinit var giftFeed: ResultSet
     lateinit var friendsFeedAdapter: FriendsFeedAdapter
-    lateinit var friendsFeedRv: RecyclerView
+    private lateinit var friendsFeedRv: RecyclerView
     private var db = DbConnector()
     private var userId: Int = -1
     private lateinit var binding: ActivityMainBinding
-    lateinit var bottomNavBar: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,7 +74,7 @@ class MainActivity : AppCompatActivity() {
                                         val b = Bundle()
                                         b.putInt("id", profile.getInt("id"))
                                         intent.putExtras(b)
-                                        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                                        intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                                         startActivityIfNeeded(intent, 0)
                                     } catch (e: Exception) {
                                         Toast.makeText(
@@ -138,14 +131,14 @@ class MainActivity : AppCompatActivity() {
                     val b = Bundle()
                     b.putInt("id", userId)
                     intent.putExtras(b)
-                    intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                    intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                     startActivityIfNeeded(intent, 0)
                 }
                 R.id.ic_bottom_nav_notifications -> {
                     //Launch notifications activity
                     Log.d("NotificationActivity", "notification")
                     val intent = Intent(this, NotificationActivity::class.java)
-                    intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                    intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                     startActivityIfNeeded(intent, 0)
                 }
                 R.id.ic_bottom_nav_home -> {}
@@ -227,17 +220,17 @@ class MainActivity : AppCompatActivity() {
     private fun setSupportActionBar(){
         //toolbar
         supportActionBar?.apply {
-            try {
-                title = getString(R.string.welcome) + " " + user.getString("first_name")
+            title = try {
+                getString(R.string.welcome) + " " + user.getString("first_name")
             } catch (e: Exception) {
                 e.printStackTrace()
-                title = "Home"
+                "Home"
             }
         }
     }
 }
 
-//Helper function for turnung SQL ResultSets into Arrays for use in recyclerviews
+//Helper function for turning SQL ResultSets into Arrays for use in recyclerview
 fun unloadResultSet(resultSet: ResultSet): ArrayList<ArrayList<String>> {
     val resultSetArray = ArrayList<ArrayList<String>>()
     while(resultSet.next()) {

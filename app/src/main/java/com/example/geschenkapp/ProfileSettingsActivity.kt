@@ -1,28 +1,23 @@
 package com.example.geschenkapp
 
 import android.annotation.SuppressLint
-import android.app.ActionBar
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.UiModeManager
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Looper
 import android.provider.MediaStore
-import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
 import android.widget.Toast
 import com.example.geschenkapp.databinding.ActivityProfileSettingsBinding
 import kotlinx.coroutines.*
-import java.io.File
 import java.sql.ResultSet
-import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -45,7 +40,7 @@ class ProfileSettingsActivity : AppCompatActivity() {
 
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.apply {
-            title = getResources().getString(R.string.title_activity_profile_settings)
+            title = resources.getString(R.string.title_activity_profile_settings)
             setHomeButtonEnabled(true)
             setDisplayHomeAsUpEnabled(true)
             setDisplayShowHomeEnabled(true)
@@ -64,7 +59,7 @@ class ProfileSettingsActivity : AppCompatActivity() {
 
         binding.etFirstName.setText(user.getString("first_name"))
         binding.etLastName.setText(user.getString("last_name"))
-        binding.tvDateOfBirth.setText(user.getString("date_of_birth"))
+        binding.tvDateOfBirth.text = user.getString("date_of_birth")
         binding.etEmail.setText(user.getString("email"))
 
         val ivProfilepicture = binding.ivProfilepicture
@@ -100,7 +95,7 @@ class ProfileSettingsActivity : AppCompatActivity() {
     }
 
     private fun getButtonClick(){
-        val tvDeleteAccount = findViewById(R.id.tvDeleteAccount) as TextView
+        val tvDeleteAccount = findViewById<TextView>(R.id.tvDeleteAccount)
         tvDeleteAccount.setOnClickListener {
             val builder = AlertDialog.Builder(this@ProfileSettingsActivity)
             builder.setMessage(R.string.deleteDialogAccount)
@@ -132,7 +127,7 @@ class ProfileSettingsActivity : AppCompatActivity() {
         }
 
 
-        val tvLogout = findViewById(R.id.tvLogout) as TextView
+        val tvLogout = findViewById<TextView>(R.id.tvLogout)
         tvLogout.setOnClickListener {
             val pref = getSharedPreferences("com.example.geschenkapp", MODE_PRIVATE)
             pref.edit().remove("email").apply()
@@ -143,19 +138,19 @@ class ProfileSettingsActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        val ivProfilepicture = findViewById(R.id.ivProfilepicture) as ImageView
+        val ivProfilepicture = findViewById<ImageView>(R.id.ivProfilepicture)
         ivProfilepicture.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             startActivityForResult(intent, 3)
         }
 
-        val tvChangeProfilepicture = findViewById(R.id.tvChangeProfilepicture) as TextView
+        val tvChangeProfilepicture = findViewById<TextView>(R.id.tvChangeProfilepicture)
         tvChangeProfilepicture.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             startActivityForResult(intent, 3)
         }
 
-        val btnSave = findViewById(R.id.btnSave) as Button
+        val btnSave = findViewById<Button>(R.id.btnSave)
         btnSave.setOnClickListener {
 
             //Read Data from frontend
@@ -167,7 +162,7 @@ class ProfileSettingsActivity : AppCompatActivity() {
                 resources.getStringArray(R.array.profile_privacy_array)
             var profilePrivacy: Int = -1
             for (i in profilePrivacyArray.indices) {
-                if (profilePrivacyArray[i].equals(profilePrivacyString)) {
+                if (profilePrivacyArray[i] == profilePrivacyString) {
                     profilePrivacy = i
                 }
             }
@@ -175,9 +170,7 @@ class ProfileSettingsActivity : AppCompatActivity() {
 
 
             //Check if some values are empty
-            if (firstName.equals("") || lastName.equals("") || email.equals("") || dateOfBirthInput.equals(
-                    ""
-                )
+            if (firstName == "" || lastName == "" || email == "" || dateOfBirthInput == ""
             ) {
                 Toast.makeText(this, R.string.emptyString, Toast.LENGTH_LONG).show()
                 return@setOnClickListener
@@ -291,17 +284,17 @@ class ProfileSettingsActivity : AppCompatActivity() {
         binding.tvDateOfBirth.setOnClickListener{
             val dpd = DatePickerDialog(this, { _, mYear, mMonth, mDay ->
                 val month2 = mMonth + 1
-                if(month2<10){
-                    mt = "0" + month2
+                mt = if(month2<10){
+                    "0$month2"
                 } else{
-                    mt = month2.toString()
+                    month2.toString()
                 }
-                if(mDay<10){
-                    d = "0" + mDay
+                d = if(mDay<10){
+                    "0$mDay"
                 } else{
-                    d = mDay.toString()
+                    mDay.toString()
                 }
-                binding.tvDateOfBirth.setText("$mYear-$mt-$d")
+                binding.tvDateOfBirth.text = "$mYear-$mt-$d"
             }, year, month, day)
             dpd.show()
         }

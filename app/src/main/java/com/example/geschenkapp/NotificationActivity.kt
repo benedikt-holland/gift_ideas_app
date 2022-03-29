@@ -18,11 +18,11 @@ import java.sql.ResultSet
 //Class for the notifications activity
 //Not implemented yet
 class NotificationActivity : AppCompatActivity() {
-    lateinit var bottomNavBar: BottomNavigationView
+    private lateinit var bottomNavBar: BottomNavigationView
     lateinit var user: ResultSet
     lateinit var db: DbConnector
-    lateinit var notificationsRv: RecyclerView
-    lateinit var notificationsAdapter: NotificationFeedAdapter
+    private lateinit var notificationsRv: RecyclerView
+    private lateinit var notificationsAdapter: NotificationFeedAdapter
     private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,7 +67,7 @@ class NotificationActivity : AppCompatActivity() {
     }
 
     //Load notifications of selected user and load into recyclerview
-    suspend fun loadNotifications(userId: Int) {
+    private suspend fun loadNotifications(userId: Int) {
         val notificationsFeed = db.getNotificationFeed(userId)
         val notificationsArray = unloadResultSet(notificationsFeed)
         withContext(Dispatchers.Main) {
@@ -83,7 +83,7 @@ class NotificationActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater: MenuInflater = menuInflater
         inflater.inflate(R.menu.toolbar, menu)
-        menu.findItem(R.id.actionRemove).setVisible(true)
+        menu.findItem(R.id.actionRemove).isVisible = true
         return true
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -99,7 +99,7 @@ class NotificationActivity : AppCompatActivity() {
                 uiScope.launch(Dispatchers.IO) {
                     db.removeAllNotifications(user.getInt("id"))
                 }
-                notificationsAdapter.updateData(ArrayList<ArrayList<String>>())
+                notificationsAdapter.updateData(ArrayList())
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -114,13 +114,13 @@ class NotificationActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.ic_bottom_nav_home -> {
                     val intent = Intent(this, MainActivity::class.java)
-                    intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                    intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                     startActivityIfNeeded(intent, 0)
                 }
                 R.id.ic_bottom_nav_profile -> {
                     Log.d("ProfileActivity", "notification")
                     val intent = Intent(this, ProfileActivity::class.java)
-                    intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                    intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                     startActivityIfNeeded(intent, 0)
                 }
                 R.id.ic_bottom_nav_notifications -> {}

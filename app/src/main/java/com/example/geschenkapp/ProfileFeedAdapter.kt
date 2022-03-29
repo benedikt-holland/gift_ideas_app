@@ -15,7 +15,7 @@ import kotlinx.coroutines.*
 import java.sql.ResultSet
 
 //Adapter for gift cards on profile page
-class ProfileFeedAdapter(private var profileFeed: ArrayList<ArrayList<String>> = ArrayList<ArrayList<String>>()): RecyclerView.Adapter<ProfileFeedViewHolder>() {
+class ProfileFeedAdapter(private var profileFeed: ArrayList<ArrayList<String>> = ArrayList()): RecyclerView.Adapter<ProfileFeedViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -48,7 +48,7 @@ class ProfileFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     fun bind(profileList: ArrayList<String>) {
         //Set text view content
         val tvVotes: TextView = itemView.findViewById(R.id.tvVotes)
-        if (!profileList.isEmpty()) {
+        if (profileList.isNotEmpty()) {
             val tvGiftName: TextView = itemView.findViewById(R.id.tvGiftName)
             val tvGiftPrice: TextView = itemView.findViewById(R.id.tvGiftPrice)
             val tvGiftOwner: TextView = itemView.findViewById(R.id.tvGiftOwner)
@@ -131,7 +131,7 @@ class ProfileFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
     //Update color of vote buttons
     //Downvote: Red, Upvote: Blue
-    fun updateVoteColor(btnDownvote: ImageButton, btnUpvote: ImageButton, like: String?) {
+    private fun updateVoteColor(btnDownvote: ImageButton, btnUpvote: ImageButton, like: String?) {
 
         if (like!=null) when(like.toInt()) {
             -1 -> {

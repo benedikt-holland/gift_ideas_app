@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.os.Looper
 import android.widget.Button
 import android.widget.Toast
-import com.example.geschenkapp.databinding.ActivityLoginBinding
 import com.example.geschenkapp.databinding.ActivityRegisterBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -20,7 +19,6 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.os.Build
 import android.widget.TextView
 import java.util.*
 
@@ -30,8 +28,8 @@ class RegisterActivity : AppCompatActivity() {
     lateinit var user: ResultSet
     private var db = DbConnector()
     private lateinit var binding: ActivityRegisterBinding
-    lateinit var datepicker: TextView
-    lateinit var clickView: TextView
+    private lateinit var datepicker: TextView
+    private lateinit var clickView: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,17 +62,17 @@ class RegisterActivity : AppCompatActivity() {
                 this,
                 { _, mYear, mMonth, mDay ->
                     val month2 = mMonth + 1
-                    if (month2 < 10) {
-                        mt = "0" + month2
+                    mt = if (month2 < 10) {
+                        "0$month2"
                     } else {
-                        mt = month2.toString()
+                        month2.toString()
                     }
-                    if (mDay < 10) {
-                        d = "0" + mDay
+                    d = if (mDay < 10) {
+                        "0$mDay"
                     } else {
-                        d = mDay.toString()
+                        mDay.toString()
                     }
-                    datepicker.setText("$mYear-$mt-$d")
+                    datepicker.text = "$mYear-$mt-$d"
                 },
                 year,
                 month,
@@ -86,7 +84,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun getButtonClick() {
-        val btnRegister = findViewById(R.id.btnRegister) as Button
+        val btnRegister = findViewById<Button>(R.id.btnRegister)
         btnRegister.setOnClickListener {
 
             if (checkForInternet(this)) {
@@ -99,9 +97,7 @@ class RegisterActivity : AppCompatActivity() {
 
 
                 //check if values are empty
-                if (firstName.equals("") || lastName.equals("") || dateOfBirthString.equals("") || email.equals(
-                        ""
-                    ) || password.equals("")
+                if (firstName == "" || lastName == "" || dateOfBirthString == "" || email == "" || password == ""
                 ) {
                     Toast.makeText(
                         this,

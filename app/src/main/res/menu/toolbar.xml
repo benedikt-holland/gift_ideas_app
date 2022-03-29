@@ -8,7 +8,7 @@
         android:layout_height="wrap_content"
         android:icon="@drawable/ic_share"
         android:visible="false"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         android:title="@string/share"/>
     <item
         android:id="@+id/actionRemove"
@@ -16,6 +16,6 @@
         android:layout_height="wrap_content"
         android:icon="@drawable/ic_remove"
         android:visible="false"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         android:title="@string/button_deleteAll"/>
 </menu>

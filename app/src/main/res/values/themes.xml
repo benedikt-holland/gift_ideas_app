@@ -20,7 +20,5 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
-    <style name="Theme.Geschenkapp.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-    <style name="Theme.Geschenkapp.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

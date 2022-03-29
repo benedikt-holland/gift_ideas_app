@@ -7,11 +7,8 @@ import android.graphics.Color
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.*
 import java.sql.ResultSet
-import java.sql.SQLException
 
 //Class for gift detail page
 class GiftPageActivity  : AppCompatActivity() {
@@ -97,11 +94,10 @@ class GiftPageActivity  : AppCompatActivity() {
                     }
                     //Set name of profile user onto actionbar
                     supportActionBar?.apply {
-                        if (gift.getString("user_last_name") != null) {
-                            title =
-                                gift.getString("user_first_name") + " " + gift.getString("user_last_name")
+                        title = if (gift.getString("user_last_name") != null) {
+                            gift.getString("user_first_name") + " " + gift.getString("user_last_name")
                         } else {
-                            title = gift.getString("user_first_name")
+                            gift.getString("user_first_name")
                         }
                     }
                     var isNotified: Boolean = notificationId != 0
@@ -128,7 +124,7 @@ class GiftPageActivity  : AppCompatActivity() {
                                         postPrivacy = i
                                     }
                                 }
-                                //Update dabase according to input data
+                                //Update database according to input data
                                 try {
                                     db.updateGift(
                                         giftId,
@@ -160,10 +156,10 @@ class GiftPageActivity  : AppCompatActivity() {
                                 // If not owner
                             } else {
                                 var memberCount: Int = gift.getInt("member_count")
-                                try {
-                                    memberId = gift.getInt("member_id")
+                                memberId = try {
+                                    gift.getInt("member_id")
                                 } catch (e: Exception) {
-                                    memberId = null
+                                    null
                                 }
                                 //When user is a member of gift -> Leave
                                 var joined: Boolean = memberId!=0 && memberId!=null
@@ -214,7 +210,7 @@ class GiftPageActivity  : AppCompatActivity() {
                             postPrivacy = i
                         }
                     }
-                    //Update dabase according to input data
+                    //Update database according to input data
                     try {
                         db.updateGift(
                             null,
@@ -246,7 +242,7 @@ class GiftPageActivity  : AppCompatActivity() {
 
     //Sets Join button text and color according to
     // Red 'Leave' if member, Green 'Join' if no member, Blue 'Save changes' if owner
-    fun updateJoinButtonColor(btnJoin: Button, memberId: Int?, ownerId: Int, isNotified: Boolean = false) {
+    private fun updateJoinButtonColor(btnJoin: Button, memberId: Int?, ownerId: Int, isNotified: Boolean = false) {
         if (ownerId == userId) {
             btnJoin.text = getString(R.string.save_changes)
             btnJoin.setBackgroundColor(Color.argb(255, 0, 191, 255))
@@ -268,7 +264,7 @@ class GiftPageActivity  : AppCompatActivity() {
         val b = Bundle()
         b.putInt("id", profileUserId)
         intent.putExtras(b)
-        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+        intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
         startActivityIfNeeded(intent, 0)
     }
 
@@ -289,7 +285,7 @@ class GiftPageActivity  : AppCompatActivity() {
     }
 
     private fun deleteGift(){
-        val tvDeleteGift = findViewById(R.id.tvDeleteGift) as TextView
+        val tvDeleteGift = findViewById<TextView>(R.id.tvDeleteGift)
         tvDeleteGift.setOnClickListener {
             val builder = AlertDialog.Builder(this@GiftPageActivity)
             builder.setMessage(R.string.deleteDialogGift)

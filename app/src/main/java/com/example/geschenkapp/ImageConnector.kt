@@ -2,26 +2,16 @@ package com.example.geschenkapp
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.net.Uri
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.InputStream
-import java.util.*
 
 //Connector for setting profile picture
 @Suppress("DEPRECATION")
 class ImageConnector : ViewModel() {
     private val viewModelJob = SupervisorJob()
-    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
-    private lateinit var connection: Connection
 
     override fun onCleared() {
         super.onCleared()

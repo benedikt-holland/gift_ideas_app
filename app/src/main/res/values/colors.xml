@@ -2,11 +2,9 @@
 <resources>
   <!-- Primary color -->
   <color name="primaryColor">#ffc107</color>
-  <color name="primaryLightColor">#fff350</color>
   <color name="primaryDarkColor">#c79100</color>
   <!-- Secondary color -->
   <color name="secondaryColor">#03a9f4</color>
-  <color name="secondaryLightColor">#67daff</color>
   <color name="secondaryDarkColor">#007ac1</color>
   <!-- Text color -->
   <color name="primaryTextColor">#000000</color>
@@ -16,10 +14,7 @@
   <color name="backgroundDark">#121212</color>
   <!-- Surface color -->
   <color name="surface">#ffffff</color>
-  <color name="surfaceDark">#202020</color>
   <!-- Icon color -->
-  <color name="favourite">#ffff00</color>
   <color name="downvote">#ff0000</color>
-  <color name="upvote">#0000ff</color>
   <color name="accept">#00ff00</color>
 </resources>

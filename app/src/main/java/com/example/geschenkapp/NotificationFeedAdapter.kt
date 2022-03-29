@@ -14,7 +14,7 @@ import kotlinx.coroutines.*
 import java.sql.ResultSet
 
 //Adapter for gift cards on profile page
-class NotificationFeedAdapter(private var notificationFeed: ArrayList<ArrayList<String>> = ArrayList<ArrayList<String>>()): RecyclerView.Adapter<NotificationFeedViewHolder>() {
+class NotificationFeedAdapter(private var notificationFeed: ArrayList<ArrayList<String>> = ArrayList()): RecyclerView.Adapter<NotificationFeedViewHolder>() {
     /* notificationFeed
         0 -> Notification Id: Int
             0: Friends request, 1: gift join request, 2: Gift change notification, 3: Gift delete notification, 4: Gift leave
@@ -65,8 +65,7 @@ class NotificationFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
         if (notificationsList.isNotEmpty()) {
             //Add last name if exists
             val name = notificationsList[2] + (" " + notificationsList[3])
-            val gift_username: String
-            gift_username = notificationsList[7] + " " + notificationsList[8]
+            val giftUsername: String = notificationsList[7] + " " + notificationsList[8]
             val tvNotification: TextView = itemView.findViewById(R.id.tvNotification)
             val tvNotificationText: TextView = itemView.findViewById(R.id.tvNotificationText)
 
@@ -84,21 +83,21 @@ class NotificationFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
                         itemView.context.getString(R.string.text_would_like_to) + " " +
                         notificationsList[4] + " " +
                         itemView.context.getString(R.string.text_for) + " " +
-                        gift_username + " " +
+                        giftUsername + " " +
                         itemView.context.getString(R.string.gift_join_text)
                 2 -> notificationsList[4] + " " +
                         itemView.context.getString(R.string.text_for) + " " +
-                        gift_username + " " +
+                        giftUsername + " " +
                         itemView.context.getString(R.string.gift_change_text)
                 3 -> notificationsList[4] + " " +
                         itemView.context.getString(R.string.text_for) + " " +
-                        gift_username + " " +
+                        giftUsername + " " +
                         itemView.context.getString(R.string.gift_deleted_text)
                 4 -> name + " " +
                         itemView.context.getString(R.string.text_left) + " " +
                         notificationsList[4] + " " +
                         itemView.context.getString(R.string.text_for) + " " +
-                        gift_username + " " +
+                        giftUsername + " " +
                         itemView.context.getString(R.string.text_left2)
                 else -> tvNotificationText.text
             }

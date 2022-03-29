@@ -33,20 +33,16 @@ var initTabArray = arrayOf(
 )*/
 
 class ProfileActivity : AppCompatActivity() {
-    lateinit var bottomNavBar: BottomNavigationView
+    private lateinit var bottomNavBar: BottomNavigationView
     private lateinit var binding: ActivityProfileBinding
     private lateinit var profilePicture: Bitmap
     lateinit var user: ResultSet
     private var userId: Int = -1
     lateinit var db: DbConnector
-    lateinit var profileFeedRv: RecyclerView
-    lateinit var profileFeedAdapter: ProfileFeedAdapter
-    var friendUserId: Int = -1
-    lateinit var profileUser: ResultSet
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private lateinit var profileFeedRv: RecyclerView
+    private lateinit var profileFeedAdapter: ProfileFeedAdapter
+    private var friendUserId: Int = -1
+    private lateinit var profileUser: ResultSet
 
     //Overwrite activity content with new user data when resuming
     override fun onResume() {
@@ -56,7 +52,7 @@ class ProfileActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.toolbar))
         //Initiate Actionbar with back button
         supportActionBar?.apply {
-            title = getResources().getString(R.string.profile)
+            title = resources.getString(R.string.profile)
             // show back button on toolbar
             // on back button press, it will navigate to parent activity
             setDisplayHomeAsUpEnabled(true)
@@ -105,7 +101,7 @@ class ProfileActivity : AppCompatActivity() {
         }.attach()
         */
 
-        //Fill textviews with userdata
+        //Fill textview with userdata
         val tvName: TextView = findViewById(R.id.tvName)
         val tvDateofbirth: TextView = findViewById(R.id.tvProfileDateofbirth)
         val ivProfilepicture: ImageView = findViewById(R.id.ivProfilepicture)
@@ -152,7 +148,7 @@ class ProfileActivity : AppCompatActivity() {
                     }
                 }
 
-                //Listener for friend add buttton
+                //Listener for friend add button
                 btnAddFriend.setOnClickListener {
                     uiScope.launch(Dispatchers.IO) {
                         if (!isFriend && profileUser.getInt("profile_privacy") == 0) {
@@ -241,7 +237,7 @@ class ProfileActivity : AppCompatActivity() {
 
     //Register buttons
     private fun getButtonClick() {
-        val btnSettings = findViewById(R.id.btnSettings) as ImageButton
+        val btnSettings = findViewById<ImageButton>(R.id.btnSettings)
         btnSettings.setOnClickListener {
             val intent = Intent(this, ProfileSettingsActivity::class.java)
             startActivity(intent)
@@ -252,13 +248,13 @@ class ProfileActivity : AppCompatActivity() {
             val b = Bundle()
             b.putInt("profileUserId", friendUserId)
             intent.putExtras(b)
-            intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+            intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
             startActivity(intent)
         }
     }
 
     //Load giftfeed of selected user and load into recyclerview
-    suspend fun loadGiftFeed(userId: Int, friendUserId: Int) {
+    private suspend fun loadGiftFeed(userId: Int, friendUserId: Int) {
         val giftFeed = if (userId != friendUserId) {
             db.getGiftFeedByUserId(userId, friendUserId)
         } else {
@@ -276,13 +272,17 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     //Update Color of add friend button according to friendship status
-    fun updateAddFriendButtonColor(btnAddFriend: ImageButton, isFriend: Boolean, isNotified: Boolean) {
-        if (isFriend) {
-            btnAddFriend.setColorFilter(Color.argb(255, 50, 205, 50))
-        } else if(isNotified) {
-            btnAddFriend.setColorFilter(Color.argb(255, 0, 191, 255))
-        } else {
-            btnAddFriend.setColorFilter(Color.argb(255, 0, 0, 0))
+    private fun updateAddFriendButtonColor(btnAddFriend: ImageButton, isFriend: Boolean, isNotified: Boolean) {
+        when {
+            isFriend -> {
+                btnAddFriend.setColorFilter(Color.argb(255, 50, 205, 50))
+            }
+            isNotified -> {
+                btnAddFriend.setColorFilter(Color.argb(255, 0, 191, 255))
+            }
+            else -> {
+                btnAddFriend.setColorFilter(Color.argb(255, 0, 0, 0))
+            }
         }
     }
 
@@ -296,13 +296,13 @@ class ProfileActivity : AppCompatActivity() {
                 R.id.ic_bottom_nav_home -> {
                     val intent = Intent(this, MainActivity::class.java)
                     //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                    intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                     startActivityIfNeeded(intent, 0)
                 }
                 R.id.ic_bottom_nav_notifications -> {
                     Log.d("NotificationActivity", "notification")
                     val intent = Intent(this, NotificationActivity::class.java)
-                    intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                    intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                     startActivityIfNeeded(intent, 0)
                 }
                 R.id.ic_bottom_nav_profile -> {}

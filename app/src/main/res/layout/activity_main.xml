@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity"
-    android:theme="@style/Theme.Geschenkapp">
+    android:theme="@style/Theme.Geschenkapp"
+    tools:keep="@layout/activity_main">
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigation"

@@ -1,12 +1,12 @@
 package com.example.geschenkapp
 
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.*
 import java.sql.*
 import java.time.LocalDate
 
 
 //Connector for mysql database, contains all SQL Methods for backend
+@Suppress("SpellCheckingInspection", "unused")
 class DbConnector : ViewModel() {
     private lateinit var connection: Connection
 
@@ -34,8 +34,7 @@ class DbConnector : ViewModel() {
                 "WHERE f.user_id = $userId " +
                 "ORDER BY days_remaining ASC;"
         val statement = connection.prepareStatement(query)
-        val result: ResultSet = statement.executeQuery()
-        return result
+        return statement.executeQuery()
     }
 
     //Load User when logging in
@@ -57,8 +56,7 @@ class DbConnector : ViewModel() {
         val query =
             "CALL addUser('$FirstName', '$LastName', '$DateOfBirth', '$Email', '$UserPassword');"
         val statement = connection.prepareCall(query)
-        val result: ResultSet = statement.executeQuery()
-        return result
+        return statement.executeQuery()
 
     }
 
@@ -74,8 +72,7 @@ class DbConnector : ViewModel() {
                 "OR last_name LIKE CONCAT('$keywords', '%') " +
                 "OR email LIKE CONCAT('$keywords', '%'));"
         val statement = connection.prepareStatement(query)
-        val result: ResultSet = statement.executeQuery()
-        return result
+        return statement.executeQuery()
 
     }
 
@@ -84,8 +81,7 @@ class DbConnector : ViewModel() {
         val query = "SELECT id, first_name, last_name, date_of_birth, email, " +
                 "profile_privacy, profile_picture FROM users WHERE id=$userId;"
         val statement = connection.prepareStatement(query)
-        val result: ResultSet = statement.executeQuery()
-        return result
+        return statement.executeQuery()
     }
 
     //Open user profile in search bar. Returning columns depended on privacy and friendship status
@@ -95,8 +91,7 @@ class DbConnector : ViewModel() {
     fun getUser(currentUserId: Int, userId: Int): ResultSet {
         val query = "CALL getUserById($currentUserId, $userId);"
         val statement = connection.prepareCall(query)
-        val result: ResultSet = statement.executeQuery()
-        return result
+        return statement.executeQuery()
     }
 
     //Load gift feed when on home screen
@@ -129,8 +124,7 @@ class DbConnector : ViewModel() {
                 "GROUP BY g.id " +
                 "ORDER BY g.is_closed DESC, likes DESC;"
         val statement = connection.prepareStatement(query)
-        val result: ResultSet = statement.executeQuery()
-        return result
+        return statement.executeQuery()
 
     }
 
@@ -155,8 +149,7 @@ class DbConnector : ViewModel() {
                 "GROUP BY g.id " +
                 "ORDER BY g.is_closed DESC, likes DESC;"
         val statement = connection.prepareStatement(query)
-        val result: ResultSet = statement.executeQuery()
-        return result
+        return statement.executeQuery()
 
     }
 
@@ -173,8 +166,7 @@ class DbConnector : ViewModel() {
                 "LEFT JOIN users AS u ON g.user_id=u.id " +
                 "WHERE g.id =$giftId; "
         val statement = connection.prepareStatement(query)
-        val result: ResultSet = statement.executeQuery()
-        return result
+        return statement.executeQuery()
     }
 
     //Update gift as owner
@@ -187,13 +179,10 @@ class DbConnector : ViewModel() {
         link: String,
         privacy: Int
     ) {
-        val query: String
-        if (giftId != null) {
-            query =
-                "UPDATE gifts SET title='$title', price=$price, user_id=$userId, owner_id=$ownerId, gift_link='$link', post_privacy=$privacy WHERE id=$giftId;"
+        val query: String = if (giftId != null) {
+            "UPDATE gifts SET title='$title', price=$price, user_id=$userId, owner_id=$ownerId, gift_link='$link', post_privacy=$privacy WHERE id=$giftId;"
         } else {
-            query =
-                "INSERT INTO gifts (title, price, user_id, owner_id, gift_link, post_privacy) VALUES ('$title', $price, $userId, $ownerId, '$link', $privacy);"
+            "INSERT INTO gifts (title, price, user_id, owner_id, gift_link, post_privacy) VALUES ('$title', $price, $userId, $ownerId, '$link', $privacy);"
         }
         val statement = connection.prepareStatement(query)
         statement.executeUpdate()
@@ -208,9 +197,7 @@ class DbConnector : ViewModel() {
                 "LEFT JOIN users AS u ON u.id=m.user_id " +
                 "WHERE m.gift_id=$giftId;"
         val statement = connection.prepareStatement(query)
-        val result: ResultSet = statement.executeQuery()
-        return result
-
+        return statement.executeQuery()
     }
 
     //Load comments on gift page
@@ -225,23 +212,20 @@ class DbConnector : ViewModel() {
                 "GROUP BY c.id " +
                 "ORDER BY likes DESC;"
         val statement = connection.prepareStatement(query)
-        val result: ResultSet = statement.executeQuery()
-        return result
+        return statement.executeQuery()
     }
 
     fun likeComment(userId: Int, commentId: Int, likes: Int): ResultSet {
         val query = "CALL applyLikeToComment($userId, $commentId, $likes);"
         val statement = connection.prepareCall(query)
-        val result: ResultSet = statement.executeQuery()
-        return result
+        return statement.executeQuery()
     }
 
     //Up or downvote gift idea on profile screen
     fun likeGift(userId: Int, giftId: Int, likes: Int): ResultSet {
         val query = "CALL applyLikeToGift($userId, $giftId, $likes);"
         val statement = connection.prepareCall(query)
-        val result: ResultSet = statement.executeQuery()
-        return result
+        return statement.executeQuery()
     }
 
     fun insertComment(userId: Int, giftId: Int, comment: String) {
@@ -278,20 +262,6 @@ class DbConnector : ViewModel() {
         statement.executeUpdate()
     }
 
-    //Create new gift idea
-    fun insertGift(
-        title: String, price: Int? = null, userId: Int, ownerId: Int? = null,
-        postPrivacy: Int = 0, giftPicture: String? = null, giftLink: String? = null
-    ) {
-        val query =
-            "INSERT INTO gifts(title, price, user_id, owner_id, " +
-                    "post_privacy, gift_picture, gift_link) " +
-                    "VALUES ($title, $price, $userId, $ownerId, " +
-                    "$postPrivacy, $giftPicture, $giftLink);"
-        val statement = connection.prepareStatement(query)
-        statement.executeUpdate()
-    }
-
     fun deleteGift(currentUserId: Int, giftId: Int) {
         val query = "DELETE FROM gifts WHERE owner_id=$currentUserId AND id=$giftId;"
         val statement = connection.prepareStatement(query)
@@ -302,8 +272,7 @@ class DbConnector : ViewModel() {
     fun joinGift(userId: Int, giftId: Int): ResultSet {
         val query = "CALL joinGift($userId, $giftId);"
         val statement = connection.prepareCall(query)
-        val result: ResultSet = statement.executeQuery()
-        return result
+        return statement.executeQuery()
     }
 
     //Leave gift idea
@@ -328,8 +297,7 @@ class DbConnector : ViewModel() {
         val query2 =
             "SELECT id, first_name, last_name, date_of_birth, email, profile_privacy, profile_picture FROM db.users WHERE id=$userId;"
         val statement2 = connection.prepareStatement(query2)
-        val result: ResultSet = statement2.executeQuery()
-        return result
+        return statement2.executeQuery()
     }
 
     //Check if email exists on register page
@@ -357,8 +325,7 @@ class DbConnector : ViewModel() {
                 "WHERE n.user_id=$userId ORDER BY n.id DESC;"
         val statement = connection.prepareStatement(query)
         statement.execute()
-        val result: ResultSet = statement.resultSet
-        return result
+        return statement.resultSet
     }
 
     fun removeNotificationById(notificationId: Int) {
@@ -397,10 +364,10 @@ class DbConnector : ViewModel() {
         val statement = connection.prepareStatement(query)
         statement.execute()
         val result: ResultSet = statement.resultSet
-        if (result.next()) {
-            return result.getInt(1)
+        return if (result.next()) {
+            result.getInt(1)
         } else {
-            return 0
+            0
         }
     }
 

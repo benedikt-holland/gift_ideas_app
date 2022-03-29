@@ -2,18 +2,14 @@ package com.example.geschenkapp
 
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.geschenkapp.databinding.ActivityLoginBinding
-import com.example.geschenkapp.databinding.ActivityMainBinding
 import kotlinx.coroutines.*
 import java.io.FileNotFoundException
 import java.sql.ResultSet
@@ -21,6 +17,7 @@ import java.util.*
 
 
 //Class for login screen
+@Suppress("BlockingMethodInNonBlockingContext")
 class LoginActivity : AppCompatActivity() {
 
     lateinit var user: ResultSet
@@ -29,7 +26,7 @@ class LoginActivity : AppCompatActivity() {
     private var dbConnected = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
@@ -64,7 +61,7 @@ class LoginActivity : AppCompatActivity() {
 
     //Register onclick listener for register and login button
     private fun getButtonClick() {
-        val btnRegister = findViewById(R.id.btnRegister) as Button
+        val btnRegister = findViewById<Button>(R.id.btnRegister)
         btnRegister.setOnClickListener {
 
             if (checkForInternet(this)) {
@@ -76,20 +73,20 @@ class LoginActivity : AppCompatActivity() {
         }
 
 
-        val btnLogin = findViewById(R.id.btnLogin) as Button
+        val btnLogin = findViewById<Button>(R.id.btnLogin)
         btnLogin.setOnClickListener {
 
             if (checkForInternet(this)) {
                 val viewModelJob = SupervisorJob()
                 val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
                 uiScope.launch(Dispatchers.IO) {
-                    try {
+                    dbConnected = try {
                         db.getUserById(1)
-                        dbConnected = true
+                        true
                     } catch (e: Exception) {
-                        dbConnected = false
+                        false
                     }
-                    if (dbConnected == false) {
+                    if (!dbConnected) {
                         connectToDatabase()
                         withContext(Dispatchers.Main) {
                             Toast.makeText(
@@ -113,12 +110,12 @@ class LoginActivity : AppCompatActivity() {
     private suspend fun connectToDatabase() {
         try {
             //Initiate database connection and save to data holder
-            var inputStream = assets.open("config.properties")
-            var props = Properties()
+            val inputStream = assets.open("config.properties")
+            val props = Properties()
             props.load(inputStream)
-            var usr = props.getProperty("MYSQL_USER", "")
-            var pwd = props.getProperty("MYSQL_PWD", "")
-            var url = props.getProperty("MYSQL_URL", "")
+            val usr = props.getProperty("MYSQL_USER", "")
+            val pwd = props.getProperty("MYSQL_PWD", "")
+            val url = props.getProperty("MYSQL_URL", "")
             inputStream.close()
             db.connect(url, usr, pwd)
             DbHolder.getInstance().db = db
@@ -142,21 +139,12 @@ class LoginActivity : AppCompatActivity() {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-            val network = connectivityManager.activeNetwork ?: return false
-            val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
-            return when {
-                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
-                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
-                else -> false
-            }
-        } else {
-            // if the android version is below M
-            @Suppress("DEPRECATION") val networkInfo =
-                connectivityManager.activeNetworkInfo ?: return false
-            @Suppress("DEPRECATION")
-            return networkInfo.isConnected
+        val network = connectivityManager.activeNetwork ?: return false
+        val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
+        return when {
+            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+            else -> false
         }
     }
 
@@ -182,7 +170,7 @@ class LoginActivity : AppCompatActivity() {
         val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
         uiScope.launch(Dispatchers.IO) {
             try {
-                var tempUser = db.loginUser(email, password)
+                val tempUser = db.loginUser(email, password)
 
                 if (tempUser.metaData.columnCount != 0) {
                     tempUser.next()

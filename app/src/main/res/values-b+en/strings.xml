@@ -1,7 +1,8 @@
 <resources>
-    <string name="profile_picture">profile picture</string>
+    <string name="profilePicture">profile picture</string>
     <string name="share">Share</string>
-    <string name="back">Back</string>
+    <string name="like">Like</string>
+    <string name="dislike">Dislike</string>
 
     <!--Home page-->
     <string name="search_hint">Search for people</string>
@@ -18,28 +19,19 @@
     <string name="title_activity_giftpage">GiftPageActivity</string>
 
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
 
     <!--profile-->
     <string name="profile_name">Firstname Lastname</string>
     <string name="profile_date_of_birth">21th birthday: 05/27</string>
-    <string name="tab_left">Wishlist</string>
-    <string name="tab_center">Events</string>
-    <string name="tab_right">Friends</string>
     <string name="members">members</string>
 
-    <!--profilesettings-->
-    <string name="speichern">Save</string>
+    <!--profile settings-->
+    <string name="save">Save</string>
     <string name="firstName">Firstname</string>
     <string name="lastName">Lastname</string>
     <string name="dateOfBirth">Date of Birth</string>
-    <string name="darkMode">Darkmode</string>
     <string name="profilePrivacy">Privacy</string>
-    <string name="giftPrivacy">Post Visability</string>
-    <string name="profilePicture">profile picture</string>
+    <string name="giftPrivacy">Post Visibility</string>
     <string name="defaultDateOfBirth">2000–01–01</string>
     <string name="defaultEmail">firstname@lastname.com</string>
     <string name="defaultFirstname">Hans</string>
@@ -64,9 +56,8 @@
     <string name="giftpage_link_description">Link:</string>
     <string name="giftpage_link">http://xyz.com</string>
     <string name="giftpage_owner_description">By:</string>
-    <string name="giftpage_owner">Vorname Nachname</string>
+    <string name="giftpage_owner">Firstname Lastname</string>
     <string name="giftpage_privacy_description">Privacy:</string>
-    <string name="giftpage_privacy">public</string>
     <string name="giftpage_member_count_description">Member Count:</string>
     <string name="giftpage_member_count">0</string>
     <string name="join">Join</string>
@@ -78,9 +69,8 @@
     <string name="deleteDialogGift">Do you really want to delete this gift?</string>
 
     <!--comments-->
-    <string name="comment">I like the idea! rubzoiunwezinw rhegnpuw bzuiz rzjbiwornuzqw  zjnwiz wetzn</string>
 
-    <!--loginpage-->
+    <!--login page-->
     <string name="login">Login</string>
     <string name="email">E-Mail</string>
     <string name="password">Password</string>
@@ -90,18 +80,15 @@
 
     <!--card views-->
     <string name="giftidea">gift idea</string>
-    <string name="addFavorite">add Favorite</string>
     <string name="giftfeed_price">0€</string>
     <string name="likeCount">0</string>
     <string name="suggestionCount">suggestions</string>
 
     <!--search friend-->
-    <string name="searchFriend">search friends</string>
 
     <string name="settingsButton">Settings</string>
     <string name="addFriend">add friend</string>
     <string name="floatingActionButton">Floating Action Button</string>
-    <string name="gifts">Gifts</string>
 
     <!--profile privacy array-->
     <string name="profilePrivacyPublic">public</string>
@@ -118,7 +105,6 @@
 
     <!-- register-->
     <string name="register">Register</string>
-    <string name="setDateOfBirth">select date of birth</string>
 
     <!--internet connection-->
     <string name="no_internet_connection">No internet connection</string>
