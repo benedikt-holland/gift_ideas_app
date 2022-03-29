@@ -4,8 +4,11 @@
     <string name="share">Teilen</string>
     <string name="back">Zurück</string>
 
-    <!--search-->
+    <!--Home page-->
     <string name="search_hint">Suche nach Personen</string>
+    <string name="remainingDays">Tage</string>
+    <string name="welcome">Willkommen</string>
+
 
     <!-- bottom navigation bar-->
     <string name="home">Home</string>
@@ -44,7 +47,7 @@
     <string name="defaultFirstname">Vorname</string>
     <string name="defaultLastname">Nachname</string>
     <string name="uploadPicture"><u>Profilbild ändern</u></string>
-    <string name="saved">gespeichert</string>
+    <string name="saved">Gespeichert</string>
     <string name="emailDuplicate">Eingegebene Email existiert bereits. Bitte geben Sie eine andere ein.</string>
     <string name="emptyString">Felder dürfen nicht leer sein</string>
     <string name="successfulSave">Gespeichert</string>
@@ -141,6 +144,7 @@
     <string name="button_delete">Entfernen</string>
     <string name="button_accept">Annehmen</string>
     <string name="button_decline">Ablehnen</string>
+    <string name="button_deleteAll">Alle entfernen</string>
 
 
 </resources>

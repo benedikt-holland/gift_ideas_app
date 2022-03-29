@@ -140,6 +140,13 @@ class GiftPageActivity  : AppCompatActivity() {
                                         postPrivacy
                                     )
                                     db.notifiyAll(2, user.getInt("id"), giftId)
+                                    withContext(Dispatchers.Main) {
+                                        Toast.makeText(
+                                            this@GiftPageActivity,
+                                            getString(R.string.saved),
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
                                 } catch (e: Exception) {
                                     e.printStackTrace()
                                     withContext(Dispatchers.Main) {

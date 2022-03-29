@@ -229,7 +229,12 @@ class MainActivity : AppCompatActivity() {
     private fun setSupportActionBar(){
         //toolbar
         supportActionBar?.apply {
-            title = "Home"
+            try {
+                title = getString(R.string.welcome) + " " + user.getString("first_name")
+            } catch (e: Exception) {
+                e.printStackTrace()
+                title = "Home"
+            }
         }
     }
 }

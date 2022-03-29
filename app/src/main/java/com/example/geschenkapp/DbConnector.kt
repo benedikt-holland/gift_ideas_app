@@ -374,7 +374,7 @@ class DbConnector : ViewModel() {
     }
 
     suspend fun getNotificationCount(userId: Int): Int {
-        val query: String = "SELECT COUNT(*) FROM notifications WHERE user_id=111;"
+        val query: String = "SELECT COUNT(*) FROM notifications WHERE user_id=$userId;"
         var statement = connection.prepareStatement(query)
         statement.execute()
         var result: ResultSet = statement.resultSet
@@ -406,7 +406,7 @@ class DbConnector : ViewModel() {
 
     suspend fun notifiyAll(notificationId: Int, userId: Int, giftId: Int) {
         val query = "INSERT INTO notifications(notification_type, user_id, friend_id, gift_id) " +
-        "SELECT $notificationId, user_id, $userId, $giftId FROM members WHERE gift_id = $giftId " +
+                "SELECT $notificationId, user_id, $userId, $giftId FROM members WHERE gift_id = $giftId " +
                 "AND NOT user_id = $userId;"
         var statement = connection.prepareStatement(query)
         statement.executeUpdate()

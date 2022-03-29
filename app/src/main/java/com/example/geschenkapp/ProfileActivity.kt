@@ -46,7 +46,6 @@ class ProfileActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     //Overwrite activity content with new user data when resuming
@@ -191,6 +190,7 @@ class ProfileActivity : AppCompatActivity() {
 
             //Load recyclerview with gift feed
             loadGiftFeed(userId, friendUserId)
+            setNotificationNumber()
 
             //Load profile picture
             try {
@@ -317,6 +317,16 @@ class ProfileActivity : AppCompatActivity() {
             }
             true
 
+        }
+    }
+
+    private suspend fun setNotificationNumber(){
+        val count = db.getNotificationCount(user.getInt("id"))
+        withContext(Dispatchers.Main) {
+            binding.bottomNavigation.getOrCreateBadge(R.id.ic_bottom_nav_notifications).apply {
+                number = count
+                isVisible = count != 0
+            }
         }
     }
 }

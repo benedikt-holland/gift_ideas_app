@@ -3,8 +3,10 @@
     <string name="share">Share</string>
     <string name="back">Back</string>
 
-    <!--search-->
-    <string name="search_hint">search for people</string>
+    <!--Home page-->
+    <string name="search_hint">Search for people</string>
+    <string name="remainingDays">days</string>
+    <string name="welcome">Welcome</string>
 
     <!-- bottom navigation bar-->
     <string name="home">Home</string>
@@ -43,7 +45,7 @@
     <string name="defaultFirstname">Hans</string>
     <string name="defaultLastname">Müller</string>
     <string name="uploadPicture"><u>Edit Profilepicture</u></string>
-    <string name="saved">saved</string>
+    <string name="saved">Saved</string>
     <string name="emailDuplicate">The entered E-Mail already exists. Please enter another E-Mail.</string>
     <string name="emptyString">fields must not be empty</string>
     <string name="successfulSave">Saved</string>
@@ -138,4 +140,5 @@
     <string name="button_delete">Delete</string>
     <string name="button_accept">Accept</string>
     <string name="button_decline">Decline</string>
+    <string name="button_deleteAll">Delete all</string>
 </resources>

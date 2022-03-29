@@ -7,6 +7,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:icon="@drawable/ic_share"
+        android:visible="false"
         app:showAsAction="always"
         android:title="@string/share"/>
+    <item
+        android:id="@+id/actionRemove"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/ic_remove"
+        android:visible="false"
+        app:showAsAction="always"
+        android:title="@string/button_deleteAll"/>
 </menu>
