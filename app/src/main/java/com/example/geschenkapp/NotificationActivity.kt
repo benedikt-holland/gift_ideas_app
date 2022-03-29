@@ -107,7 +107,7 @@ class NotificationActivity : AppCompatActivity() {
     }
 
     private fun useBottomNavBar(){
-        menuBottomNavBar = findViewById(R.id.bottomNavigation)
+        menuBottomNavBar = findViewById(R.id.mBottomNavigation)
         menuBottomNavBar.selectedItemId = R.id.ic_bottom_nav_notifications
         menuBottomNavBar.setOnItemSelectedListener { item ->
             Log.d("NotificationActivity", "item clicked")
@@ -136,7 +136,7 @@ class NotificationActivity : AppCompatActivity() {
     private suspend fun setNotificationNumber(){
         val count = db.getNotificationCount(user.getInt("id"))
         withContext(Dispatchers.Main) {
-            binding.bottomNavigation.getOrCreateBadge(R.id.ic_bottom_nav_notifications).apply {
+            binding.mBottomNavigation.getOrCreateBadge(R.id.ic_bottom_nav_notifications).apply {
                 number = count
                 isVisible = count != 0
             }

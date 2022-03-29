@@ -5,9 +5,11 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.coroutines.*
+import org.w3c.dom.Text
 import java.sql.ResultSet
 
 //Class for gift detail page
@@ -54,6 +56,7 @@ class GiftpageActivity  : AppCompatActivity() {
         val spPrivacy: Spinner = findViewById(R.id.spGiftpagePostPrivacy)
         val tvMemberCount: TextView = findViewById(R.id.tvMemberCount)
         val btnJoin: Button = findViewById(R.id.btnJoin)
+        val tvDeleteGift: TextView = findViewById(R.id.tvDeleteGift)
 
         userId = user.getInt("id")
         val viewModelJob = SupervisorJob()
@@ -86,11 +89,14 @@ class GiftpageActivity  : AppCompatActivity() {
                         tvPrice.isEnabled = true
                         tvLink.isEnabled = true
                         spPrivacy.isEnabled = true
+                        tvDeleteGift.visibility = View.VISIBLE
+                        registerDeleteGift(userId, giftId)
                     } else {
                         tvName.isEnabled = false
                         tvPrice.isEnabled = false
                         tvLink.isEnabled = false
                         spPrivacy.isEnabled = false
+                        tvDeleteGift.visibility = View.GONE
                     }
                     //Set name of profile user onto actionbar
                     supportActionBar?.apply {
@@ -236,7 +242,6 @@ class GiftpageActivity  : AppCompatActivity() {
         giftPageCommentsRv.layoutManager = LinearLayoutManager(giftPageCommentsRv.context)
         giftPageCommentsRv.setHasFixedSize(true)*/
         spinnerPostPrivacy()
-        deleteGift()
 
     }
 
@@ -284,15 +289,21 @@ class GiftpageActivity  : AppCompatActivity() {
         }
     }
 
-    private fun deleteGift(){
+    private fun registerDeleteGift(userId: Int, giftId: Int){
         val tvDeleteGift = findViewById<TextView>(R.id.tvDeleteGift)
         tvDeleteGift.setOnClickListener {
             val builder = AlertDialog.Builder(this@GiftpageActivity)
             builder.setMessage(R.string.delete_gift_dialog)
                 .setCancelable(false)
                 .setPositiveButton(R.string.yes) { _, _ ->
-                    // Delete selected note from database
-                    TODO()
+                    val viewModelJob = SupervisorJob()
+                    val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+                    uiScope.launch(Dispatchers.IO) {
+                        db.deleteGift(userId, giftId)
+                        withContext(Dispatchers.Main) {
+                            finish()
+                        }
+                    }
                 }
                 .setNegativeButton(R.string.no) { dialog, _ ->
                     // Dismiss the dialog

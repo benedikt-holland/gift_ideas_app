@@ -10,7 +10,7 @@
     tools:keep="@layout/activity_main">
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigation"
+        android:id="@+id/mBottomNavigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -23,7 +23,7 @@
         android:layout_alignParentBottom="true"/>
 
     <androidx.appcompat.widget.SearchView
-        android:id="@+id/search"
+        android:id="@+id/svHome"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
@@ -80,8 +80,8 @@
         android:id="@+id/rvFriendsFeed"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
-        app:layout_constraintTop_toBottomOf="@id/search"
+        app:layout_constraintBottom_toTopOf="@id/mBottomNavigation"
+        app:layout_constraintTop_toBottomOf="@id/svHome"
         tools:itemCount="5"
         tools:layout_editor_absoluteX="0dp"
         tools:listitem="@layout/friendsfeed_card" />

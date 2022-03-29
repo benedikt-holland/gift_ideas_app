@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
         rvFriendsFeed.setHasFixedSize(true)
 
         //Listener for clicking on recyclerview cards. Opens profile page of selected user
-        binding.search.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+        binding.svHome.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if(query!=null) {
                     try {
@@ -121,8 +121,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
         //bottom navigation bar
-        binding.bottomNavigation.selectedItemId = R.id.ic_bottom_nav_home
-        binding.bottomNavigation.setOnItemSelectedListener { item ->
+        binding.mBottomNavigation.selectedItemId = R.id.ic_bottom_nav_home
+        binding.mBottomNavigation.setOnItemSelectedListener { item ->
             Log.d("MainActivity", "item clicked")
             when (item.itemId) {
                 R.id.ic_bottom_nav_profile -> {
@@ -198,7 +198,7 @@ class MainActivity : AppCompatActivity() {
     private suspend fun setNotificationNumber(){
         val count = db.getNotificationCount(userId)
         withContext(Dispatchers.Main) {
-            binding.bottomNavigation.getOrCreateBadge(R.id.ic_bottom_nav_notifications).apply {
+            binding.mBottomNavigation.getOrCreateBadge(R.id.ic_bottom_nav_notifications).apply {
                 number = count
                 isVisible = count != 0
             }

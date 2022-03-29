@@ -7,7 +7,7 @@
     android:theme="@style/Theme.Geschenkapp">
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigation"
+        android:id="@+id/mBottomNavigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -26,7 +26,7 @@
         tools:listitem="@layout/notification_card"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
+        app:layout_constraintBottom_toTopOf="@id/mBottomNavigation"
         app:layout_constraintTop_toBottomOf="@+id/tToolbar" />
 
     <include
