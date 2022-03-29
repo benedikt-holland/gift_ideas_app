@@ -43,7 +43,7 @@ class ProfileFeedAdapter(private var profileFeed: ArrayList<ArrayList<String>> =
 //View holder for gift cards on profile page
 class ProfileFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     var db: DbConnector = DbHolder.getInstance().db
-    var user: ResultSet = DataHolder.getInstance().user
+    var user: ResultSet = LoginHolder.getInstance().user
     @SuppressLint("SetTextI18n")
     fun bind(profileList: ArrayList<String>) {
         //Set text view content
@@ -118,7 +118,7 @@ class ProfileFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         //Listener for clicking on gift cards, opens detail gift page
         val btnCard = itemView.findViewById(R.id.cvGift) as CardView
         btnCard.setOnClickListener {
-            val intent = Intent(itemView.context, GiftPageActivity::class.java)
+            val intent = Intent(itemView.context, GiftpageActivity::class.java)
             val b = Bundle()
             b.putInt("id", profileList[0].toInt())
             b.putInt("profileUserId", profileList[14].toInt())

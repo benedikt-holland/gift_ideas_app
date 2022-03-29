@@ -38,7 +38,7 @@
             android:src="@drawable/ic_arrowup"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/backgroundDark" />
+            app:tint="@color/background_dark" />
 
         <ImageButton
             android:id="@+id/btnDownvote"
@@ -50,7 +50,7 @@
             android:src="@drawable/ic_arrowdown"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:tint="@color/backgroundDark" />
+            app:tint="@color/background_dark" />
 
         <TextView
             android:id="@+id/tvGiftPrice"
@@ -88,7 +88,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/likeCount"
+            android:text="@string/like_count"
             android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@+id/btnDownvote"
             app:layout_constraintEnd_toEndOf="@id/btnUpvote"

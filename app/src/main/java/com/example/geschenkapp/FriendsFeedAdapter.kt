@@ -91,7 +91,7 @@ class FriendsFeedAdapter(private var friendsList: ArrayList<ArrayList<String>>) 
             tvName.text = friendsList[2] + " " + friendsList[3]
             tvFeedDateofbirth.text = friendsList[4]
             tvCountGifts.text = friendsList[6]
-            tvDaysRemaining.text = friendsList[7] + " " + itemView.context.getString(R.string.remainingDays)
+            tvDaysRemaining.text = friendsList[7] + " " + itemView.context.getString(R.string.remaining_days)
 
             /*On click listener for favourite function
             val btnStar = itemView.findViewById(R.id.btnAddFavourite) as ImageButton

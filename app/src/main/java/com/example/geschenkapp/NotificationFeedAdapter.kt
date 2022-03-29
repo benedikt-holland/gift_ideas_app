@@ -59,7 +59,7 @@ class NotificationFeedAdapter(private var notificationFeed: ArrayList<ArrayList<
 //View holder for gift cards on profile page
 class NotificationFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     var db: DbConnector = DbHolder.getInstance().db
-    var user: ResultSet = DataHolder.getInstance().user
+    var user: ResultSet = LoginHolder.getInstance().user
     fun bind(notificationsList: ArrayList<String>, adapter: NotificationFeedAdapter) {
         //Set text view content
         if (notificationsList.isNotEmpty()) {
@@ -159,7 +159,7 @@ class NotificationFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
                 3 -> {}
                 //Open gift page
                 2, 4 -> {
-                    val intent = Intent(itemView.context, GiftPageActivity::class.java)
+                    val intent = Intent(itemView.context, GiftpageActivity::class.java)
                     val b = Bundle()
                     b.putInt("id", notificationsList[6].toInt())
                     intent.putExtras(b)

@@ -16,7 +16,7 @@
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:iconTint="@color/primaryTextColor" />
+        app:iconTint="@color/primary_text" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

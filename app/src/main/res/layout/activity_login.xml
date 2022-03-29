@@ -72,7 +72,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
-        android:text="@string/register"/>
+        android:text="@string/button_register"/>
 
     <Button
         android:id="@+id/btnLogin"

@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         //Get user data and database connector
-        user = DataHolder.getInstance().user
+        user = LoginHolder.getInstance().user
         db = DbHolder.getInstance().db
 
         val viewModelJob = SupervisorJob()
@@ -153,7 +153,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater: MenuInflater = menuInflater
-        inflater.inflate(R.menu.toolbar, menu)
+        inflater.inflate(R.menu.toolbar_menu, menu)
         return true
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

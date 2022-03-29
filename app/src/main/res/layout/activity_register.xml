@@ -16,7 +16,7 @@
         android:layout_marginRight="50dp"
         android:layout_marginBottom="20dp"
 
-        android:hint="@string/firstName"
+        android:hint="@string/first_name"
         app:layout_constraintBottom_toTopOf="@id/tfLastname">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -34,7 +34,7 @@
         android:layout_marginRight="50dp"
         android:layout_marginBottom="20dp"
 
-        android:hint="@string/lastName"
+        android:hint="@string/last_name"
         app:layout_constraintBottom_toTopOf="@id/tfEmail">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -91,7 +91,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginRight="50dp"
 
-        android:hint="@string/dateOfBirth"
+        android:hint="@string/date_of_birth"
         app:layout_constraintTop_toBottomOf="@id/tfPassword">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -135,7 +135,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
-        android:text="@string/register"
+        android:text="@string/button_register"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />

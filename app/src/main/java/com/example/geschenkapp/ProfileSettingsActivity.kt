@@ -50,7 +50,7 @@ class ProfileSettingsActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        user = DataHolder.getInstance().user
+        user = LoginHolder.getInstance().user
 
 
         db = DbHolder.getInstance().db
@@ -98,7 +98,7 @@ class ProfileSettingsActivity : AppCompatActivity() {
         val tvDeleteAccount = findViewById<TextView>(R.id.tvDeleteAccount)
         tvDeleteAccount.setOnClickListener {
             val builder = AlertDialog.Builder(this@ProfileSettingsActivity)
-            builder.setMessage(R.string.deleteDialogAccount)
+            builder.setMessage(R.string.delete_account_dialog)
                 .setCancelable(false)
                 .setPositiveButton(R.string.yes) { _, _ ->
                     // Delete selected note from database
@@ -172,7 +172,7 @@ class ProfileSettingsActivity : AppCompatActivity() {
             //Check if some values are empty
             if (firstName == "" || lastName == "" || email == "" || dateOfBirthInput == ""
             ) {
-                Toast.makeText(this, R.string.emptyString, Toast.LENGTH_LONG).show()
+                Toast.makeText(this, R.string.empty_string, Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
 
@@ -210,20 +210,20 @@ class ProfileSettingsActivity : AppCompatActivity() {
 
                     tempUser.next()
                     user = tempUser
-                    DataHolder.getInstance().user = user
+                    LoginHolder.getInstance().user = user
 
                 } else {
                     Looper.prepare()
                     Toast.makeText(
                         this@ProfileSettingsActivity,
-                        R.string.emailDuplicate,
+                        R.string.email_duplicate,
                         Toast.LENGTH_SHORT
                     ).show()
                     Looper.loop()
                     return@launch
                 }
                 Looper.prepare()
-                Toast.makeText(this@ProfileSettingsActivity, R.string.successfulSave, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ProfileSettingsActivity, R.string.successful_save, Toast.LENGTH_SHORT).show()
                 Looper.loop()
 
             }

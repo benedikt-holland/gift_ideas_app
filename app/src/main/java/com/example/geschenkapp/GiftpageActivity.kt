@@ -11,7 +11,7 @@ import kotlinx.coroutines.*
 import java.sql.ResultSet
 
 //Class for gift detail page
-class GiftPageActivity  : AppCompatActivity() {
+class GiftpageActivity  : AppCompatActivity() {
 
     lateinit var user: ResultSet
     private var db = DbConnector()
@@ -35,7 +35,7 @@ class GiftPageActivity  : AppCompatActivity() {
         }
 
         //Get dataholders with userdata and database connector
-        user = DataHolder.getInstance().user
+        user = LoginHolder.getInstance().user
         db = DbHolder.getInstance().db
 
         //Extract giftId and user id of selected profile
@@ -138,7 +138,7 @@ class GiftPageActivity  : AppCompatActivity() {
                                     db.notifiyAll(2, user.getInt("id"), giftId)
                                     withContext(Dispatchers.Main) {
                                         Toast.makeText(
-                                            this@GiftPageActivity,
+                                            this@GiftpageActivity,
                                             getString(R.string.saved),
                                             Toast.LENGTH_SHORT
                                         ).show()
@@ -147,7 +147,7 @@ class GiftPageActivity  : AppCompatActivity() {
                                     e.printStackTrace()
                                     withContext(Dispatchers.Main) {
                                         Toast.makeText(
-                                            this@GiftPageActivity,
+                                            this@GiftpageActivity,
                                             "Update failed, please try again",
                                             Toast.LENGTH_LONG
                                         ).show()
@@ -223,7 +223,7 @@ class GiftPageActivity  : AppCompatActivity() {
                         )
                     } catch (e: Exception) {
                         Toast.makeText(
-                            this@GiftPageActivity,
+                            this@GiftpageActivity,
                             "Update failed, please try again",
                             Toast.LENGTH_LONG
                         ).show()
@@ -287,8 +287,8 @@ class GiftPageActivity  : AppCompatActivity() {
     private fun deleteGift(){
         val tvDeleteGift = findViewById<TextView>(R.id.tvDeleteGift)
         tvDeleteGift.setOnClickListener {
-            val builder = AlertDialog.Builder(this@GiftPageActivity)
-            builder.setMessage(R.string.deleteDialogGift)
+            val builder = AlertDialog.Builder(this@GiftpageActivity)
+            builder.setMessage(R.string.delete_gift_dialog)
                 .setCancelable(false)
                 .setPositiveButton(R.string.yes) { _, _ ->
                     // Delete selected note from database

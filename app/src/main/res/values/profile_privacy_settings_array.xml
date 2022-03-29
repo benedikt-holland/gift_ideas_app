@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="profile_privacy_array">
-        <item>@string/profilePrivacyPublic</item>
-        <item>@string/profilePrivacyHideFeed</item>
-        <item>@string/profilePrivacyNameAndProfilePicture</item>
-        <item>@string/profilePrivacyName</item>
-        <item>@string/profilePrivacyHidden</item>
+        <item>@string/profile_privacy_public</item>
+        <item>@string/profile_privacy_hide_feed</item>
+        <item>@string/profile_privacy_name_and_profile_picture</item>
+        <item>@string/profile_privacy_name</item>
+        <item>@string/profile_privacy_hidden</item>
     </string-array>
 </resources>

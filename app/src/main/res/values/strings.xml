@@ -1,51 +1,48 @@
 <resources>
-    <string name="profilePicture">Profilbild</string>
     <string name="app_name" translatable="false">Geschenkapp</string>
     <string name="share">Teilen</string>
-    <string name="like">Gefällt mir</string>
-    <string name="dislike">Gefällt mir nicht</string>
 
     <!--Home page-->
     <string name="search_hint">Suche nach Personen</string>
-    <string name="remainingDays">Tage</string>
+    <string name="remaining_days">Tage</string>
     <string name="welcome">Willkommen</string>
 
-
     <!-- bottom navigation bar-->
-    <string name="home">Home</string>
-    <string name="profile">Profil</string>
-    <string name="notifications">Benachrichtigungen</string>
+    <string name="tab_home">Home</string>
+    <string name="tab_profile">Profil</string>
+    <string name="tab_notifications">Benachrichtigungen</string>
     <string name="title_activity_profile">ProfileActivity</string>
     <string name="title_activity_profile_settings">ProfileSettingsActivity</string>
     <string name="title_activity_notification">NotificationActivity</string>
     <string name="title_activity_giftpage">GiftPageActivity</string>
 
-    <!-- Strings used for fragments for navigation -->
-
     <!--profile-->
     <string name="profile_name">Vorname Nachname</string>
-    <string name="profile_date_of_birth">21. Geburtstag am 27.Mai</string>
+    <string name="profile_date_of_birth">0000–00–00</string>
     <string name="members">Teilnehmer</string>
+    <string name="profile_picture">Profilbild</string>
+    <string name="like">Gefällt mir</string>
+    <string name="dislike">Gefällt mir nicht</string>
 
     <!--profilesettings-->
     <string name="save">Speichern</string>
-    <string name="firstName">Vorname</string>
-    <string name="lastName">Nachname</string>
-    <string name="dateOfBirth">Geburtstag</string>
-    <string name="profilePrivacy">Privatsphäre</string>
-    <string name="giftPrivacy">Post Sichtbarkeit</string>
-    <string name="defaultDateOfBirth">2000–01–01</string>
-    <string name="defaultEmail">vorname@nachname.de</string>
-    <string name="defaultFirstname">Vorname</string>
-    <string name="defaultLastname">Nachname</string>
-    <string name="uploadPicture"><u>Profilbild ändern</u></string>
+    <string name="first_name">Vorname</string>
+    <string name="last_name">Nachname</string>
+    <string name="date_of_birth">Geburtstag</string>
+    <string name="profile_privacy">Privatsphäre</string>
+    <string name="gift_privacy">Post Sichtbarkeit</string>
+    <string name="default_date_of_birth">0000–00–00</string>
+    <string name="default_email">vorname@nachname.de</string>
+    <string name="default_firstname">Vorname</string>
+    <string name="default_lastname">Nachname</string>
+    <string name="upload_picture"><u>Profilbild ändern</u></string>
     <string name="saved">Gespeichert</string>
-    <string name="emailDuplicate">Eingegebene Email existiert bereits. Bitte geben Sie eine andere ein.</string>
-    <string name="emptyString">Felder dürfen nicht leer sein</string>
-    <string name="successfulSave">Gespeichert</string>
+    <string name="email_duplicate">Eingegebene Email existiert bereits. Bitte geben Sie eine andere ein.</string>
+    <string name="empty_string">Felder dürfen nicht leer sein</string>
+    <string name="successful_save">Gespeichert</string>
     <string name="logout"><u>Ausloggen</u></string>
-    <string name="deleteAccount"><u>Account löschen</u></string>
-    <string name="deleteDialogAccount">Möchtest du deinen Account wirklich löschen?</string>
+    <string name="delete_account"><u>Account löschen</u></string>
+    <string name="delete_account_dialog">Möchtest du deinen Account wirklich löschen?</string>
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
 
@@ -67,46 +64,46 @@
     <string name="requested">Angefragt</string>
     <string name="save_changes">Änderungen speichern</string>
     <string name="gift_picture">Bild von Geschenk</string>
-    <string name="deleteGift"><u>Geschenkidee löschen</u></string>
-    <string name="deleteDialogGift">Möchtest du diese Geschenkidee wirklich löschen?</string>
+    <string name="delete_gift"><u>Geschenkidee löschen</u></string>
+    <string name="delete_gift_dialog">Möchtest du diese Geschenkidee wirklich löschen?</string>
 
     <!--loginpage-->
     <string name="login">Anmelden</string>
     <string name="email">E-Mail</string>
     <string name="password">Passwort</string>
-    <string name="noEmailError">Bitte trage eine E-Mail ein!</string>
-    <string name="noPasswordError">Bitte trage ein Passwort ein!</string>
-    <string name="wrongCredentials">Ihre E-Mail-Adresse und Ihr Kennwort stimmen nicht überein!</string>
+    <string name="no_email_error">Bitte trage eine E-Mail ein!</string>
+    <string name="no_password_error">Bitte trage ein Passwort ein!</string>
+    <string name="wrong_credentials">Ihre E-Mail-Adresse und Ihr Kennwort stimmen nicht überein!</string>
 
     <!--comments-->
 
     <!--card views-->
     <string name="giftidea">Geschenkidee</string>
     <string name="giftfeed_price">0</string>
-    <string name="likeCount">0</string>
-    <string name="suggestionCount">Vorschläge</string>
+    <string name="like_count">0</string>
+    <string name="suggestion_count">Vorschläge</string>
 
     <!--search friend-->
 
-    <string name="settingsButton">Einstellungen</string>
-    <string name="addFriend">Freund hinzufügen</string>
-    <string name="floatingActionButton">Floating Action Button</string>
+    <string name="button_settings">Einstellungen</string>
+    <string name="button_add_friend">Freund hinzufügen</string>
+    <string name="button_add_gift">Floating Action Button</string>
 
     <!--profile privacy array-->
-    <string name="profilePrivacyPublic">öffentlich</string>
-    <string name="profilePrivacyHideFeed">Feed verstecken</string>
-    <string name="profilePrivacyNameAndProfilePicture">Name und Profilbild</string>
-    <string name="profilePrivacyName">Nur Name</string>
-    <string name="profilePrivacyHidden">unsichtbar</string>
+    <string name="profile_privacy_public">öffentlich</string>
+    <string name="profile_privacy_hide_feed">Feed verstecken</string>
+    <string name="profile_privacy_name_and_profile_picture">Name und Profilbild</string>
+    <string name="profile_privacy_name">Nur Name</string>
+    <string name="profile_privacy_hidden">unsichtbar</string>
 
     <!--post privacy array-->
-    <string name="postPrivacyPublic">Öffentlich</string>
-    <string name="postPrivacyOnlyFriendsOfOwner">Privat</string>
-    <string name="postPrivacyOnlyFriendsOfOwnerHiddenMembers">Privat, versteckte Teilnehmer</string>
-    <string name="postPrivacyHidden">Unsichtbar</string>
+    <string name="post_privacy_public">Öffentlich</string>
+    <string name="post_privacy_friends">Privat</string>
+    <string name="post_privacy_hidden_members">Privat, versteckte Teilnehmer</string>
+    <string name="post_privacy_hidden">Unsichtbar</string>
 
 	<!-- register-->
-    <string name="register">Registrieren</string>
+    <string name="button_register">Registrieren</string>
 
     <!--internet connection-->
     <string name="no_internet_connection">Keine Internetverbindung</string>

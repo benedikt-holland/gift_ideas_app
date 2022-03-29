@@ -101,7 +101,7 @@ class RegisterActivity : AppCompatActivity() {
                 ) {
                     Toast.makeText(
                         this,
-                        R.string.emptyString,
+                        R.string.empty_string,
                         Toast.LENGTH_LONG
                     ).show()
                     return@setOnClickListener
@@ -118,7 +118,7 @@ class RegisterActivity : AppCompatActivity() {
                         Looper.prepare()
                         Toast.makeText(
                             this@RegisterActivity,
-                            R.string.emailDuplicate,
+                            R.string.email_duplicate,
                             Toast.LENGTH_LONG
                         ).show()
                         Looper.loop()
@@ -129,7 +129,7 @@ class RegisterActivity : AppCompatActivity() {
                     val tempUser = db.createUser(firstName, lastName, dateOfBirth, email, password)
                     tempUser.next()
                     user = tempUser
-                    DataHolder.getInstance().user = user
+                    LoginHolder.getInstance().user = user
 
 
                     val intent = Intent(this@RegisterActivity, MainActivity::class.java)

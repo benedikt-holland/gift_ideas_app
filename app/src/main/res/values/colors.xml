@@ -1,17 +1,17 @@
 <!--?xml version="1.0" encoding="UTF-8"?-->
 <resources>
   <!-- Primary color -->
-  <color name="primaryColor">#ffc107</color>
-  <color name="primaryDarkColor">#c79100</color>
+  <color name="primary">#ffc107</color>
+  <color name="primary_dark">#c79100</color>
   <!-- Secondary color -->
-  <color name="secondaryColor">#03a9f4</color>
-  <color name="secondaryDarkColor">#007ac1</color>
+  <color name="secondary">#03a9f4</color>
+  <color name="secondary_dark">#007ac1</color>
   <!-- Text color -->
-  <color name="primaryTextColor">#000000</color>
-  <color name="secondaryTextColor">#ffffff</color>
+  <color name="primary_text">#000000</color>
+  <color name="secondary_text">#ffffff</color>
   <!-- Background color -->
   <color name="background">#ffffff</color>
-  <color name="backgroundDark">#121212</color>
+  <color name="background_dark">#121212</color>
   <!-- Surface color -->
   <color name="surface">#ffffff</color>
   <!-- Icon color -->

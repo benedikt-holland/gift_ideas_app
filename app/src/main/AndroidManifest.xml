@@ -48,7 +48,7 @@
             android:parentActivityName=".MainActivity"
             android:theme="@style/Theme.Geschenkapp.NoActionBar" />
         <activity
-            android:name=".GiftPageActivity"
+            android:name=".GiftpageActivity"
             android:windowSoftInputMode="adjustPan"
             android:exported="true"
             android:label="@string/title_activity_giftpage"

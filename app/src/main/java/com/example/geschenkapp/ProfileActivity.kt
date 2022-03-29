@@ -52,7 +52,7 @@ class ProfileActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.toolbar))
         //Initiate Actionbar with back button
         supportActionBar?.apply {
-            title = resources.getString(R.string.profile)
+            title = resources.getString(R.string.tab_profile)
             // show back button on toolbar
             // on back button press, it will navigate to parent activity
             setDisplayHomeAsUpEnabled(true)
@@ -60,7 +60,7 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         //Get userdata and database connector
-        user = DataHolder.getInstance().user
+        user = LoginHolder.getInstance().user
         db = DbHolder.getInstance().db
         userId = user.getInt("id")
 
@@ -220,7 +220,7 @@ class ProfileActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater: MenuInflater = menuInflater
-        inflater.inflate(R.menu.toolbar, menu)
+        inflater.inflate(R.menu.toolbar_menu, menu)
         return true
     }
 
@@ -244,7 +244,7 @@ class ProfileActivity : AppCompatActivity() {
         }
         val btnAddGift: FloatingActionButton = findViewById(R.id.fabAddGift)
         btnAddGift.setOnClickListener {
-            val intent = Intent(this, GiftPageActivity::class.java)
+            val intent = Intent(this, GiftpageActivity::class.java)
             val b = Bundle()
             b.putInt("profileUserId", friendUserId)
             intent.putExtras(b)

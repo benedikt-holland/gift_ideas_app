@@ -151,7 +151,7 @@ class LoginActivity : AppCompatActivity() {
     private fun login() {
         val email = binding.tfEmail.editText?.text.toString()
         if (email == "") {
-            binding.tfEmail.error = getString(R.string.noEmailError)
+            binding.tfEmail.error = getString(R.string.no_email_error)
             binding.tfEmail.isErrorEnabled = true
             return
         } else {
@@ -159,7 +159,7 @@ class LoginActivity : AppCompatActivity() {
         }
         val password = binding.tfPassword.editText?.text.toString()
         if (password == "") {
-            binding.tfPassword.error = getString(R.string.noPasswordError)
+            binding.tfPassword.error = getString(R.string.no_password_error)
             binding.tfPassword.isErrorEnabled = true
             return
         } else {
@@ -175,7 +175,7 @@ class LoginActivity : AppCompatActivity() {
                 if (tempUser.metaData.columnCount != 0) {
                     tempUser.next()
                     user = tempUser
-                    DataHolder.getInstance().user = user
+                    LoginHolder.getInstance().user = user
                     val pref = getSharedPreferences("com.example.geschenkapp", MODE_PRIVATE)
 
                     with(pref.edit()){
@@ -188,7 +188,7 @@ class LoginActivity : AppCompatActivity() {
                     startActivity(intent)
                 } else {
                     withContext(Dispatchers.Main) {
-                        binding.tfPassword.error = getString(R.string.wrongCredentials)
+                        binding.tfPassword.error = getString(R.string.wrong_credentials)
                         binding.tfPassword.isErrorEnabled = true
                     }
                 }

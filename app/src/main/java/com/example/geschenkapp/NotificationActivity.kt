@@ -26,14 +26,14 @@ class NotificationActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        user = DataHolder.getInstance().user
+        user = LoginHolder.getInstance().user
         db = DbHolder.getInstance().db
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(R.layout.activity_notification)
         //toolbar
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.apply {
-            title = getString(R.string.notifications)
+            title = getString(R.string.tab_notifications)
             // show back button on toolbar
             // on back button press, it will navigate to parent activity
             setDisplayHomeAsUpEnabled(true)
@@ -82,7 +82,7 @@ class NotificationActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater: MenuInflater = menuInflater
-        inflater.inflate(R.menu.toolbar, menu)
+        inflater.inflate(R.menu.toolbar_menu, menu)
         menu.findItem(R.id.actionRemove).isVisible = true
         return true
     }
