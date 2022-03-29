@@ -36,7 +36,7 @@ class NotificationFeedAdapter(private var notificationFeed: ArrayList<ArrayList<
     }
 
     override fun onBindViewHolder(holder: NotificationFeedViewHolder, position: Int) {
-        holder.bind(notificationFeed[position])
+        holder.bind(notificationFeed[position], this)
     }
 
     override fun getItemCount(): Int {
@@ -47,13 +47,18 @@ class NotificationFeedAdapter(private var notificationFeed: ArrayList<ArrayList<
         notificationFeed = newFeed
         notifyDataSetChanged()
     }
+
+    fun removeItem(position: Int) {
+        notificationFeed.removeAt(position)
+        notifyItemRemoved(position)
+    }
 }
 
 //View holder for gift cards on profile page
 class NotificationFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     var db: DbConnector = DbHolder.getInstance().db
     var user: ResultSet = DataHolder.getInstance().user
-    fun bind(notificationsList: ArrayList<String>) {
+    fun bind(notificationsList: ArrayList<String>, adapter: NotificationFeedAdapter) {
         //Set text view content
         if (notificationsList.isNotEmpty()) {
             //Add last name if exists
@@ -123,7 +128,7 @@ class NotificationFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
                 uiScope.launch(Dispatchers.IO) {
                     db.removeNotificationById(notificationsList[0].toInt())
                 }
-                bindingAdapter!!.notifyItemRemoved(position)
+                adapter.removeItem(bindingAdapterPosition)
             }
 
         } else {
@@ -143,7 +148,7 @@ class NotificationFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
                     }
                     db.removeNotificationById(notificationsList[0].toInt())
                 }
-                bindingAdapter!!.notifyItemRemoved(bindingAdapterPosition)
+                adapter.removeItem(bindingAdapterPosition)
             }
 
             btnDecline.setOnClickListener {
@@ -162,7 +167,7 @@ class NotificationFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
                 //Do nothing
                 3 -> {}
                 //Open gift page
-                2 -> {
+                2, 4 -> {
                     var intent = Intent(itemView.context, GiftPageActivity::class.java)
                     var b = Bundle()
                     b.putInt("id", notificationsList[6].toInt())
