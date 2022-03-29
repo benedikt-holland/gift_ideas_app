@@ -243,7 +243,7 @@ class ProfileSettingsActivity : AppCompatActivity() {
     }
 
     private fun spinnerProfilePrivacy() {
-        val spinner: Spinner = findViewById(R.id.spProfilePrivacy)
+        val spProfilePrivacy: Spinner = findViewById(R.id.spProfilePrivacy)
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter.createFromResource(
             this,
@@ -253,12 +253,12 @@ class ProfileSettingsActivity : AppCompatActivity() {
             // Specify the layout to use when the list of choices appears
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             // Apply the adapter to the spinner
-            spinner.adapter = adapter
+            spProfilePrivacy.adapter = adapter
         }
     }
 
     private fun spinnerPostPrivacy() {
-        val spinner: Spinner = findViewById(R.id.spPostPrivacy)
+        val spPostPrivacy: Spinner = findViewById(R.id.spPostPrivacy)
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter.createFromResource(
             this,
@@ -268,7 +268,7 @@ class ProfileSettingsActivity : AppCompatActivity() {
             // Specify the layout to use when the list of choices appears
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             // Apply the adapter to the spinner
-            spinner.adapter = adapter
+            spPostPrivacy.adapter = adapter
         }
     }
 

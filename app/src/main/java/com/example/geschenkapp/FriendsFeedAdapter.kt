@@ -93,18 +93,6 @@ class FriendsFeedAdapter(private var friendsList: ArrayList<ArrayList<String>>) 
             tvCountGifts.text = friendsList[6]
             tvDaysRemaining.text = friendsList[7] + " " + itemView.context.getString(R.string.remaining_days)
 
-            /*On click listener for favourite function
-            val btnStar = itemView.findViewById(R.id.btnAddFavourite) as ImageButton
-            btnStar.setOnClickListener {
-                if (friendsList[5].toInt()==0) {
-                    //btnStar.tint = Color.YELLOW
-                    friendsList[5] = "1"
-                } else {
-                    //btnStar.tint = Color.BLACK
-                    friendsList[5] = "0"
-                }
-            }*/
-
             //On click listener for clicking on cards in recyclerview
             val btnCard = itemView.findViewById(R.id.cvFriend) as CardView
             btnCard.setOnClickListener {

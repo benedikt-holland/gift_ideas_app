@@ -18,10 +18,10 @@ import java.sql.ResultSet
 //Class for the notifications activity
 //Not implemented yet
 class NotificationActivity : AppCompatActivity() {
-    private lateinit var bottomNavBar: BottomNavigationView
+    private lateinit var menuBottomNavBar: BottomNavigationView
     lateinit var user: ResultSet
     lateinit var db: DbConnector
-    private lateinit var notificationsRv: RecyclerView
+    private lateinit var rvNotifications: RecyclerView
     private lateinit var notificationsAdapter: NotificationFeedAdapter
     private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,9 +40,9 @@ class NotificationActivity : AppCompatActivity() {
             setDisplayShowHomeEnabled(true)
         }
 
-        notificationsRv = findViewById(R.id.rvNotifications)
-        notificationsRv.layoutManager = LinearLayoutManager(notificationsRv.context)
-        notificationsRv.setHasFixedSize(true)
+        rvNotifications = findViewById(R.id.rvNotifications)
+        rvNotifications.layoutManager = LinearLayoutManager(rvNotifications.context)
+        rvNotifications.setHasFixedSize(true)
 
 
         val viewModelJob = SupervisorJob()
@@ -71,9 +71,9 @@ class NotificationActivity : AppCompatActivity() {
         val notificationsFeed = db.getNotificationFeed(userId)
         val notificationsArray = unloadResultSet(notificationsFeed)
         withContext(Dispatchers.Main) {
-            if (notificationsRv.adapter==null) {
+            if (rvNotifications.adapter==null) {
                 notificationsAdapter = NotificationFeedAdapter(notificationsArray)
-                notificationsRv.adapter = notificationsAdapter
+                rvNotifications.adapter = notificationsAdapter
             } else {
                 notificationsAdapter.updateData(notificationsArray)
             }
@@ -107,9 +107,9 @@ class NotificationActivity : AppCompatActivity() {
     }
 
     private fun useBottomNavBar(){
-        bottomNavBar = findViewById(R.id.bottomNavigation)
-        bottomNavBar.selectedItemId = R.id.ic_bottom_nav_notifications
-        bottomNavBar.setOnItemSelectedListener { item ->
+        menuBottomNavBar = findViewById(R.id.bottomNavigation)
+        menuBottomNavBar.selectedItemId = R.id.ic_bottom_nav_notifications
+        menuBottomNavBar.setOnItemSelectedListener { item ->
             Log.d("NotificationActivity", "item clicked")
             when (item.itemId) {
                 R.id.ic_bottom_nav_home -> {

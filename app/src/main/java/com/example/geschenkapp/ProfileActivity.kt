@@ -33,13 +33,13 @@ var initTabArray = arrayOf(
 )*/
 
 class ProfileActivity : AppCompatActivity() {
-    private lateinit var bottomNavBar: BottomNavigationView
+    private lateinit var menuBottomNavBar: BottomNavigationView
     private lateinit var binding: ActivityProfileBinding
     private lateinit var profilePicture: Bitmap
     lateinit var user: ResultSet
     private var userId: Int = -1
     lateinit var db: DbConnector
-    private lateinit var profileFeedRv: RecyclerView
+    private lateinit var rvProfileFeed: RecyclerView
     private lateinit var profileFeedAdapter: ProfileFeedAdapter
     private var friendUserId: Int = -1
     private lateinit var profileUser: ResultSet
@@ -64,9 +64,9 @@ class ProfileActivity : AppCompatActivity() {
         db = DbHolder.getInstance().db
         userId = user.getInt("id")
 
-        profileFeedRv = findViewById(R.id.rvGiftFeed)
-        profileFeedRv.layoutManager = LinearLayoutManager(profileFeedRv.context)
-        profileFeedRv.setHasFixedSize(true)
+        rvProfileFeed = findViewById(R.id.rvGiftFeed)
+        rvProfileFeed.layoutManager = LinearLayoutManager(rvProfileFeed.context)
+        rvProfileFeed.setHasFixedSize(true)
         binding = ActivityProfileBinding.inflate(layoutInflater)
 
         //Get userId
@@ -262,9 +262,9 @@ class ProfileActivity : AppCompatActivity() {
         }
         val giftFeedArray = unloadResultSet(giftFeed)
         withContext(Dispatchers.Main) {
-            if (profileFeedRv.adapter==null) {
+            if (rvProfileFeed.adapter==null) {
                 profileFeedAdapter = ProfileFeedAdapter(giftFeedArray)
-                profileFeedRv.adapter = profileFeedAdapter
+                rvProfileFeed.adapter = profileFeedAdapter
             } else {
                 profileFeedAdapter.updateData(giftFeedArray)
             }
@@ -288,9 +288,9 @@ class ProfileActivity : AppCompatActivity() {
 
     //Bottom navigation bar on tab profile
     private fun useBottomNavBar() {
-        bottomNavBar = findViewById(R.id.bottomNavigation)
-        bottomNavBar.selectedItemId = R.id.ic_bottom_nav_profile
-        bottomNavBar.setOnItemSelectedListener { item ->
+        menuBottomNavBar = findViewById(R.id.bottomNavigation)
+        menuBottomNavBar.selectedItemId = R.id.ic_bottom_nav_profile
+        menuBottomNavBar.setOnItemSelectedListener { item ->
             Log.d("ProfileActivity", "item clicked")
             when (item.itemId) {
                 R.id.ic_bottom_nav_home -> {

@@ -28,8 +28,8 @@ class RegisterActivity : AppCompatActivity() {
     lateinit var user: ResultSet
     private var db = DbConnector()
     private lateinit var binding: ActivityRegisterBinding
-    private lateinit var datepicker: TextView
-    private lateinit var clickView: TextView
+    private lateinit var tvDateOfBirth: TextView
+    private lateinit var tvForClick: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,9 +55,9 @@ class RegisterActivity : AppCompatActivity() {
         var mt: String
         var d: String
 
-        datepicker = findViewById(R.id.tvDateOfBirth)
-        clickView = findViewById(R.id.tvForClick)
-        clickView.setOnClickListener {
+        tvDateOfBirth = findViewById(R.id.tvDateOfBirth)
+        tvForClick = findViewById(R.id.tvForClick)
+        tvForClick.setOnClickListener {
             val dpd = DatePickerDialog(
                 this,
                 { _, mYear, mMonth, mDay ->
@@ -72,7 +72,7 @@ class RegisterActivity : AppCompatActivity() {
                     } else {
                         mDay.toString()
                     }
-                    datepicker.text = "$mYear-$mt-$d"
+                    tvDateOfBirth.text = "$mYear-$mt-$d"
                 },
                 year,
                 month,

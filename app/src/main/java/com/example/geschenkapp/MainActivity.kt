@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var friendsFeed: ResultSet
     private lateinit var giftFeed: ResultSet
     lateinit var friendsFeedAdapter: FriendsFeedAdapter
-    private lateinit var friendsFeedRv: RecyclerView
+    private lateinit var rvFriendsFeed: RecyclerView
     private var db = DbConnector()
     private var userId: Int = -1
     private lateinit var binding: ActivityMainBinding
@@ -55,9 +55,9 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar()
 
         //Initiate and set content of friendsfeed recyclerview
-        friendsFeedRv = findViewById(R.id.rvFriendsFeed)
-        friendsFeedRv.layoutManager = LinearLayoutManager(friendsFeedRv.context)
-        friendsFeedRv.setHasFixedSize(true)
+        rvFriendsFeed = findViewById(R.id.rvFriendsFeed)
+        rvFriendsFeed.layoutManager = LinearLayoutManager(rvFriendsFeed.context)
+        rvFriendsFeed.setHasFixedSize(true)
 
         //Listener for clicking on recyclerview cards. Opens profile page of selected user
         binding.search.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
@@ -180,7 +180,7 @@ class MainActivity : AppCompatActivity() {
         }
         withContext(Dispatchers.Main) {
             friendsFeedAdapter = FriendsFeedAdapter(giftList)
-            friendsFeedRv.adapter = friendsFeedAdapter
+            rvFriendsFeed.adapter = friendsFeedAdapter
         }
     }
 
@@ -190,7 +190,7 @@ class MainActivity : AppCompatActivity() {
         val friendsFeedArray = unloadResultSet(friendsFeed)
         withContext(Dispatchers.Main) {
             friendsFeedAdapter = FriendsFeedAdapter(friendsFeedArray)
-            friendsFeedRv.adapter = friendsFeedAdapter
+            rvFriendsFeed.adapter = friendsFeedAdapter
             friendsFeedAdapter.notifyDataSetChanged()
         }
     }
