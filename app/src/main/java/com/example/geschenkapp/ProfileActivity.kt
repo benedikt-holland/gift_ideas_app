@@ -88,18 +88,6 @@ class ProfileActivity : AppCompatActivity() {
             btnAddFriend.visibility = View.VISIBLE
         }
         useBottomNavBar()
-        /*Set tabs for profile page
-        //Hide 'friends' tab for stranger profile and 'gifts' tab for personal profile
-        tabLayout = findViewById(R.id.profileTabLayout)
-        viewPager = findViewById(R.id.profileViewPager)
-        val adapter =
-            ProfileTabAdapter(supportFragmentManager, lifecycle, userId, friendUserId)
-        viewPager.adapter = adapter
-
-        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            tab.text = tabArray[position]
-        }.attach()
-        */
 
         //Fill textview with userdata
         val tvName: TextView = findViewById(R.id.tvName)

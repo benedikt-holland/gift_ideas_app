@@ -81,7 +81,7 @@ class LoginActivity : AppCompatActivity() {
                 val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
                 uiScope.launch(Dispatchers.IO) {
                     dbConnected = try {
-                        db.getUserById(1)
+                        db.getNotificationCount(1)
                         true
                     } catch (e: Exception) {
                         false

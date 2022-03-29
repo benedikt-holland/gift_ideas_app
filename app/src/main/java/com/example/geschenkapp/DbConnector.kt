@@ -1,15 +1,18 @@
 package com.example.geschenkapp
 
 import androidx.lifecycle.ViewModel
-import java.sql.*
+import java.sql.Connection
+import java.sql.DriverManager
+import java.sql.ResultSet
 import java.time.LocalDate
 
 
 //Connector for mysql database, contains all SQL Methods for backend
-@Suppress("SpellCheckingInspection", "unused")
+@Suppress("SpellCheckingInspection")
 class DbConnector : ViewModel() {
     private lateinit var connection: Connection
 
+    //Connect to database
     fun connect(url: String, usr: String, pwd: String) {
         connection = DriverManager.getConnection(
             url,
@@ -76,14 +79,6 @@ class DbConnector : ViewModel() {
 
     }
 
-    //Get User from Id for new Activities
-    fun getUserById(userId: Int): ResultSet {
-        val query = "SELECT id, first_name, last_name, date_of_birth, email, " +
-                "profile_privacy, profile_picture FROM users WHERE id=$userId;"
-        val statement = connection.prepareStatement(query)
-        return statement.executeQuery()
-    }
-
     //Open user profile in search bar. Returning columns depended on privacy and friendship status
     //privacy 4: returns nothing
     //privacy 3: returns first_name, last_name, profile_privacy
@@ -94,19 +89,11 @@ class DbConnector : ViewModel() {
         return statement.executeQuery()
     }
 
-    //Load gift feed when on home screen
+    //Load gift feed when on personal profile page
     //Loads all open gifts the user is a member of
     //Returns gift_id, title, price, gift_picture, user_first_name, user_last_name,
     // owner_first_name, owner_last_name
     fun getGiftFeedByMemberId(memberId: Int): ResultSet {
-        /*val query = "SELECT g.id, g.title, g.price, g.gift_picture, " +
-                "u.first_name AS user_first_name, u.last_name AS user_last_name, " +
-                "o.first_name AS owner_first_name, o.last_name AS owner_last_name " +
-                "FROM gifts AS g " +
-                "LEFT JOIN users AS o ON g.owner_id=o.id " +
-                "LEFT JOIN users AS u ON g.user_id = u.id " +
-                "LEFT JOIN members AS m ON g.id=m.gift_id " +
-                "WHERE m.user_id = $memberId AND g.is_closed=0;"*/
         val query = "SELECT g.id, g.title, g.price, g.owner_id, g.is_wish, " +
                 "g.post_privacy, g.gift_picture, g.is_closed, " +
                 "o.first_name AS owner_first_name, o.last_name AS owner_last_name, " +
@@ -170,6 +157,7 @@ class DbConnector : ViewModel() {
     }
 
     //Update gift as owner
+    //When no gift Id is given a new gift will be created
     fun updateGift(
         giftId: Int?,
         title: String,
@@ -188,57 +176,11 @@ class DbConnector : ViewModel() {
         statement.executeUpdate()
     }
 
-    //Load members on gift page
-    //Returns membership_id, first_name, last_name, max_price, is_fixed
-    //No implemented privacy check
-    fun getMembers(giftId: Int): ResultSet {
-        val query = "SELECT m.id, u.first_name, u.last_name, m.max_price, m.is_fixed " +
-                "FROM members as m " +
-                "LEFT JOIN users AS u ON u.id=m.user_id " +
-                "WHERE m.gift_id=$giftId;"
-        val statement = connection.prepareStatement(query)
-        return statement.executeQuery()
-    }
-
-    //Load comments on gift page
-    //Returns comment_id, first_name, last_name, content, likes
-    //No implemented privacy check
-    fun getComments(giftId: Int): ResultSet {
-        val query = "SELECT c.id AS comment_id, u.first_name, u.last_name, c.content, " +
-                "SUM(l.likes) AS likes FROM comments AS c " +
-                "LEFT JOIN users AS u ON u.id=c.user_id " +
-                "LEFT JOIN likes AS l ON l.comment_id=c.id " +
-                "WHERE c.gift_id=$giftId " +
-                "GROUP BY c.id " +
-                "ORDER BY likes DESC;"
-        val statement = connection.prepareStatement(query)
-        return statement.executeQuery()
-    }
-
-    fun likeComment(userId: Int, commentId: Int, likes: Int): ResultSet {
-        val query = "CALL applyLikeToComment($userId, $commentId, $likes);"
-        val statement = connection.prepareCall(query)
-        return statement.executeQuery()
-    }
-
     //Up or downvote gift idea on profile screen
     fun likeGift(userId: Int, giftId: Int, likes: Int): ResultSet {
         val query = "CALL applyLikeToGift($userId, $giftId, $likes);"
         val statement = connection.prepareCall(query)
         return statement.executeQuery()
-    }
-
-    fun insertComment(userId: Int, giftId: Int, comment: String) {
-        val query = "INSERT INTO comments(user_id, gift_id, content) " +
-                "VALUES ($userId, $giftId, $comment;"
-        val statement = connection.prepareStatement(query)
-        statement.executeUpdate()
-    }
-
-    fun removeComment(commentId: String) {
-        val query = "DELETE FROM comments WHERE comment_id=$commentId;"
-        val statement = connection.prepareStatement(query)
-        statement.executeUpdate()
     }
 
     //Add friend on profile page
@@ -256,12 +198,7 @@ class DbConnector : ViewModel() {
         statement.executeUpdate()
     }
 
-    fun updateFavourite(friendId: Int, isFavourite: Int) {
-        val query = "UPDATE friends SET is_favourite=$isFavourite WHERE id=$friendId AND;"
-        val statement = connection.prepareStatement(query)
-        statement.executeUpdate()
-    }
-
+    //Delete gift as owner on gift page
     fun deleteGift(currentUserId: Int, giftId: Int) {
         val query = "DELETE FROM gifts WHERE owner_id=$currentUserId AND id=$giftId;"
         val statement = connection.prepareStatement(query)
@@ -283,6 +220,7 @@ class DbConnector : ViewModel() {
     }
 
     //Edit own user data on settings page
+    //Returns new user data
     fun editUser(
         userId: Int, firstName: String, lastName: String, dateOfBirth: LocalDate,
         email: String, profilePrivacy: Int, profilePicture: String
@@ -300,7 +238,7 @@ class DbConnector : ViewModel() {
         return statement2.executeQuery()
     }
 
-    //Check if email exists on register page
+    //Check if email already exists on register page
     fun checkIfEmailExistsOnOtherUser(userId: Int, email: String): Boolean {
         val query =
             "SELECT u.id FROM users AS u WHERE u.email = \"$email\" AND u.id != $userId;"
@@ -310,12 +248,15 @@ class DbConnector : ViewModel() {
         return result.next()
     }
 
+    //Delete own account on settings page
     fun deleteAccount(userId: Int) {
         val query = "DELETE FROM users WHERE users.id = $userId;"
         val statement = connection.prepareStatement(query)
         statement.execute()
     }
 
+    //Get notifications feed for notifications tab
+    //Returns all notifications adressed at the user
     fun getNotificationFeed(userId: Int): ResultSet {
         val query = "SELECT n.id, n.notification_type, u.first_name, u.last_name, " +
                 "g.title AS gift_title, n.friend_id, n.gift_id, o.first_name, o.last_name FROM notifications AS n  " +
@@ -328,18 +269,21 @@ class DbConnector : ViewModel() {
         return statement.resultSet
     }
 
+    //Deletes notification by Id
     fun removeNotificationById(notificationId: Int) {
         val query = "DELETE FROM notifications WHERE id=$notificationId;"
         val statement = connection.prepareStatement(query)
         statement.executeUpdate()
     }
 
+    //Removes all notifications adressed at user
     fun removeAllNotifications(userId: Int) {
         val query = "DELETE FROM notifications WHERE user_id=$userId;"
         val statement = connection.prepareStatement(query)
         statement.executeUpdate()
     }
 
+    //Returns amount of notifications adressed at user
     fun getNotificationCount(userId: Int): Int {
         val query = "SELECT COUNT(*) FROM notifications WHERE user_id=$userId;"
         val statement = connection.prepareStatement(query)
@@ -349,6 +293,7 @@ class DbConnector : ViewModel() {
         return result.getInt(1)
     }
 
+    //Add notifications for another user
     fun addNotification(notificationId: Int, userId: Int, friendId: Int, giftId: Int?=null) {
         val query = "INSERT INTO notifications (notification_type, user_id, friend_id, gift_id) " +
                 "VALUES($notificationId, $userId, $friendId, $giftId);"
@@ -356,6 +301,7 @@ class DbConnector : ViewModel() {
         statement.executeUpdate()
     }
 
+    //Check if user is already notified about action
     fun getNotificationId(notificationId: Int, userId: Int, friendId: Int, giftId: Int?=null): Int {
         var query = "SELECT id FROM notifications WHERE notification_type=$notificationId " +
                 "AND user_id=$userId AND friend_id=$friendId"
@@ -371,6 +317,7 @@ class DbConnector : ViewModel() {
         }
     }
 
+    //Send notifications to all users who joined the gift idea
     fun notifiyAll(notificationId: Int, userId: Int, giftId: Int) {
         val query = "INSERT INTO notifications(notification_type, user_id, friend_id, gift_id) " +
                 "SELECT $notificationId, user_id, $userId, $giftId FROM members WHERE gift_id = $giftId " +

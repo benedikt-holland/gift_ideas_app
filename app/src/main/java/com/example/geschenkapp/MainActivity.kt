@@ -195,18 +195,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /*Register Actionbar buttons, not implemented yet
-    private fun getButtonClick(){
-        val btnStar = findViewById(R.id.btnFavorites) as Button
-        btnStar.setOnClickListener {
-            Toast.makeText(this, "favorites", Toast.LENGTH_SHORT).show()
-        }
-        val btnGift = findViewById(R.id.btnGeschenk) as Button
-        btnGift.setOnClickListener {
-            Toast.makeText(this, "gift", Toast.LENGTH_SHORT).show()
-        }
-    }*/
-
     private suspend fun setNotificationNumber(){
         val count = db.getNotificationCount(userId)
         withContext(Dispatchers.Main) {
