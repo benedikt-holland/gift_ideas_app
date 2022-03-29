@@ -48,6 +48,7 @@ class ProfileFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     fun bind(profileList: ArrayList<String>) {
         //Set text view content
         val tvVotes: TextView = itemView.findViewById(R.id.tvVotes)
+        val cvGift = itemView.findViewById<CardView>(R.id.cvGift)
         if (profileList.isNotEmpty()) {
             val tvGiftName: TextView = itemView.findViewById(R.id.tvGiftName)
             val tvGiftPrice: TextView = itemView.findViewById(R.id.tvGiftPrice)
@@ -59,6 +60,12 @@ class ProfileFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             tvGiftOwner.text = profileList[8] + " " + profileList[9]
             tvGiftMemberCount.text = profileList[10] + " " + itemView.context.getString(R.string.members)
             tvVotes.text = profileList[11]
+            //Highlight gift if joined
+            cvGift.setCardBackgroundColor(if (profileList[12]!="0") {
+                Color.argb(255, 255, 193, 7)
+            } else {
+                Color.argb(255, 211, 211, 211)
+            })
         }
         //Register vote buttons
         val btnDownvote = itemView.findViewById(R.id.btnDownvote) as ImageButton
@@ -116,8 +123,7 @@ class ProfileFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         }
 
         //Listener for clicking on gift cards, opens detail gift page
-        val btnCard = itemView.findViewById(R.id.cvGift) as CardView
-        btnCard.setOnClickListener {
+        cvGift.setOnClickListener {
             val intent = Intent(itemView.context, GiftpageActivity::class.java)
             val b = Bundle()
             b.putInt("id", profileList[0].toInt())
