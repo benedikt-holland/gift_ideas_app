@@ -1,5 +1,6 @@
 package com.example.geschenkapp
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP
@@ -70,16 +71,14 @@ class MainActivity : AppCompatActivity() {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if(query!=null) {
                     try {
-                        val viewModelJob = SupervisorJob()
-                        val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
                         uiScope.launch(Dispatchers.IO) {
                                 val profile: ResultSet = db.searchUser(userId, query)
                                 withContext(Dispatchers.Main) {
                                     try {
                                         profile.next()
-                                        var intent =
+                                        val intent =
                                             Intent(this@MainActivity, ProfileActivity::class.java)
-                                        var b = Bundle()
+                                        val b = Bundle()
                                         b.putInt("id", profile.getInt("id"))
                                         intent.putExtras(b)
                                         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
@@ -135,8 +134,8 @@ class MainActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.ic_bottom_nav_profile -> {
                     //Launch profile activity and pass id of logged user
-                    var intent = Intent(this, ProfileActivity::class.java)
-                    var b = Bundle()
+                    val intent = Intent(this, ProfileActivity::class.java)
+                    val b = Bundle()
                     b.putInt("id", userId)
                     intent.putExtras(b)
                     intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
@@ -149,9 +148,7 @@ class MainActivity : AppCompatActivity() {
                     intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                     startActivityIfNeeded(intent, 0)
                 }
-                R.id.ic_bottom_nav_home -> {
-                    true
-                }
+                R.id.ic_bottom_nav_home -> {}
                 else -> {
                     Log.d("MainActivity", "item not found")
                 }
@@ -182,7 +179,7 @@ class MainActivity : AppCompatActivity() {
         val giftList = ArrayList<ArrayList<String>>()
         giftFeed = db.getGiftFeedByMemberId(userId)
         while(giftFeed.next()) {
-            var row = ArrayList<String>()
+            val row = ArrayList<String>()
             for (i in 1..8) {
                 row.add(giftFeed.getString(i))
             }
@@ -194,6 +191,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     suspend fun loadFriendsFeed(userId: Int) {
         friendsFeed = db.getFriendsFeed(userId)
         val friendsFeedArray = unloadResultSet(friendsFeed)
@@ -241,9 +239,9 @@ class MainActivity : AppCompatActivity() {
 
 //Helper function for turnung SQL ResultSets into Arrays for use in recyclerviews
 fun unloadResultSet(resultSet: ResultSet): ArrayList<ArrayList<String>> {
-    var resultSetArray = ArrayList<ArrayList<String>>()
+    val resultSetArray = ArrayList<ArrayList<String>>()
     while(resultSet.next()) {
-        var row = ArrayList<String>()
+        val row = ArrayList<String>()
         for (i in 1 until resultSet.metaData.columnCount+1) {
             row.add(resultSet.getString(i))
         }

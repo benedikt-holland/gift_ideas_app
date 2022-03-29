@@ -1,5 +1,6 @@
 package com.example.geschenkapp
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -47,20 +48,21 @@ class RegisterActivity : AppCompatActivity() {
         setDate()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setDate() {
         val c = Calendar.getInstance()
         val year = c.get(Calendar.YEAR)
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
-        var mt = "0"
-        var d = "0"
+        var mt: String
+        var d: String
 
         datepicker = findViewById(R.id.tvDateOfBirth)
         clickView = findViewById(R.id.tvForClick)
         clickView.setOnClickListener {
             val dpd = DatePickerDialog(
                 this,
-                DatePickerDialog.OnDateSetListener { view, mYear, mMonth, mDay ->
+                { _, mYear, mMonth, mDay ->
                     val month2 = mMonth + 1
                     if (month2 < 10) {
                         mt = "0" + month2
@@ -72,7 +74,7 @@ class RegisterActivity : AppCompatActivity() {
                     } else {
                         d = mDay.toString()
                     }
-                    datepicker.setText("" + mYear + "-" + mt + "-" + d)
+                    datepicker.setText("$mYear-$mt-$d")
                 },
                 year,
                 month,
@@ -89,11 +91,11 @@ class RegisterActivity : AppCompatActivity() {
 
             if (checkForInternet(this)) {
                 //read values from frontend
-                var firstName = binding.tfFirstname.editText?.text.toString()
-                var lastName = binding.tfLastname.editText?.text.toString()
-                var dateOfBirthString = binding.tvDateOfBirth.text.toString()
-                var email = binding.tfEmail.editText?.text.toString()
-                var password = binding.tfPassword.editText?.text.toString()
+                val firstName = binding.tfFirstname.editText?.text.toString()
+                val lastName = binding.tfLastname.editText?.text.toString()
+                val dateOfBirthString = binding.tvDateOfBirth.text.toString()
+                val email = binding.tfEmail.editText?.text.toString()
+                val password = binding.tfPassword.editText?.text.toString()
 
 
                 //check if values are empty
@@ -128,7 +130,7 @@ class RegisterActivity : AppCompatActivity() {
                     }
 
 
-                    var tempUser = db.createUser(firstName, lastName, dateOfBirth, email, password)
+                    val tempUser = db.createUser(firstName, lastName, dateOfBirth, email, password)
                     tempUser.next()
                     user = tempUser
                     DataHolder.getInstance().user = user
@@ -150,22 +152,13 @@ class RegisterActivity : AppCompatActivity() {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-            val network = connectivityManager.activeNetwork ?: return false
-            val activeNetwork =
-                connectivityManager.getNetworkCapabilities(network) ?: return false
-            return when {
-                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
-                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
-                else -> false
-            }
-        } else {
-            // if the android version is below M
-            @Suppress("DEPRECATION") val networkInfo =
-                connectivityManager.activeNetworkInfo ?: return false
-            @Suppress("DEPRECATION")
-            return networkInfo.isConnected
+        val network = connectivityManager.activeNetwork ?: return false
+        val activeNetwork =
+            connectivityManager.getNetworkCapabilities(network) ?: return false
+        return when {
+            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+            else -> false
         }
     }
 }

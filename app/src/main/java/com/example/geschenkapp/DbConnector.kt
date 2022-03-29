@@ -10,7 +10,7 @@ import java.time.LocalDate
 class DbConnector : ViewModel() {
     private lateinit var connection: Connection
 
-    suspend fun connect(url: String, usr: String, pwd: String) {
+    fun connect(url: String, usr: String, pwd: String) {
         connection = DriverManager.getConnection(
             url,
             usr,
@@ -22,8 +22,8 @@ class DbConnector : ViewModel() {
     //Load friends list when on home screen
     //Loads all users the user is friends with
     //Returns user_id, first_name, last_name, date_of_birth, is_favourite, count_gifts
-    suspend fun getFriendsFeed(userId: Int): ResultSet {
-        val query: String = "SELECT f.id, f.friend_id, u.first_name, u.last_name, " +
+    fun getFriendsFeed(userId: Int): ResultSet {
+        val query = "SELECT f.id, f.friend_id, u.first_name, u.last_name, " +
                 "u.date_of_birth, f.is_favourite, " +
                 "(SELECT COUNT(*) FROM gifts WHERE user_id=f.friend_id) AS count_gifts, " +
                 "IF((DAYOFYEAR(u.date_of_birth) - DAYOFYEAR(NOW()))<0, " +
@@ -31,33 +31,33 @@ class DbConnector : ViewModel() {
                 "(DAYOFYEAR(u.date_of_birth) - DAYOFYEAR(NOW()))) AS days_remaining " +
                 "FROM friends AS f " +
                 "LEFT JOIN users AS u on f.friend_id=u.id " +
-                "WHERE f.user_id = 111 " +
+                "WHERE f.user_id = $userId " +
                 "ORDER BY days_remaining ASC;"
-        var statement = connection.prepareStatement(query)
-        var result: ResultSet = statement.executeQuery()
+        val statement = connection.prepareStatement(query)
+        val result: ResultSet = statement.executeQuery()
         return result
     }
 
     //Load User when logging in
     //Returns user_id, first_name, last_name, date_of_birth, email, profile_privacy, profile_picture
     //Needed for settings
-    suspend fun loginUser(email: String, password: String): ResultSet {
+    fun loginUser(email: String, password: String): ResultSet {
         val query = "CALL login('$email', '$password');"
-        var statement = connection.prepareCall(query)
+        val statement = connection.prepareCall(query)
         return statement.executeQuery()
     }
 
     //Create new account and log in
     //Returns user_id, first_name, last_name, date_of_birth, email, profile_privacy, profile_picture
     //Needed for settings
-    suspend fun createUser(
+    fun createUser(
         FirstName: String, LastName: String, DateOfBirth: LocalDate,
         Email: String, UserPassword: String
     ): ResultSet {
         val query =
             "CALL addUser('$FirstName', '$LastName', '$DateOfBirth', '$Email', '$UserPassword');"
-        var statement = connection.prepareCall(query)
-        var result: ResultSet = statement.executeQuery()
+        val statement = connection.prepareCall(query)
+        val result: ResultSet = statement.executeQuery()
         return result
 
     }
@@ -65,26 +65,26 @@ class DbConnector : ViewModel() {
     //Search user in search bar with keywords
     //Returns user_id, first_name, last_name
     //Only returns users without privacy status 4 or friends
-    suspend fun searchUser(userId: Int, keywords: String): ResultSet {
-        val query: String = "SELECT id, first_name, last_name FROM users AS u " +
+    fun searchUser(userId: Int, keywords: String): ResultSet {
+        val query = "SELECT id, first_name, last_name FROM users AS u " +
                 "WHERE (profile_privacy <> 4 OR EXISTS( " +
                 "SELECT * FROM friends where user_id=$userId AND friend_id=u.id)) " +
                 "AND (CONCAT(first_name, ' ', last_name) LIKE CONCAT('$keywords', '%') " +
                 "OR first_name LIKE CONCAT('$keywords', '%') " +
                 "OR last_name LIKE CONCAT('$keywords', '%') " +
                 "OR email LIKE CONCAT('$keywords', '%'));"
-        var statement = connection.prepareStatement(query)
-        var result: ResultSet = statement.executeQuery()
+        val statement = connection.prepareStatement(query)
+        val result: ResultSet = statement.executeQuery()
         return result
 
     }
 
     //Get User from Id for new Activities
-    suspend fun getUserById(userId: Int): ResultSet {
-        val query: String = "SELECT id, first_name, last_name, date_of_birth, email, " +
+    fun getUserById(userId: Int): ResultSet {
+        val query = "SELECT id, first_name, last_name, date_of_birth, email, " +
                 "profile_privacy, profile_picture FROM users WHERE id=$userId;"
-        var statement = connection.prepareStatement(query)
-        var result: ResultSet = statement.executeQuery()
+        val statement = connection.prepareStatement(query)
+        val result: ResultSet = statement.executeQuery()
         return result
     }
 
@@ -92,10 +92,10 @@ class DbConnector : ViewModel() {
     //privacy 4: returns nothing
     //privacy 3: returns first_name, last_name, profile_privacy
     //privacy 2&1 or friend: return first_name, last_name, profile_picture, profile_privacy
-    suspend fun getUser(currentUserId: Int, userId: Int): ResultSet {
-        val query: String = "CALL getUserById($currentUserId, $userId);"
-        var statement = connection.prepareCall(query)
-        var result: ResultSet = statement.executeQuery()
+    fun getUser(currentUserId: Int, userId: Int): ResultSet {
+        val query = "CALL getUserById($currentUserId, $userId);"
+        val statement = connection.prepareCall(query)
+        val result: ResultSet = statement.executeQuery()
         return result
     }
 
@@ -103,8 +103,8 @@ class DbConnector : ViewModel() {
     //Loads all open gifts the user is a member of
     //Returns gift_id, title, price, gift_picture, user_first_name, user_last_name,
     // owner_first_name, owner_last_name
-    suspend fun getGiftFeedByMemberId(memberId: Int): ResultSet {
-        /*val query: String = "SELECT g.id, g.title, g.price, g.gift_picture, " +
+    fun getGiftFeedByMemberId(memberId: Int): ResultSet {
+        /*val query = "SELECT g.id, g.title, g.price, g.gift_picture, " +
                 "u.first_name AS user_first_name, u.last_name AS user_last_name, " +
                 "o.first_name AS owner_first_name, o.last_name AS owner_last_name " +
                 "FROM gifts AS g " +
@@ -112,7 +112,7 @@ class DbConnector : ViewModel() {
                 "LEFT JOIN users AS u ON g.user_id = u.id " +
                 "LEFT JOIN members AS m ON g.id=m.gift_id " +
                 "WHERE m.user_id = $memberId AND g.is_closed=0;"*/
-        val query: String = "SELECT g.id, g.title, g.price, g.owner_id, g.is_wish, " +
+        val query = "SELECT g.id, g.title, g.price, g.owner_id, g.is_wish, " +
                 "g.post_privacy, g.gift_picture, g.is_closed, " +
                 "o.first_name AS owner_first_name, o.last_name AS owner_last_name, " +
                 "(SELECT COUNT(*) FROM members WHERE gift_id=g.id) AS member_count, " +
@@ -128,8 +128,8 @@ class DbConnector : ViewModel() {
                 "SELECT * FROM friends WHERE user_id=$memberId AND friend_id=g.owner_id)) " +
                 "GROUP BY g.id " +
                 "ORDER BY g.is_closed DESC, likes DESC;"
-        var statement = connection.prepareStatement(query)
-        var result: ResultSet = statement.executeQuery()
+        val statement = connection.prepareStatement(query)
+        val result: ResultSet = statement.executeQuery()
         return result
 
     }
@@ -138,8 +138,8 @@ class DbConnector : ViewModel() {
     //Loads all public gifts or private gifts of friends
     //Returns gift_id, title, price, owner_id, is_wish, post_privacy, gift_picture, is_closed,
     // owner_first_name, owner_last_name, member_count, likes
-    suspend fun getGiftFeedByUserId(currentUserId: Int, userId: Int): ResultSet {
-        val query: String = "SELECT g.id, g.title, g.price, g.owner_id, g.is_wish, " +
+    fun getGiftFeedByUserId(currentUserId: Int, userId: Int): ResultSet {
+        val query = "SELECT g.id, g.title, g.price, g.owner_id, g.is_wish, " +
                 "g.post_privacy, g.gift_picture, g.is_closed, " +
                 "o.first_name AS owner_first_name, o.last_name AS owner_last_name, " +
                 "(SELECT COUNT(*) FROM members WHERE gift_id=g.id) AS member_count, " +
@@ -154,15 +154,15 @@ class DbConnector : ViewModel() {
                 "SELECT * FROM friends WHERE user_id=$currentUserId AND friend_id=g.owner_id)) " +
                 "GROUP BY g.id " +
                 "ORDER BY g.is_closed DESC, likes DESC;"
-        var statement = connection.prepareStatement(query)
-        var result: ResultSet = statement.executeQuery()
+        val statement = connection.prepareStatement(query)
+        val result: ResultSet = statement.executeQuery()
         return result
 
     }
 
     //Get gift when clicking on giftfeed on profile page
-    suspend fun getGiftById(userId: Int, giftId: Int): ResultSet {
-        val query: String = "SELECT g.id, g.title, g.price, g.owner_id, g.user_id, g.is_wish, " +
+    fun getGiftById(userId: Int, giftId: Int): ResultSet {
+        val query = "SELECT g.id, g.title, g.price, g.owner_id, g.user_id, g.is_wish, " +
                 "g.post_privacy, g.gift_link, g.gift_picture, g.is_closed, " +
                 "o.first_name AS owner_first_name, o.last_name AS owner_last_name, " +
                 "u.first_name AS user_first_name, u.last_name AS user_last_name, " +
@@ -172,13 +172,13 @@ class DbConnector : ViewModel() {
                 "LEFT JOIN users AS o ON g.owner_id=o.id " +
                 "LEFT JOIN users AS u ON g.user_id=u.id " +
                 "WHERE g.id =$giftId; "
-        var statement = connection.prepareStatement(query)
-        var result: ResultSet = statement.executeQuery()
+        val statement = connection.prepareStatement(query)
+        val result: ResultSet = statement.executeQuery()
         return result
     }
 
     //Update gift as owner
-    suspend fun updateGift(
+    fun updateGift(
         giftId: Int?,
         title: String,
         price: Int,
@@ -195,20 +195,20 @@ class DbConnector : ViewModel() {
             query =
                 "INSERT INTO gifts (title, price, user_id, owner_id, gift_link, post_privacy) VALUES ('$title', $price, $userId, $ownerId, '$link', $privacy);"
         }
-        var statement = connection.prepareStatement(query)
+        val statement = connection.prepareStatement(query)
         statement.executeUpdate()
     }
 
     //Load members on gift page
     //Returns membership_id, first_name, last_name, max_price, is_fixed
     //No implemented privacy check
-    suspend fun getMembers(giftId: Int): ResultSet {
-        val query: String = "SELECT m.id, u.first_name, u.last_name, m.max_price, m.is_fixed " +
+    fun getMembers(giftId: Int): ResultSet {
+        val query = "SELECT m.id, u.first_name, u.last_name, m.max_price, m.is_fixed " +
                 "FROM members as m " +
                 "LEFT JOIN users AS u ON u.id=m.user_id " +
                 "WHERE m.gift_id=$giftId;"
-        var statement = connection.prepareStatement(query)
-        var result: ResultSet = statement.executeQuery()
+        val statement = connection.prepareStatement(query)
+        val result: ResultSet = statement.executeQuery()
         return result
 
     }
@@ -216,187 +216,187 @@ class DbConnector : ViewModel() {
     //Load comments on gift page
     //Returns comment_id, first_name, last_name, content, likes
     //No implemented privacy check
-    suspend fun getComments(giftId: Int): ResultSet {
-        val query: String = "SELECT c.id AS comment_id, u.first_name, u.last_name, c.content, " +
+    fun getComments(giftId: Int): ResultSet {
+        val query = "SELECT c.id AS comment_id, u.first_name, u.last_name, c.content, " +
                 "SUM(l.likes) AS likes FROM comments AS c " +
                 "LEFT JOIN users AS u ON u.id=c.user_id " +
                 "LEFT JOIN likes AS l ON l.comment_id=c.id " +
                 "WHERE c.gift_id=$giftId " +
                 "GROUP BY c.id " +
                 "ORDER BY likes DESC;"
-        var statement = connection.prepareStatement(query)
-        var result: ResultSet = statement.executeQuery()
+        val statement = connection.prepareStatement(query)
+        val result: ResultSet = statement.executeQuery()
         return result
     }
 
-    suspend fun likeComment(userId: Int, commentId: Int, likes: Int): ResultSet {
-        val query: String = "CALL applyLikeToComment($userId, $commentId, $likes);"
-        var statement = connection.prepareCall(query)
-        var result: ResultSet = statement.executeQuery()
+    fun likeComment(userId: Int, commentId: Int, likes: Int): ResultSet {
+        val query = "CALL applyLikeToComment($userId, $commentId, $likes);"
+        val statement = connection.prepareCall(query)
+        val result: ResultSet = statement.executeQuery()
         return result
     }
 
     //Up or downvote gift idea on profile screen
-    suspend fun likeGift(userId: Int, giftId: Int, likes: Int): ResultSet {
+    fun likeGift(userId: Int, giftId: Int, likes: Int): ResultSet {
         val query = "CALL applyLikeToGift($userId, $giftId, $likes);"
-        var statement = connection.prepareCall(query)
-        var result: ResultSet = statement.executeQuery()
+        val statement = connection.prepareCall(query)
+        val result: ResultSet = statement.executeQuery()
         return result
     }
 
-    suspend fun insertComment(userId: Int, giftId: Int, comment: String) {
-        val query: String = "INSERT INTO comments(user_id, gift_id, content) " +
+    fun insertComment(userId: Int, giftId: Int, comment: String) {
+        val query = "INSERT INTO comments(user_id, gift_id, content) " +
                 "VALUES ($userId, $giftId, $comment;"
-        var statement = connection.prepareStatement(query)
+        val statement = connection.prepareStatement(query)
         statement.executeUpdate()
     }
 
-    suspend fun removeComment(commentId: String) {
-        val query: String = "DELETE FROM comments WHERE comment_id=$commentId;"
-        var statement = connection.prepareStatement(query)
+    fun removeComment(commentId: String) {
+        val query = "DELETE FROM comments WHERE comment_id=$commentId;"
+        val statement = connection.prepareStatement(query)
         statement.executeUpdate()
     }
 
     //Add friend on profile page
-    suspend fun addFriend(friendUserId: Int, userId: Int) {
-        val query: String = "INSERT INTO friends (friend_id, user_id) " +
+    fun addFriend(friendUserId: Int, userId: Int) {
+        val query = "INSERT INTO friends (friend_id, user_id) " +
                 "VALUES ($friendUserId, $userId);"
-        var statement = connection.prepareStatement(query)
+        val statement = connection.prepareStatement(query)
         statement.executeUpdate()
     }
 
     //Remove friend on profile page
-    suspend fun removeFriend(friendUserId: Int, userId: Int) {
-        val query: String = "DELETE FROM friends WHERE friend_id=$friendUserId AND user_id=$userId;"
-        var statement = connection.prepareStatement(query)
+    fun removeFriend(friendUserId: Int, userId: Int) {
+        val query = "DELETE FROM friends WHERE friend_id=$friendUserId AND user_id=$userId;"
+        val statement = connection.prepareStatement(query)
         statement.executeUpdate()
     }
 
-    suspend fun updateFavourite(friendId: Int, isFavourite: Int) {
-        val query: String = "UPDATE friends SET is_favourite=$isFavourite WHERE id=$friendId AND;"
-        var statement = connection.prepareStatement(query)
+    fun updateFavourite(friendId: Int, isFavourite: Int) {
+        val query = "UPDATE friends SET is_favourite=$isFavourite WHERE id=$friendId AND;"
+        val statement = connection.prepareStatement(query)
         statement.executeUpdate()
     }
 
     //Create new gift idea
-    suspend fun insertGift(
+    fun insertGift(
         title: String, price: Int? = null, userId: Int, ownerId: Int? = null,
         postPrivacy: Int = 0, giftPicture: String? = null, giftLink: String? = null
     ) {
-        val query: String =
+        val query =
             "INSERT INTO gifts(title, price, user_id, owner_id, " +
                     "post_privacy, gift_picture, gift_link) " +
                     "VALUES ($title, $price, $userId, $ownerId, " +
                     "$postPrivacy, $giftPicture, $giftLink);"
-        var statement = connection.prepareStatement(query)
+        val statement = connection.prepareStatement(query)
         statement.executeUpdate()
     }
 
-    suspend fun deleteGift(currentUserId: Int, giftId: Int) {
-        val query: String = "DELETE FROM gifts WHERE owner_id=$currentUserId AND id=$giftId;"
-        var statement = connection.prepareStatement(query)
+    fun deleteGift(currentUserId: Int, giftId: Int) {
+        val query = "DELETE FROM gifts WHERE owner_id=$currentUserId AND id=$giftId;"
+        val statement = connection.prepareStatement(query)
         statement.executeUpdate()
     }
 
     //Join gift idea
-    suspend fun joinGift(userId: Int, giftId: Int): ResultSet {
+    fun joinGift(userId: Int, giftId: Int): ResultSet {
         val query = "CALL joinGift($userId, $giftId);"
-        var statement = connection.prepareCall(query)
+        val statement = connection.prepareCall(query)
         val result: ResultSet = statement.executeQuery()
         return result
     }
 
     //Leave gift idea
-    suspend fun leaveGift(memberId: Int) {
+    fun leaveGift(memberId: Int) {
         val query = "DELETE FROM members WHERE id=$memberId;"
-        var statement = connection.prepareStatement(query)
+        val statement = connection.prepareStatement(query)
         statement.executeUpdate()
     }
 
     //Edit own user data on settings page
-    suspend fun editUser(
+    fun editUser(
         userId: Int, firstName: String, lastName: String, dateOfBirth: LocalDate,
         email: String, profilePrivacy: Int, profilePicture: String
     ): ResultSet {
-        val query: String =
+        val query =
             "UPDATE db.users SET first_name=\"$firstName\", last_name=\"$lastName\"," +
                     " date_of_birth=\"$dateOfBirth\", email=\"$email\", profile_privacy=$profilePrivacy, profile_picture=\"$profilePicture\"" +
                     " WHERE id=$userId;"
-        var statement = connection.prepareStatement(query)
+        val statement = connection.prepareStatement(query)
         statement.executeUpdate()
 
-        val query2: String =
+        val query2 =
             "SELECT id, first_name, last_name, date_of_birth, email, profile_privacy, profile_picture FROM db.users WHERE id=$userId;"
-        var statement2 = connection.prepareStatement(query2)
-        var result: ResultSet = statement2.executeQuery()
+        val statement2 = connection.prepareStatement(query2)
+        val result: ResultSet = statement2.executeQuery()
         return result
     }
 
     //Check if email exists on register page
-    suspend fun checkIfEmailExistsOnOtherUser(userId: Int, email: String): Boolean {
-        val query: String =
+    fun checkIfEmailExistsOnOtherUser(userId: Int, email: String): Boolean {
+        val query =
             "SELECT u.id FROM users AS u WHERE u.email = \"$email\" AND u.id != $userId;"
-        var statement = connection.prepareStatement(query)
+        val statement = connection.prepareStatement(query)
         statement.execute()
-        var result: ResultSet = statement.resultSet
+        val result: ResultSet = statement.resultSet
         return result.next()
     }
 
-    suspend fun deleteAccount(userId: Int) {
-        val query: String = "DELETE FROM users WHERE users.id = $userId;"
-        var statement = connection.prepareStatement(query)
+    fun deleteAccount(userId: Int) {
+        val query = "DELETE FROM users WHERE users.id = $userId;"
+        val statement = connection.prepareStatement(query)
         statement.execute()
     }
 
-    suspend fun getNotificationFeed(userId: Int): ResultSet {
-        val query: String = "SELECT n.id, n.notification_type, u.first_name, u.last_name, " +
+    fun getNotificationFeed(userId: Int): ResultSet {
+        val query = "SELECT n.id, n.notification_type, u.first_name, u.last_name, " +
                 "g.title AS gift_title, n.friend_id, n.gift_id, o.first_name, o.last_name FROM notifications AS n  " +
                 "LEFT JOIN users AS u ON u.id = n.friend_id " +
                 "LEFT JOIN gifts AS g ON g.id = n.gift_id  " +
                 "LEFT JOIN users AS o ON o.id = g.user_id " +
                 "WHERE n.user_id=$userId ORDER BY n.id DESC;"
-        var statement = connection.prepareStatement(query)
+        val statement = connection.prepareStatement(query)
         statement.execute()
-        var result: ResultSet = statement.resultSet
+        val result: ResultSet = statement.resultSet
         return result
     }
 
-    suspend fun removeNotificationById(notificationId: Int) {
-        val query: String = "DELETE FROM notifications WHERE id=$notificationId;"
-        var statement = connection.prepareStatement(query)
+    fun removeNotificationById(notificationId: Int) {
+        val query = "DELETE FROM notifications WHERE id=$notificationId;"
+        val statement = connection.prepareStatement(query)
         statement.executeUpdate()
     }
 
-    suspend fun removeAllNotifications(userId: Int) {
-        val query: String = "DELETE FROM notifications WHERE user_id=$userId;"
-        var statement = connection.prepareStatement(query)
+    fun removeAllNotifications(userId: Int) {
+        val query = "DELETE FROM notifications WHERE user_id=$userId;"
+        val statement = connection.prepareStatement(query)
         statement.executeUpdate()
     }
 
-    suspend fun getNotificationCount(userId: Int): Int {
-        val query: String = "SELECT COUNT(*) FROM notifications WHERE user_id=$userId;"
-        var statement = connection.prepareStatement(query)
+    fun getNotificationCount(userId: Int): Int {
+        val query = "SELECT COUNT(*) FROM notifications WHERE user_id=$userId;"
+        val statement = connection.prepareStatement(query)
         statement.execute()
-        var result: ResultSet = statement.resultSet
+        val result: ResultSet = statement.resultSet
         result.next()
         return result.getInt(1)
     }
 
-    suspend fun addNotification(notificationId: Int, userId: Int, friendId: Int, giftId: Int?=null) {
+    fun addNotification(notificationId: Int, userId: Int, friendId: Int, giftId: Int?=null) {
         val query = "INSERT INTO notifications (notification_type, user_id, friend_id, gift_id) " +
                 "VALUES($notificationId, $userId, $friendId, $giftId);"
-        var statement = connection.prepareStatement(query)
+        val statement = connection.prepareStatement(query)
         statement.executeUpdate()
     }
 
-    suspend fun getNotificationId(notificationId: Int, userId: Int, friendId: Int, giftId: Int?=null): Int {
+    fun getNotificationId(notificationId: Int, userId: Int, friendId: Int, giftId: Int?=null): Int {
         var query = "SELECT id FROM notifications WHERE notification_type=$notificationId " +
                 "AND user_id=$userId AND friend_id=$friendId"
         if (giftId!=null) query += " AND gift_id=$giftId"
         query += ";"
-        var statement = connection.prepareStatement(query)
+        val statement = connection.prepareStatement(query)
         statement.execute()
-        var result: ResultSet = statement.resultSet
+        val result: ResultSet = statement.resultSet
         if (result.next()) {
             return result.getInt(1)
         } else {
@@ -404,11 +404,11 @@ class DbConnector : ViewModel() {
         }
     }
 
-    suspend fun notifiyAll(notificationId: Int, userId: Int, giftId: Int) {
+    fun notifiyAll(notificationId: Int, userId: Int, giftId: Int) {
         val query = "INSERT INTO notifications(notification_type, user_id, friend_id, gift_id) " +
                 "SELECT $notificationId, user_id, $userId, $giftId FROM members WHERE gift_id = $giftId " +
                 "AND NOT user_id = $userId;"
-        var statement = connection.prepareStatement(query)
+        val statement = connection.prepareStatement(query)
         statement.executeUpdate()
     }
 

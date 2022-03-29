@@ -1,5 +1,6 @@
 package com.example.geschenkapp
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
@@ -23,6 +24,7 @@ class GiftPageActivity  : AppCompatActivity() {
     private var profileUserId: Int = -1
 
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_giftpage)
@@ -62,7 +64,7 @@ class GiftPageActivity  : AppCompatActivity() {
         uiScope.launch(Dispatchers.IO) {
             if (giftId > 0) {
                 //Get gift data from database
-                var gift = db.getGiftById(userId, giftId)
+                val gift = db.getGiftById(userId, giftId)
                 gift.next()
                 val notificationId: Int = db.getNotificationId(
                     1,
@@ -115,14 +117,12 @@ class GiftPageActivity  : AppCompatActivity() {
                             isNotified
                         )
                     btnJoin.setOnClickListener {
-                        val viewModelJob = SupervisorJob()
-                        val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
                         uiScope.launch(Dispatchers.IO) {
                             //User is owner of gift
                             if (userId == gift.getInt("owner_id")) {
                                 val profilePrivacyArray: Array<String> =
                                     resources.getStringArray(R.array.profile_privacy_array)
-                                var postPrivacy: Int = 0
+                                var postPrivacy = 0
                                 for (i in profilePrivacyArray.indices) {
                                     if (profilePrivacyArray[i].contains(spPrivacy.selectedItem.toString())) {
                                         postPrivacy = i
@@ -133,7 +133,7 @@ class GiftPageActivity  : AppCompatActivity() {
                                     db.updateGift(
                                         giftId,
                                         tvName.text.toString(),
-                                        tvPrice!!.text.toString().toInt(),
+                                        tvPrice.text.toString().toInt(),
                                         profileUserId,
                                         userId,
                                         tvLink.text.toString(),
@@ -165,8 +165,6 @@ class GiftPageActivity  : AppCompatActivity() {
                                 } catch (e: Exception) {
                                     memberId = null
                                 }
-                                val notificationId: Int = db.getNotificationId(1, gift.getInt("owner_id"), user.getInt("id"), giftId)
-                                var isNotified: Boolean = notificationId != 0
                                 //When user is a member of gift -> Leave
                                 var joined: Boolean = memberId!=0 && memberId!=null
                                 if (joined) {
@@ -206,13 +204,11 @@ class GiftPageActivity  : AppCompatActivity() {
         updateJoinButtonColor(btnJoin, null, userId)
         //Set listener for create button
         btnJoin.setOnClickListener {
-            val viewModelJob = SupervisorJob()
-            val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
             uiScope.launch(Dispatchers.IO) {
                 //User is owner of gift
                     val profilePrivacyArray: Array<String> =
                         resources.getStringArray(R.array.profile_privacy_array)
-                    var postPrivacy: Int = 0
+                    var postPrivacy = 0
                     for (i in profilePrivacyArray.indices) {
                         if (profilePrivacyArray[i].contains(spPrivacy.selectedItem.toString())) {
                             postPrivacy = i
@@ -223,7 +219,7 @@ class GiftPageActivity  : AppCompatActivity() {
                         db.updateGift(
                             null,
                             tvName.text.toString(),
-                            tvPrice!!.text.toString().toInt(),
+                            tvPrice.text.toString().toInt(),
                             profileUserId,
                             userId,
                             tvLink.text.toString(),
@@ -252,24 +248,24 @@ class GiftPageActivity  : AppCompatActivity() {
     // Red 'Leave' if member, Green 'Join' if no member, Blue 'Save changes' if owner
     fun updateJoinButtonColor(btnJoin: Button, memberId: Int?, ownerId: Int, isNotified: Boolean = false) {
         if (ownerId == userId) {
-            btnJoin.text = "Änderungen speichern"
+            btnJoin.text = getString(R.string.save_changes)
             btnJoin.setBackgroundColor(Color.argb(255, 0, 191, 255))
         } else if(memberId!=null && memberId!=0) {
-            btnJoin.text = "Verlassen"
+            btnJoin.text = getString(R.string.leave)
             btnJoin.setBackgroundColor(Color.argb(255, 255, 0, 0))
         } else if(!isNotified) {
-            btnJoin.text = "Teilnehmen"
+            btnJoin.text = getString(R.string.join)
             btnJoin.setBackgroundColor(Color.argb(255, 50, 205, 50))
         } else {
-            btnJoin.text = "Angefragt"
+            btnJoin.text = getString(R.string.requested)
             btnJoin.setBackgroundColor(Color.argb(255, 0, 191, 255))
         }
     }
 
     //Call profile activity with userId
     override fun onBackPressed() {
-        var intent = Intent(this, ProfileActivity::class.java)
-        var b = Bundle()
+        val intent = Intent(this, ProfileActivity::class.java)
+        val b = Bundle()
         b.putInt("id", profileUserId)
         intent.putExtras(b)
         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
@@ -298,11 +294,11 @@ class GiftPageActivity  : AppCompatActivity() {
             val builder = AlertDialog.Builder(this@GiftPageActivity)
             builder.setMessage(R.string.deleteDialogGift)
                 .setCancelable(false)
-                .setPositiveButton(R.string.yes) { dialog, id ->
+                .setPositiveButton(R.string.yes) { _, _ ->
                     // Delete selected note from database
                     TODO()
                 }
-                .setNegativeButton(R.string.no) { dialog, id ->
+                .setNegativeButton(R.string.no) { dialog, _ ->
                     // Dismiss the dialog
                     dialog.dismiss()
                 }

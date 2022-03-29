@@ -1,5 +1,6 @@
 package com.example.geschenkapp
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -43,6 +44,7 @@ class NotificationFeedAdapter(private var notificationFeed: ArrayList<ArrayList<
         return notificationFeed.size
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun updateData(newFeed: ArrayList<ArrayList<String>>) {
         notificationFeed = newFeed
         notifyDataSetChanged()
@@ -62,19 +64,9 @@ class NotificationFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
         //Set text view content
         if (notificationsList.isNotEmpty()) {
             //Add last name if exists
-            val name = notificationsList[2] + if(notificationsList[3]!=null) {
-                " " + notificationsList[3]
-            } else {
-                ""
-            }
-            var gift_username = ""
-            if (notificationsList[7]!=null) {
-                gift_username = notificationsList[7] + if (notificationsList[8] != null) {
-                    " " + notificationsList[8]
-                } else {
-                    ""
-                }
-            }
+            val name = notificationsList[2] + (" " + notificationsList[3])
+            val gift_username: String
+            gift_username = notificationsList[7] + " " + notificationsList[8]
             val tvNotification: TextView = itemView.findViewById(R.id.tvNotification)
             val tvNotificationText: TextView = itemView.findViewById(R.id.tvNotificationText)
 
@@ -168,16 +160,16 @@ class NotificationFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
                 3 -> {}
                 //Open gift page
                 2, 4 -> {
-                    var intent = Intent(itemView.context, GiftPageActivity::class.java)
-                    var b = Bundle()
+                    val intent = Intent(itemView.context, GiftPageActivity::class.java)
+                    val b = Bundle()
                     b.putInt("id", notificationsList[6].toInt())
                     intent.putExtras(b)
                     itemView.context.startActivity(intent)
                 }
                 //Open profile page
                 else -> {
-                    var intent = Intent(itemView.context, ProfileActivity::class.java)
-                    var b = Bundle()
+                    val intent = Intent(itemView.context, ProfileActivity::class.java)
+                    val b = Bundle()
                     b.putInt("id", notificationsList[5].toInt())
                     intent.putExtras(b)
                     itemView.context.startActivity(intent)

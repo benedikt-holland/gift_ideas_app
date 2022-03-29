@@ -17,6 +17,7 @@ import java.io.InputStream
 import java.util.*
 
 //Connector for setting profile picture
+@Suppress("DEPRECATION")
 class ImageConnector : ViewModel() {
     private val viewModelJob = SupervisorJob()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
@@ -28,39 +29,39 @@ class ImageConnector : ViewModel() {
     }
 
     fun getImage(imageUri : String, auth : String): Bitmap {
-        var client: OkHttpClient = OkHttpClient().newBuilder().build()
-        var request: Request = Request.Builder().url(imageUri).method("GET", null)
+        val client: OkHttpClient = OkHttpClient().newBuilder().build()
+        val request: Request = Request.Builder().url(imageUri).method("GET", null)
             .addHeader(
                 "Authorization",
                 auth
             )
             .build()
-        var response: Response = client.newCall(request).execute()
-        var byteStream = response.body?.byteStream()
-        var bitmap : Bitmap = BitmapFactory.decodeStream(byteStream)
+        val response: Response = client.newCall(request).execute()
+        val byteStream = response.body?.byteStream()
+        val bitmap : Bitmap = BitmapFactory.decodeStream(byteStream)
         response.close()
         return bitmap
     }
 
     fun postImage(postUrl : String, auth : String, profilePicture: Bitmap, userId: Int):String{
-        var stream = ByteArrayOutputStream()
+        val stream = ByteArrayOutputStream()
         profilePicture.compress(Bitmap.CompressFormat.PNG, 100, stream)
-        var byteArray = stream.toByteArray()
+        val byteArray = stream.toByteArray()
 
 
 
-        var requestBody : RequestBody = MultipartBody.Builder().setType(MultipartBody.FORM)
+        val requestBody : RequestBody = MultipartBody.Builder().setType(MultipartBody.FORM)
             .addFormDataPart(
                 "file",
                 "$userId.png",
                 RequestBody.create("image/png".toMediaType(), byteArray)
             ).build()
 
-        var client: OkHttpClient = OkHttpClient().newBuilder().build()
-        var request: Request = Request.Builder().url(postUrl).method("POST", requestBody)
+        val client: OkHttpClient = OkHttpClient().newBuilder().build()
+        val request: Request = Request.Builder().url(postUrl).method("POST", requestBody)
             .addHeader("Authorization", auth).build()
-        var response = client.newCall(request).execute()
-        var string = response.body.toString()
+        val response = client.newCall(request).execute()
+        val string = response.body.toString()
         response.close()
         return string
 

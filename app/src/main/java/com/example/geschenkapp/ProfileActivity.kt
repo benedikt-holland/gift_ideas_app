@@ -80,8 +80,8 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         //Show settings button for personal profile and add friend button for stranger profile
-        var btnSettings: ImageButton = findViewById(R.id.btnSettings)
-        var btnAddFriend: ImageButton = findViewById(R.id.btnAddFriend)
+        val btnSettings: ImageButton = findViewById(R.id.btnSettings)
+        val btnAddFriend: ImageButton = findViewById(R.id.btnAddFriend)
         if (friendUserId == userId) {
             //tabArray = initTabArray.slice(1..3).toTypedArray()
             btnSettings.visibility = View.VISIBLE
@@ -106,8 +106,8 @@ class ProfileActivity : AppCompatActivity() {
         */
 
         //Fill textviews with userdata
-        var tvName: TextView = findViewById(R.id.tvName)
-        var tvDateofbirth: TextView = findViewById(R.id.tvProfileDateofbirth)
+        val tvName: TextView = findViewById(R.id.tvName)
+        val tvDateofbirth: TextView = findViewById(R.id.tvProfileDateofbirth)
         val ivProfilepicture: ImageView = findViewById(R.id.ivProfilepicture)
 
         val viewModelJob = SupervisorJob()
@@ -154,8 +154,6 @@ class ProfileActivity : AppCompatActivity() {
 
                 //Listener for friend add buttton
                 btnAddFriend.setOnClickListener {
-                    val viewModelJob = SupervisorJob()
-                    val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
                     uiScope.launch(Dispatchers.IO) {
                         if (!isFriend && profileUser.getInt("profile_privacy") == 0) {
                             //No friends request for public profiles
@@ -180,7 +178,6 @@ class ProfileActivity : AppCompatActivity() {
 
                         withContext(Dispatchers.Main) {
                             updateAddFriendButtonColor(btnAddFriend, isFriend, isNotified)
-                            profileFeedAdapter.notifyDataSetChanged()
                         }
                     }
                 }
@@ -194,8 +191,8 @@ class ProfileActivity : AppCompatActivity() {
 
             //Load profile picture
             try {
-                var inputStream = assets.open("config.properties")
-                var props = Properties()
+                val inputStream = assets.open("config.properties")
+                val props = Properties()
                 props.load(inputStream)
 
                 //
@@ -203,11 +200,11 @@ class ProfileActivity : AppCompatActivity() {
                 //
 
 
-                var auth = props.getProperty("API_AUTH", "")
-                var downloadUri = props.getProperty("API_DOWNLOAD", "") + profilePictureFileName
+                val auth = props.getProperty("API_AUTH", "")
+                val downloadUri = props.getProperty("API_DOWNLOAD", "") + profilePictureFileName
                 inputStream.close()
 
-                var imageConnector = ImageConnector()
+                val imageConnector = ImageConnector()
                 profilePicture = imageConnector.getImage(downloadUri, auth)
                 withContext(Dispatchers.Main) {
                     ivProfilepicture.setImageBitmap(profilePicture)
@@ -251,8 +248,8 @@ class ProfileActivity : AppCompatActivity() {
         }
         val btnAddGift: FloatingActionButton = findViewById(R.id.fabAddGift)
         btnAddGift.setOnClickListener {
-            var intent = Intent(this, GiftPageActivity::class.java)
-            var b = Bundle()
+            val intent = Intent(this, GiftPageActivity::class.java)
+            val b = Bundle()
             b.putInt("profileUserId", friendUserId)
             intent.putExtras(b)
             intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
@@ -308,9 +305,7 @@ class ProfileActivity : AppCompatActivity() {
                     intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                     startActivityIfNeeded(intent, 0)
                 }
-                R.id.ic_bottom_nav_profile -> {
-                    true
-                }
+                R.id.ic_bottom_nav_profile -> {}
                 else -> {
                     Log.d("ProfileActivity", "item not found")
                 }

@@ -11,18 +11,17 @@ import com.example.geschenkapp.fragments.GiftfeedFragment
 private const val NUM_TABS = 3
 
 //Adapter for tabview on profile page
-class ProfileTabAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle, userId: Int, friendUserId: Int) :
+class ProfileTabAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle,
+                        val userId: Int, val friendUserId: Int
+) :
     FragmentStateAdapter(fragmentManager, lifecycle) {
-    val userId: Int = userId
-    val friendUserId: Int = friendUserId
 
     override fun getItemCount(): Int {
         return NUM_TABS
     }
 
     override fun createFragment(position: Int): Fragment {
-        return EventsFragment()
-        if (false && userId==friendUserId) { //Temporarly Removed
+        if (userId==friendUserId) { //Temporarly Removed
             when (position) {
                 0 -> return GiftfeedFragment(userId, friendUserId, true)
                 1 -> return EventsFragment()

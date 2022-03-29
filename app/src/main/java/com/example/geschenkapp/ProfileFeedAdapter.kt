@@ -1,5 +1,6 @@
 package com.example.geschenkapp
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -32,6 +33,7 @@ class ProfileFeedAdapter(private var profileFeed: ArrayList<ArrayList<String>> =
         return profileFeed.size
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun updateData(newFeed: ArrayList<ArrayList<String>>) {
         profileFeed = newFeed
         notifyDataSetChanged()
@@ -42,6 +44,7 @@ class ProfileFeedAdapter(private var profileFeed: ArrayList<ArrayList<String>> =
 class ProfileFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     var db: DbConnector = DbHolder.getInstance().db
     var user: ResultSet = DataHolder.getInstance().user
+    @SuppressLint("SetTextI18n")
     fun bind(profileList: ArrayList<String>) {
         //Set text view content
         val tvVotes: TextView = itemView.findViewById(R.id.tvVotes)
@@ -52,17 +55,10 @@ class ProfileFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             val tvGiftMemberCount: TextView = itemView.findViewById(R.id.tvGiftMemberCount)
 
             tvGiftName.text = profileList[1]
-            tvGiftPrice.text = profileList[2] + "€"
-            tvGiftOwner.text = if (profileList[9] != null) {
-                profileList[8] + " " + profileList[9]
-            } else {
-                profileList[8]
-            }
+            tvGiftPrice.text = profileList[2] + itemView.context.getString(R.string.currency)
+            tvGiftOwner.text = profileList[8] + " " + profileList[9]
             tvGiftMemberCount.text = profileList[10] + " " + itemView.context.getString(R.string.members)
             tvVotes.text = profileList[11]
-            when(profileList[13]) {
-                null -> 0
-            }
         }
         //Register vote buttons
         val btnDownvote = itemView.findViewById(R.id.btnDownvote) as ImageButton
@@ -78,7 +74,7 @@ class ProfileFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
                     1
                 }
                 //Push like to database
-                var likes = db.likeGift(user.getInt("id"), profileList[0].toInt(), vote)
+                val likes = db.likeGift(user.getInt("id"), profileList[0].toInt(), vote)
                 withContext(Dispatchers.Main) {
                     try {
                         //Update local data
@@ -104,7 +100,7 @@ class ProfileFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
                 } else {
                     -1
                 }
-                var likes = db.likeGift(user.getInt("id"), profileList[0].toInt(), vote)
+                val likes = db.likeGift(user.getInt("id"), profileList[0].toInt(), vote)
                 withContext(Dispatchers.Main) {
                     try {
                         likes.next()
@@ -122,8 +118,8 @@ class ProfileFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         //Listener for clicking on gift cards, opens detail gift page
         val btnCard = itemView.findViewById(R.id.cvGift) as CardView
         btnCard.setOnClickListener {
-            var intent = Intent(itemView.context, GiftPageActivity::class.java)
-            var b = Bundle()
+            val intent = Intent(itemView.context, GiftPageActivity::class.java)
+            val b = Bundle()
             b.putInt("id", profileList[0].toInt())
             b.putInt("profileUserId", profileList[14].toInt())
             intent.putExtras(b)

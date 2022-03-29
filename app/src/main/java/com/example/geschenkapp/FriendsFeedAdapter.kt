@@ -1,5 +1,6 @@
 package com.example.geschenkapp
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -56,13 +57,9 @@ class FriendsFeedAdapter(private var friendsList: ArrayList<ArrayList<String>>) 
                 } else {
                     //Assemble full name
                     for (row in friendsList) {
-                        val name = if(row[3]!=null) {
-                           row[2] + " " + row[3]
-                        } else {
-                            row[2]
-                        }
+                        val name = row[2] + " " + row[3]
                         //Check for first name, last name and combination
-                        if (row[2].lowercase(Locale.ROOT).contains(charSearch.lowercase(Locale.ROOT)) || (row[3]!=null && row[3].lowercase(Locale.ROOT).contains(charSearch.lowercase(Locale.ROOT))) ||
+                        if (row[2].lowercase(Locale.ROOT).contains(charSearch.lowercase(Locale.ROOT)) || (row[3].lowercase(Locale.ROOT).contains(charSearch.lowercase(Locale.ROOT))) ||
                             name.lowercase(Locale.ROOT).contains(charSearch.lowercase(Locale.ROOT))) {
                             resultList.add(row)
                         }
@@ -74,6 +71,7 @@ class FriendsFeedAdapter(private var friendsList: ArrayList<ArrayList<String>>) 
                 return filterResults
             }
 
+            @SuppressLint("NotifyDataSetChanged")
             @Suppress("UNCHECKED_CAST")
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
                 friendsFilterList = results?.values as ArrayList<ArrayList<String>>
@@ -84,16 +82,13 @@ class FriendsFeedAdapter(private var friendsList: ArrayList<ArrayList<String>>) 
     }
     // Holds the views for adding it to image and text
     class FriendsFeedViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
+        @SuppressLint("SetTextI18n")
         fun bind(friendsList: ArrayList<String>) {
             val tvName: TextView = itemView.findViewById(R.id.tvName)
             val tvFeedDateofbirth: TextView = itemView.findViewById(R.id.tvFeedDateofbirth)
             val tvCountGifts: TextView = itemView.findViewById(R.id.tvCountGifts)
             val tvDaysRemaining: TextView = itemView.findViewById(R.id.tvDaysRemaining)
-            if (friendsList[3]!=null) {
-                tvName.text = friendsList[2] + " " + friendsList[3]
-            } else {
-                tvName.text = friendsList[2]
-            }
+            tvName.text = friendsList[2] + " " + friendsList[3]
             tvFeedDateofbirth.text = friendsList[4]
             tvCountGifts.text = friendsList[6]
             tvDaysRemaining.text = friendsList[7] + " " + itemView.context.getString(R.string.remainingDays)
@@ -113,8 +108,8 @@ class FriendsFeedAdapter(private var friendsList: ArrayList<ArrayList<String>>) 
             //On click listener for clicking on cards in recyclerview
             val btnCard = itemView.findViewById(R.id.cvFriend) as CardView
             btnCard.setOnClickListener {
-                var intent = Intent(itemView.context, ProfileActivity::class.java)
-                var b = Bundle()
+                val intent = Intent(itemView.context, ProfileActivity::class.java)
+                val b = Bundle()
                 b.putInt("id", friendsList[1].toInt())
                 intent.putExtras(b)
                 itemView.context.startActivity(intent)

@@ -42,7 +42,7 @@
     <string name="profilePrivacy">Privatsphäre</string>
     <string name="giftPrivacy">Post Sichtbarkeit</string>
     <string name="profilePicture">Profilbild</string>
-    <string name="defaultDateOfBirth">2000-01-01</string>
+    <string name="defaultDateOfBirth">2000–01–01</string>
     <string name="defaultEmail">vorname@nachname.de</string>
     <string name="defaultFirstname">Vorname</string>
     <string name="defaultLastname">Nachname</string>
@@ -72,6 +72,9 @@
     <string name="giftpage_member_count_description">Anzahl Beteiligte:</string>
     <string name="giftpage_member_count">0</string>
     <string name="join">Teilnehmen</string>
+    <string name="leave">Verlassen</string>
+    <string name="requested">Angefragt</string>
+    <string name="save_changes">Änderungen speichern</string>
     <string name="gift_picture">Bild von Geschenk</string>
     <string name="deleteGift"><u>Geschenkidee löschen</u></string>
     <string name="deleteDialogGift">Möchtest du diese Geschenkidee wirklich löschen?</string>

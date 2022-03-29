@@ -1,5 +1,6 @@
 package com.example.geschenkapp
 
+import android.annotation.SuppressLint
 import android.app.ActionBar
 import android.app.AlertDialog
 import android.app.DatePickerDialog
@@ -28,6 +29,7 @@ import java.util.*
 
 
 //Class for profile settings page
+@Suppress("DEPRECATION")
 class ProfileSettingsActivity : AppCompatActivity() {
 
     lateinit var uiModeManager: UiModeManager
@@ -71,16 +73,16 @@ class ProfileSettingsActivity : AppCompatActivity() {
         val viewModelJob = SupervisorJob()
         val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
         uiScope.launch(Dispatchers.IO) {
-            var inputStream = assets.open("config.properties")
-            var props = Properties()
+            val inputStream = assets.open("config.properties")
+            val props = Properties()
             props.load(inputStream)
             val profilePictureFileName = user.getString("profile_picture")
 
-            var auth = props.getProperty("API_AUTH", "")
-            var downloadUri = props.getProperty("API_DOWNLOAD", "") + profilePictureFileName
+            val auth = props.getProperty("API_AUTH", "")
+            val downloadUri = props.getProperty("API_DOWNLOAD", "") + profilePictureFileName
             inputStream.close()
 
-            var imageConnector = ImageConnector()
+            val imageConnector = ImageConnector()
             profilePicture = imageConnector.getImage(downloadUri, auth)
             withContext(Dispatchers.Main) {
                 ivProfilepicture.setImageBitmap(profilePicture)
@@ -103,13 +105,13 @@ class ProfileSettingsActivity : AppCompatActivity() {
             val builder = AlertDialog.Builder(this@ProfileSettingsActivity)
             builder.setMessage(R.string.deleteDialogAccount)
                 .setCancelable(false)
-                .setPositiveButton(R.string.yes) { dialog, id ->
+                .setPositiveButton(R.string.yes) { _, _ ->
                     // Delete selected note from database
                     val alert = builder.create()
                     alert.show()
                     val pref = getSharedPreferences("com.example.geschenkapp", MODE_PRIVATE)
-                    pref.edit().remove("email").commit()
-                    pref.edit().remove("password").commit()
+                    pref.edit().remove("email").apply()
+                    pref.edit().remove("password").apply()
 
                     val viewModelJob = SupervisorJob()
                     val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
@@ -121,7 +123,7 @@ class ProfileSettingsActivity : AppCompatActivity() {
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
                 }
-                .setNegativeButton(R.string.no) { dialog, id ->
+                .setNegativeButton(R.string.no) { dialog, _ ->
                     // Dismiss the dialog
                     dialog.dismiss()
                 }
@@ -133,8 +135,8 @@ class ProfileSettingsActivity : AppCompatActivity() {
         val tvLogout = findViewById(R.id.tvLogout) as TextView
         tvLogout.setOnClickListener {
             val pref = getSharedPreferences("com.example.geschenkapp", MODE_PRIVATE)
-            pref.edit().remove("email").commit()
-            pref.edit().remove("password").commit()
+            pref.edit().remove("email").apply()
+            pref.edit().remove("password").apply()
 
             val intent = Intent(this, LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -169,7 +171,7 @@ class ProfileSettingsActivity : AppCompatActivity() {
                     profilePrivacy = i
                 }
             }
-            var dateOfBirthInput: String = binding.tvDateOfBirth.text.toString()
+            val dateOfBirthInput: String = binding.tvDateOfBirth.text.toString()
 
 
             //Check if some values are empty
@@ -194,20 +196,20 @@ class ProfileSettingsActivity : AppCompatActivity() {
                 if (!db.checkIfEmailExistsOnOtherUser(user.getInt("id"), email)) {
 
 
-                    var inputStream = assets.open("config.properties")
-                    var props = Properties()
+                    val inputStream = assets.open("config.properties")
+                    val props = Properties()
                     props.load(inputStream)
 
-                    var auth = props.getProperty("API_AUTH", "")
-                    var uploadUri = props.getProperty("API_UPLOAD", "")
+                    val auth = props.getProperty("API_AUTH", "")
+                    val uploadUri = props.getProperty("API_UPLOAD", "")
                     inputStream.close()
 
-                    var imageConnector = ImageConnector()
+                    val imageConnector = ImageConnector()
                     imageConnector.postImage(uploadUri, auth, profilePicture, user.getInt("id"))
 
                     val userId = user.getInt("id")
 
-                    var tempUser = db.editUser(
+                    val tempUser = db.editUser(
                         userId, firstName, lastName,
                         dateOfBirth, email, profilePrivacy,
                         "$userId.png"
@@ -240,7 +242,7 @@ class ProfileSettingsActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK && data != null) {
-            var selectedImage = data.data!!
+            val selectedImage = data.data!!
             profilePicture = MediaStore.Images.Media.getBitmap(this.contentResolver, selectedImage)
 //            binding.ivProfilepicture.setImageURI(selectedImage)
             binding.ivProfilepicture.setImageBitmap(profilePicture)
@@ -277,16 +279,17 @@ class ProfileSettingsActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setDate(){
         val c = Calendar.getInstance()
         val year = c.get(Calendar.YEAR)
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
-        var mt = "0"
-        var d = "0"
+        var mt: String
+        var d: String
 
         binding.tvDateOfBirth.setOnClickListener{
-            val dpd = DatePickerDialog(this, DatePickerDialog.OnDateSetListener{view, mYear, mMonth, mDay ->
+            val dpd = DatePickerDialog(this, { _, mYear, mMonth, mDay ->
                 val month2 = mMonth + 1
                 if(month2<10){
                     mt = "0" + month2
@@ -298,7 +301,7 @@ class ProfileSettingsActivity : AppCompatActivity() {
                 } else{
                     d = mDay.toString()
                 }
-                binding.tvDateOfBirth.setText(""+ mYear + "-" + mt + "-"+ d )
+                binding.tvDateOfBirth.setText("$mYear-$mt-$d")
             }, year, month, day)
             dpd.show()
         }

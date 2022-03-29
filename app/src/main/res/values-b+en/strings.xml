@@ -40,7 +40,7 @@
     <string name="profilePrivacy">Privacy</string>
     <string name="giftPrivacy">Post Visability</string>
     <string name="profilePicture">profile picture</string>
-    <string name="defaultDateOfBirth">2000-01-01</string>
+    <string name="defaultDateOfBirth">2000–01–01</string>
     <string name="defaultEmail">firstname@lastname.com</string>
     <string name="defaultFirstname">Hans</string>
     <string name="defaultLastname">Müller</string>
@@ -70,6 +70,9 @@
     <string name="giftpage_member_count_description">Member Count:</string>
     <string name="giftpage_member_count">0</string>
     <string name="join">Join</string>
+    <string name="leave">Leave</string>
+    <string name="requested">Requested</string>
+    <string name="save_changes">Save changes</string>
     <string name="gift_picture">picture of the gift</string>
     <string name="deleteGift"><u>Delete gift</u></string>
     <string name="deleteDialogGift">Do you really want to delete this gift?</string>
@@ -132,11 +135,11 @@
     <string name="friends_request_text">would like to be your friend</string>
     <string name="text_for">for</string>
     <string name="text_would_like_to">would like to join </string>
-    <string name="gift_join_text"></string>
+    <string name="gift_join_text" />
     <string name="gift_change_text">has been edited</string>
     <string name="gift_deleted_text">has been removed</string>
     <string name="text_left">has left</string>
-    <string name="text_left2"></string>
+    <string name="text_left2" />
     <string name="button_delete">Delete</string>
     <string name="button_accept">Accept</string>
     <string name="button_decline">Decline</string>

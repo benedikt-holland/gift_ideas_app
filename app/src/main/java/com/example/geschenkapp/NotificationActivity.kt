@@ -123,9 +123,7 @@ class NotificationActivity : AppCompatActivity() {
                     intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                     startActivityIfNeeded(intent, 0)
                 }
-                R.id.ic_bottom_nav_notifications -> {
-                    true
-                }
+                R.id.ic_bottom_nav_notifications -> {}
                 else -> {
                     Log.d("NotificationActivity", "item not found")
                 }
