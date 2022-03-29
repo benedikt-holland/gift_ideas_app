@@ -85,16 +85,18 @@ class FriendsFeedAdapter(private var friendsList: ArrayList<ArrayList<String>>) 
     // Holds the views for adding it to image and text
     class FriendsFeedViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
         fun bind(friendsList: ArrayList<String>) {
-            val name: TextView = itemView.findViewById(R.id.tvName)
-            val dateofbirth: TextView = itemView.findViewById(R.id.tvFeedDateofbirth)
-            val count: TextView = itemView.findViewById(R.id.tvCountGifts)
+            val tvName: TextView = itemView.findViewById(R.id.tvName)
+            val tvFeedDateofbirth: TextView = itemView.findViewById(R.id.tvFeedDateofbirth)
+            val tvCountGifts: TextView = itemView.findViewById(R.id.tvCountGifts)
+            val tvDaysRemaining: TextView = itemView.findViewById(R.id.tvDaysRemaining)
             if (friendsList[3]!=null) {
-                name.text = friendsList[2] + " " + friendsList[3]
+                tvName.text = friendsList[2] + " " + friendsList[3]
             } else {
-                name.text = friendsList[2]
+                tvName.text = friendsList[2]
             }
-            dateofbirth.text = friendsList[4]
-            count.text = friendsList[6] + " " + itemView.context.getString(R.string.suggestionCount)
+            tvFeedDateofbirth.text = friendsList[4]
+            tvCountGifts.text = friendsList[6]
+            tvDaysRemaining.text = friendsList[7] + " " + itemView.context.getString(R.string.remainingDays)
 
             /*On click listener for favourite function
             val btnStar = itemView.findViewById(R.id.btnAddFavourite) as ImageButton

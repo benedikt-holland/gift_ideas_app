@@ -25,10 +25,14 @@ class DbConnector : ViewModel() {
     suspend fun getFriendsFeed(userId: Int): ResultSet {
         val query: String = "SELECT f.id, f.friend_id, u.first_name, u.last_name, " +
                 "u.date_of_birth, f.is_favourite, " +
-                "(SELECT COUNT(*) FROM gifts WHERE user_id=f.friend_id) AS count_gifts " +
+                "(SELECT COUNT(*) FROM gifts WHERE user_id=f.friend_id) AS count_gifts, " +
+                "IF((DAYOFYEAR(u.date_of_birth) - DAYOFYEAR(NOW()))<0, " +
+                "(DAYOFYEAR(u.date_of_birth) - DAYOFYEAR(NOW()))+365, " +
+                "(DAYOFYEAR(u.date_of_birth) - DAYOFYEAR(NOW()))) AS days_remaining " +
                 "FROM friends AS f " +
                 "LEFT JOIN users AS u on f.friend_id=u.id " +
-                "WHERE f.user_id = $userId;"
+                "WHERE f.user_id = 111 " +
+                "ORDER BY days_remaining ASC;"
         var statement = connection.prepareStatement(query)
         var result: ResultSet = statement.executeQuery()
         return result
