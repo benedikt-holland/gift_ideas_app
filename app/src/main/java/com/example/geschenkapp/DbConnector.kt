@@ -100,8 +100,8 @@ class DbConnector : ViewModel() {
                 "(SELECT COUNT(*) FROM members WHERE gift_id=g.id) AS member_count, " +
                 "SUM(l.likes) AS likes, " +
                 "(SELECT id FROM members WHERE user_id=$memberId AND gift_id=g.id) AS member_id, " +
-                "(SELECT likes FROM likes WHERE gift_id=g.id AND user_id=$memberId LIMIT 1) AS isLiked " +
-                "FROM gifts AS g " +
+                "(SELECT likes FROM likes WHERE gift_id=g.id AND user_id=$memberId LIMIT 1) AS isLiked, " +
+                "g.user_id FROM gifts AS g " +
                 "LEFT JOIN users AS o ON g.owner_id=o.id " +
                 "LEFT JOIN likes AS l ON g.id=l.gift_id " +
                 "LEFT JOIN members AS m ON g.id=m.gift_id " +

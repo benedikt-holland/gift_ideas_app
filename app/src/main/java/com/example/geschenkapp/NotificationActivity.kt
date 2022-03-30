@@ -115,13 +115,13 @@ class NotificationActivity : AppCompatActivity() {
                 R.id.ic_bottom_nav_home -> {
                     val intent = Intent(this, MainActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-                    startActivityIfNeeded(intent, 0)
+                    startActivity(intent)
                 }
                 R.id.ic_bottom_nav_profile -> {
                     Log.d("ProfileActivity", "notification")
                     val intent = Intent(this, ProfileActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-                    startActivityIfNeeded(intent, 0)
+                    startActivity(intent)
                 }
                 R.id.ic_bottom_nav_notifications -> {}
                 else -> {

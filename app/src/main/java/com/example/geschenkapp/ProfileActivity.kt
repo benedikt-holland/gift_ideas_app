@@ -1,7 +1,6 @@
 package com.example.geschenkapp
 
 import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -21,28 +20,16 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.io.FileNotFoundException
 import java.lang.NullPointerException
-import java.sql.ResultSet
 import java.sql.SQLException
 
-/*Possible tabs
-var initTabArray = arrayOf(
-    "Geschenke",
-    "Wunschliste",
-    "Events",
-    "Freunde"
-)*/
-
 class ProfileActivity : AppCompatActivity() {
-    private lateinit var menuBottomNavBar: BottomNavigationView
-    private lateinit var binding: ActivityProfileBinding
-    private lateinit var profilePicture: Bitmap
-    lateinit var user: ResultSet
-    private var userId: Int = -1
     lateinit var db: DbConnector
     private lateinit var rvProfileFeed: RecyclerView
     private lateinit var profileFeedAdapter: ProfileFeedAdapter
-    private var friendUserId: Int = -1
-    private lateinit var profileUser: ResultSet
+    private lateinit var binding: ActivityProfileBinding
+    //For thread creation
+    private val viewModelJob = SupervisorJob()
+    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
     //Overwrite activity content with new user data when resuming
     override fun onResume() {
@@ -60,9 +47,9 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         //Get userdata and database connector
-        user = LoginHolder.getInstance().user
+        val user = LoginHolder.getInstance().user
         db = DbHolder.getInstance().db
-        userId = user.getInt("id")
+        val userId = user.getInt("id")
 
         rvProfileFeed = findViewById(R.id.rvGiftFeed)
         rvProfileFeed.layoutManager = LinearLayoutManager(rvProfileFeed.context)
@@ -71,9 +58,7 @@ class ProfileActivity : AppCompatActivity() {
 
         //Get userId
         val b: Bundle? = intent.extras
-        if (b != null) {
-            friendUserId = b.getInt("id")
-        }
+        val friendUserId = b?.getInt("id") ?: userId
 
         //Show settings button for personal profile and add friend button for stranger profile
         val btnSettings: ImageButton = findViewById(R.id.btnSettings)
@@ -87,6 +72,25 @@ class ProfileActivity : AppCompatActivity() {
             btnSettings.visibility = View.GONE
             btnAddFriend.visibility = View.VISIBLE
         }
+
+        //Listener for settings button
+        btnSettings.setOnClickListener {
+            val intent = Intent(this, ProfileSettingsActivity::class.java)
+            startActivity(intent)
+        }
+
+        //Listener for add Gift button
+        val btnAddGift: FloatingActionButton = findViewById(R.id.fabAddGift)
+        btnAddGift.setOnClickListener {
+            val intent = Intent(this, GiftpageActivity::class.java)
+            val b2 = Bundle()
+            b2.putInt("profileUserId", friendUserId)
+            intent.putExtras(b2)
+            intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+            startActivity(intent)
+        }
+
+        //Register bottom nav bar
         useBottomNavBar()
 
         //Fill textview with userdata
@@ -94,47 +98,41 @@ class ProfileActivity : AppCompatActivity() {
         val tvDateofbirth: TextView = findViewById(R.id.tvProfileDateofbirth)
         val ivProfilepicture: ImageView = findViewById(R.id.ivProfilepicture)
 
-        val viewModelJob = SupervisorJob()
-        val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
-        uiScope.launch(Dispatchers.IO) {
-
-            //Load user data
-            try {
-                profileUser = db.getUser(userId, friendUserId)
-            } catch (e: Exception) {
-                println("Unable to load user data")
-                e.printStackTrace()
-            }
-            try {
-                if (!profileUser.isLast) {
-                    profileUser.next()
-                }
+        try {
+            uiScope.launch(Dispatchers.IO) {
+                //Load user data
+                val profileUser = db.getUser(userId, friendUserId)
+                profileUser.next()
 
                 //Set friend button status
                 var isFriend: Boolean = profileUser.getInt("is_friend") == 1
                 val notificationId: Int = db.getNotificationId(0, friendUserId, userId)
-                var isNotified: Boolean = notificationId!=0
+                var isNotified: Boolean = notificationId != 0
                 updateAddFriendButtonColor(btnAddFriend, isFriend, isNotified)
 
-                withContext(Dispatchers.Main) {
-                    tvName.text = if (profileUser.getString("last_name") != null) {
-                        profileUser.getString("first_name") + " " + profileUser.getString("last_name")
-                    } else {
-                        profileUser.getString("first_name")
+                try {
+                    withContext(Dispatchers.Main) {
+                        tvName.text = if (profileUser.getString("last_name") != null) {
+                            profileUser.getString("first_name") + " " + profileUser.getString("last_name")
+                        } else {
+                            profileUser.getString("first_name")
+                        }
+                        try {
+                            tvDateofbirth.text = profileUser.getString("date_of_birth")
+                        } catch (e: SQLException) {
+                            tvDateofbirth.visibility = View.INVISIBLE
+                            println("User privacy settings hides date of birth")
+                        }
+                        if (isFriend || profileUser.getInt("profile_privacy") == 0) {
+                            btnAddGift.visibility = View.VISIBLE
+                        } else {
+                            btnAddGift.visibility = View.GONE
+                        }
                     }
-                    try {
-                        tvDateofbirth.text = profileUser.getString("date_of_birth")
-                    } catch (e: SQLException) {
-                        tvDateofbirth.visibility = View.INVISIBLE
-                        println("User privacy settings hides date of birth")
-                    }
-                    val btnAddGift: FloatingActionButton = findViewById(R.id.fabAddGift)
-                    if (isFriend || profileUser.getInt("profile_privacy")==0) {
-                        btnAddGift.visibility = View.VISIBLE
-                    } else {
-                        btnAddGift.visibility = View.GONE
-                    }
+                } catch (e: Exception) {
+                    println("Unable to set user data")
                 }
+
 
                 //Listener for friend add button
                 btnAddFriend.setOnClickListener {
@@ -143,12 +141,11 @@ class ProfileActivity : AppCompatActivity() {
                             //No friends request for public profiles
                             db.addFriend(friendUserId, userId)
                             isFriend = true
-                            isNotified = false
                         } else if (!isFriend && !isNotified) {
                             //Send friends request
                             db.addNotification(0, friendUserId, userId)
                             isNotified = true
-                        } else if (!isFriend && isNotified){
+                        } else if (!isFriend && isNotified) {
                             //Cancel friends request
                             db.removeNotificationById(notificationId)
                             isNotified = false
@@ -159,51 +156,48 @@ class ProfileActivity : AppCompatActivity() {
                             isNotified = false
                         }
 
-
                         withContext(Dispatchers.Main) {
                             updateAddFriendButtonColor(btnAddFriend, isFriend, isNotified)
                         }
                     }
                 }
-            } catch (e: Exception) {
-                println("Unable to set user data")
-            }
 
-            //Load recyclerview with gift feed
-            loadGiftFeed(userId, friendUserId)
-            setNotificationNumber()
+                //Load recyclerview with gift feed
+                loadGiftFeed(userId, friendUserId)
+                setNotificationNumber(userId)
 
-            //Load profile picture
-            try {
-                val inputStream = assets.open("config.properties")
-                val props = Properties()
-                props.load(inputStream)
+                //Load profile picture
+                try {
+                    val inputStream = assets.open("config.properties")
+                    val props = Properties()
+                    props.load(inputStream)
 
-                //
-                val profilePictureFileName = profileUser.getString("profile_picture")
-                //
+                    //
+                    val profilePictureFileName = profileUser.getString("profile_picture")
+                    //
 
 
-                val auth = props.getProperty("API_AUTH", "")
-                val downloadUri = props.getProperty("API_DOWNLOAD", "") + profilePictureFileName
-                inputStream.close()
+                    val auth = props.getProperty("API_AUTH", "")
+                    val downloadUri = props.getProperty("API_DOWNLOAD", "") + profilePictureFileName
+                    inputStream.close()
 
-                val imageConnector = ImageConnector()
-                profilePicture = imageConnector.getImage(downloadUri, auth)
-                withContext(Dispatchers.Main) {
-                    ivProfilepicture.setImageBitmap(profilePicture)
+                    val imageConnector = ImageConnector()
+                    val profilePicture = imageConnector.getImage(downloadUri, auth)
+                    withContext(Dispatchers.Main) {
+                        ivProfilepicture.setImageBitmap(profilePicture)
+                    }
+                } catch (e: FileNotFoundException) {
+                    System.err.println("Missing config.properties file in app/src/main/assets/ containing database credentials")
+                } catch (e: NullPointerException) {
+                    println("User has no profile picture")
+                } catch (e: Exception) {
+                    e.printStackTrace()
                 }
-            } catch (e: FileNotFoundException) {
-                System.err.println("Missing config.properties file in app/src/main/assets/ containing database credentials")
-            } catch (e: NullPointerException) {
-                println("User has no profile picture")
-            } catch (e: Exception) {
-                e.printStackTrace()
             }
-
-
+        } catch (e: SQLException) {
+            e.printStackTrace()
+            Toast.makeText(this, getString(R.string.error), Toast.LENGTH_SHORT).show()
         }
-        getButtonClick()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -220,24 +214,6 @@ class ProfileActivity : AppCompatActivity() {
                 true
             }
             else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    //Register buttons
-    private fun getButtonClick() {
-        val btnSettings = findViewById<ImageButton>(R.id.btnSettings)
-        btnSettings.setOnClickListener {
-            val intent = Intent(this, ProfileSettingsActivity::class.java)
-            startActivity(intent)
-        }
-        val btnAddGift: FloatingActionButton = findViewById(R.id.fabAddGift)
-        btnAddGift.setOnClickListener {
-            val intent = Intent(this, GiftpageActivity::class.java)
-            val b = Bundle()
-            b.putInt("profileUserId", friendUserId)
-            intent.putExtras(b)
-            intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-            startActivity(intent)
         }
     }
 
@@ -276,22 +252,21 @@ class ProfileActivity : AppCompatActivity() {
 
     //Bottom navigation bar on tab profile
     private fun useBottomNavBar() {
-        menuBottomNavBar = findViewById(R.id.mBottomNavigation)
+        val menuBottomNavBar: BottomNavigationView = findViewById(R.id.mBottomNavigation)
         menuBottomNavBar.selectedItemId = R.id.ic_bottom_nav_profile
         menuBottomNavBar.setOnItemSelectedListener { item ->
             Log.d("ProfileActivity", "item clicked")
             when (item.itemId) {
                 R.id.ic_bottom_nav_home -> {
                     val intent = Intent(this, MainActivity::class.java)
-                    //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-                    startActivityIfNeeded(intent, 0)
+                    startActivity(intent)
                 }
                 R.id.ic_bottom_nav_notifications -> {
                     Log.d("NotificationActivity", "notification")
                     val intent = Intent(this, NotificationActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-                    startActivityIfNeeded(intent, 0)
+                    startActivity(intent)
                 }
                 R.id.ic_bottom_nav_profile -> {}
                 else -> {
@@ -303,8 +278,8 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
-    private suspend fun setNotificationNumber(){
-        val count = db.getNotificationCount(user.getInt("id"))
+    private suspend fun setNotificationNumber(userId: Int){
+        val count = db.getNotificationCount(userId)
         withContext(Dispatchers.Main) {
             binding.mBottomNavigation.getOrCreateBadge(R.id.ic_bottom_nav_notifications).apply {
                 number = count

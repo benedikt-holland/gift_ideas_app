@@ -348,7 +348,7 @@ class GiftpageActivity  : AppCompatActivity() {
         b.putInt("id", profileUserId)
         intent.putExtras(b)
         intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-        startActivityIfNeeded(intent, 0)
+        startActivity(intent)
     }
 
     //Set spinner data

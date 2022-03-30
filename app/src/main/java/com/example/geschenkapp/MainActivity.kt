@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity() {
                                         b.putInt("id", profile.getInt("id"))
                                         intent.putExtras(b)
                                         intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-                                        startActivityIfNeeded(intent, 0)
+                                        startActivity(intent)
                                     } catch (e: Exception) {
                                         Toast.makeText(
                                             this@MainActivity,
@@ -132,14 +132,14 @@ class MainActivity : AppCompatActivity() {
                     b.putInt("id", userId)
                     intent.putExtras(b)
                     intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-                    startActivityIfNeeded(intent, 0)
+                    startActivity(intent)
                 }
                 R.id.ic_bottom_nav_notifications -> {
                     //Launch notifications activity
                     Log.d("NotificationActivity", "notification")
                     val intent = Intent(this, NotificationActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-                    startActivityIfNeeded(intent, 0)
+                    startActivity(intent)
                 }
                 R.id.ic_bottom_nav_home -> {}
                 else -> {
