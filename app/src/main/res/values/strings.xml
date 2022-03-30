@@ -6,6 +6,7 @@
     <string name="search_hint">Suche nach Personen</string>
     <string name="remaining_days">Tage</string>
     <string name="welcome">Willkommen</string>
+    <string name="search_error">User %1$s konnte nicht gefunden werden. Versuche nach seiner Email zu suchen</string>
 
     <!-- bottom navigation bar-->
     <string name="tab_home">Home</string>

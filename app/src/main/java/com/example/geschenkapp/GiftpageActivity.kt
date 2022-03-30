@@ -349,7 +349,6 @@ class GiftpageActivity  : AppCompatActivity() {
         val b = Bundle()
         b.putInt("id", profileUserId)
         intent.putExtras(b)
-        intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
         startActivity(intent)
     }
 

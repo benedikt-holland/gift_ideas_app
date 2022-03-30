@@ -5,6 +5,7 @@
     <string name="search_hint">Search for people</string>
     <string name="remaining_days">days</string>
     <string name="welcome">Welcome</string>
+    <string name="search_error">Cannot find user %1$s. Try searching for their email</string>
 
     <!-- bottom navigation bar-->
     <string name="tab_home">Home</string>

@@ -87,7 +87,6 @@ class ProfileActivity : AppCompatActivity() {
             val b2 = Bundle()
             b2.putInt("profileUserId", friendUserId)
             intent.putExtras(b2)
-            intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
             startActivity(intent)
         }
 
@@ -260,13 +259,11 @@ class ProfileActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.ic_bottom_nav_home -> {
                     val intent = Intent(this, MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                     startActivity(intent)
                 }
                 R.id.ic_bottom_nav_notifications -> {
                     Log.d("NotificationActivity", "notification")
                     val intent = Intent(this, NotificationActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                     startActivity(intent)
                 }
                 R.id.ic_bottom_nav_profile -> {}

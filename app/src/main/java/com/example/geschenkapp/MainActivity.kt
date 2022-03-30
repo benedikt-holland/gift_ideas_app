@@ -73,18 +73,19 @@ class MainActivity : AppCompatActivity() {
                                         val b = Bundle()
                                         b.putInt("id", profile.getInt("id"))
                                         intent.putExtras(b)
-                                        intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                                         startActivity(intent)
+                                        intent.removeExtra("id")
                                     } catch (e: Exception) {
                                         Toast.makeText(
                                             this@MainActivity,
-                                            "Can't find user $query! Try searching for their email.",
+                                            getString(R.string.search_error, query),
                                             Toast.LENGTH_LONG
                                         ).show()
                                     }
                             }
                         }
                     } catch (e: Exception) {}
+                return true
                 }
                 return false
             }
@@ -101,7 +102,6 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         db = DbHolder.getInstance().db
-
 
         //Refresh friendsfeed
         uiScope.launch(Dispatchers.IO) {
@@ -125,14 +125,13 @@ class MainActivity : AppCompatActivity() {
                     val b = Bundle()
                     b.putInt("id", userId)
                     intent.putExtras(b)
-                    intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                     startActivity(intent)
+                    intent.removeExtra("id")
                 }
                 R.id.ic_bottom_nav_notifications -> {
                     //Launch notifications activity
                     Log.d("NotificationActivity", "notification")
                     val intent = Intent(this, NotificationActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                     startActivity(intent)
                 }
                 R.id.ic_bottom_nav_home -> {}
