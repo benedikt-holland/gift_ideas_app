@@ -59,6 +59,7 @@ class ProfileActivity : AppCompatActivity() {
         //Get userId
         val b: Bundle? = intent.extras
         val friendUserId = b?.getInt("id") ?: userId
+        intent.removeExtra("id")
 
         //Show settings button for personal profile and add friend button for stranger profile
         val btnSettings: ImageButton = findViewById(R.id.btnSettings)

@@ -49,6 +49,8 @@ class GiftpageActivity  : AppCompatActivity() {
             giftId = b.getInt("id")
             profileUserId = b.getInt("profileUserId")
         }
+        intent.removeExtra("id")
+        intent.removeExtra("profileUserId")
 
         //Register privacy spinner
         spinnerPostPrivacy()
