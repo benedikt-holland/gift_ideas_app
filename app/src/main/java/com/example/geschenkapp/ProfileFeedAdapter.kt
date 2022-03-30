@@ -1,6 +1,7 @@
 package com.example.geschenkapp
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -10,9 +11,13 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.*
+import java.security.AccessController.getContext
 import java.sql.ResultSet
+
 
 //Adapter for gift cards on profile page
 class ProfileFeedAdapter(private var profileFeed: ArrayList<ArrayList<String>> = ArrayList()): RecyclerView.Adapter<ProfileFeedViewHolder>() {
@@ -61,11 +66,21 @@ class ProfileFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             tvGiftMemberCount.text = profileList[10] + " " + itemView.context.getString(R.string.members)
             tvVotes.text = profileList[11]
             //Highlight gift if joined
+            var colorYellow = ContextCompat.getColor(itemView.context, R.color.primary)
+            var colorGrey= ContextCompat.getColor(itemView.context, R.color.card_grey)
+            if (profileList[12]!="0"){
+                cvGift.getBackground().setTint(colorYellow)
+            }else{
+                cvGift.getBackground().setTint(colorGrey)
+            }
+            /*
             cvGift.setCardBackgroundColor(if (profileList[12]!="0") {
                 Color.argb(255, 255, 193, 7)
             } else {
                 Color.argb(255, 211, 211, 211)
             })
+            */
+
         }
         //Register vote buttons
         val btnDownvote = itemView.findViewById(R.id.btnDownvote) as ImageButton
