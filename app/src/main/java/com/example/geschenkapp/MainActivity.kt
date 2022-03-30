@@ -169,17 +169,10 @@ class MainActivity : AppCompatActivity() {
         
 //Not implemented yet
     suspend fun loadGiftFeed(userId: Int) {
-        val giftList = ArrayList<ArrayList<String>>()
         giftFeed = db.getGiftFeedByMemberId(userId)
-        while(giftFeed.next()) {
-            val row = ArrayList<String>()
-            for (i in 1..8) {
-                row.add(giftFeed.getString(i))
-            }
-            giftList.add(row)
-        }
         withContext(Dispatchers.Main) {
-            friendsFeedAdapter = FriendsFeedAdapter(giftList)
+            val giftArray = unloadResultSet(giftFeed)
+            friendsFeedAdapter = FriendsFeedAdapter(giftArray)
             rvFriendsFeed.adapter = friendsFeedAdapter
         }
     }

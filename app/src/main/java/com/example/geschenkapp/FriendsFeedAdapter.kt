@@ -13,15 +13,9 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 //Adapter for friends feed recyclerview on home screen
-class FriendsFeedAdapter(private var friendsList: ArrayList<ArrayList<String>>) : RecyclerView.Adapter<FriendsFeedAdapter.FriendsFeedViewHolder>(), Filterable {
+class FriendsFeedAdapter(private var friendsList: ArrayList<ArrayList<String>> = ArrayList()) : RecyclerView.Adapter<FriendsFeedAdapter.FriendsFeedViewHolder>(), Filterable {
 
-    //Initiate FilterList
-    var friendsFilterList = ArrayList<ArrayList<String>>()
-    init {
-        for (row in friendsList) {
-            friendsFilterList.add(row)
-        }
-    }
+    private var friendsFilterList = friendsList
     // create new views
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FriendsFeedViewHolder {
         // inflates the card_view_design view
