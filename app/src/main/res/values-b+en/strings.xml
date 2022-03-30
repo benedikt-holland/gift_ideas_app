@@ -67,6 +67,8 @@
     <string name="gift_picture">picture of the gift</string>
     <string name="delete_gift"><u>Delete gift</u></string>
     <string name="delete_gift_dialog">Do you really want to delete this gift?</string>
+    <string name="error">Something went wrong. Please try again later</string>
+    <string name="gift_create">Create gift</string>
 
     <!--comments-->
 

@@ -158,6 +158,7 @@ class DbConnector : ViewModel() {
 
     //Update gift as owner
     //When no gift Id is given a new gift will be created
+    //Returns id of last insert
     fun updateGift(
         giftId: Int?,
         title: String,
@@ -166,14 +167,19 @@ class DbConnector : ViewModel() {
         ownerId: Int,
         link: String,
         privacy: Int
-    ) {
+    ): Int {
         val query: String = if (giftId != null) {
             "UPDATE gifts SET title='$title', price=$price, user_id=$userId, owner_id=$ownerId, gift_link='$link', post_privacy=$privacy WHERE id=$giftId;"
         } else {
             "INSERT INTO gifts (title, price, user_id, owner_id, gift_link, post_privacy) VALUES ('$title', $price, $userId, $ownerId, '$link', $privacy);"
         }
+        val query2 = "SELECT LAST_INSERT_ID();"
         val statement = connection.prepareStatement(query)
         statement.executeUpdate()
+        val statement2 = connection.prepareStatement(query2)
+        val result = statement2.executeQuery()
+        result.next()
+        return result.getInt(1)
     }
 
     //Up or downvote gift idea on profile screen
@@ -294,16 +300,22 @@ class DbConnector : ViewModel() {
     }
 
     //Add notifications for another user
-    fun addNotification(notificationId: Int, userId: Int, friendId: Int, giftId: Int?=null) {
+    //Returns id of notification
+    fun addNotification(notificationType: Int, userId: Int, friendId: Int, giftId: Int?=null): Int {
         val query = "INSERT INTO notifications (notification_type, user_id, friend_id, gift_id) " +
-                "VALUES($notificationId, $userId, $friendId, $giftId);"
+                "VALUES($notificationType, $userId, $friendId, $giftId);"
+        val query2 = "SELECT LAST_INSERT_ID();"
         val statement = connection.prepareStatement(query)
         statement.executeUpdate()
+        val statement2 = connection.prepareStatement(query2)
+        val result = statement2.executeQuery()
+        result.next()
+        return result.getInt(1)
     }
 
     //Check if user is already notified about action
-    fun getNotificationId(notificationId: Int, userId: Int, friendId: Int, giftId: Int?=null): Int {
-        var query = "SELECT id FROM notifications WHERE notification_type=$notificationId " +
+    fun getNotificationId(notificationType: Int, userId: Int, friendId: Int, giftId: Int?=null): Int {
+        var query = "SELECT id FROM notifications WHERE notification_type=$notificationType " +
                 "AND user_id=$userId AND friend_id=$friendId"
         if (giftId!=null) query += " AND gift_id=$giftId"
         query += ";"

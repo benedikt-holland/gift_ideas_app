@@ -234,6 +234,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginStart="10dp"
             android:gravity="center"
+            android:visibility="gone"
             android:text="@string/delete_gift"
             android:textSize="20sp"
             app:layout_constraintTop_toBottomOf="@+id/vSeparator6"
@@ -248,10 +249,56 @@
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
+            android:visibility="gone"
+            android:backgroundTint="@color/accept"
             android:text="@string/join"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvDeleteGift"/>
 
+        <Button
+            android:id="@+id/btnRequested"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/secondary"
+            android:visibility="gone"
+            android:text="@string/requested"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvDeleteGift"/>
+
+        <Button
+            android:id="@+id/btnLeave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/downvote"
+            android:visibility="gone"
+            android:text="@string/leave"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvDeleteGift"/>
+
+        <Button
+            android:id="@+id/btnEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/secondary"
+            android:visibility="gone"
+            android:text="@string/save_changes"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvDeleteGift"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

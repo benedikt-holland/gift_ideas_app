@@ -66,6 +66,8 @@
     <string name="gift_picture">Bild von Geschenk</string>
     <string name="delete_gift"><u>Geschenkidee löschen</u></string>
     <string name="delete_gift_dialog">Möchtest du diese Geschenkidee wirklich löschen?</string>
+    <string name="error">Etwas ist schiefgelaufen. Bitte versuche es später nochmal</string>
+    <string name="gift_create">Geschenk anlegen</string>
 
     <!--loginpage-->
     <string name="login">Anmelden</string>

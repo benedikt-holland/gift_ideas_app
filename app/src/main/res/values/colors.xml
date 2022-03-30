@@ -16,7 +16,7 @@
   <color name="surface">#ffffff</color>
   <!-- Icon color -->
   <color name="downvote">#ff0000</color>
-  <color name="accept">#00ff00</color>
+  <color name="accept">#32CD32</color>
 
   <color name="card_grey">#D3D3D3</color>
 </resources>
