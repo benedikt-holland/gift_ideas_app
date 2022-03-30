@@ -21,12 +21,13 @@ import kotlin.collections.ArrayList
 class MainActivity : AppCompatActivity() {
     lateinit var user: ResultSet
     private lateinit var friendsFeed: ResultSet
-    private lateinit var giftFeed: ResultSet
     lateinit var friendsFeedAdapter: FriendsFeedAdapter
     private lateinit var rvFriendsFeed: RecyclerView
     private var db = DbConnector()
     private var userId: Int = -1
     private lateinit var binding: ActivityMainBinding
+    private val viewModelJob = SupervisorJob()
+    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,8 +36,6 @@ class MainActivity : AppCompatActivity() {
         user = LoginHolder.getInstance().user
         db = DbHolder.getInstance().db
 
-        val viewModelJob = SupervisorJob()
-        val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
         uiScope.launch(Dispatchers.IO) {
             try {
                 //Load friendsfeed and set recyclerview content
@@ -95,11 +94,7 @@ class MainActivity : AppCompatActivity() {
                 friendsFeedAdapter.filter.filter(newText)
                 return false
             }
-
         })
-
-        //getButtonClick()
-
     }
 
     //Will be called when returning from other activity
@@ -108,8 +103,7 @@ class MainActivity : AppCompatActivity() {
         db = DbHolder.getInstance().db
 
 
-        val viewModelJob = SupervisorJob()
-        val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+        //Refresh friendsfeed
         uiScope.launch(Dispatchers.IO) {
             try {
                 //Reload friendsfeed on resume
@@ -164,16 +158,6 @@ class MainActivity : AppCompatActivity() {
                 true
             }
             else -> super.onOptionsItemSelected(item)
-        }
-    }
-        
-//Not implemented yet
-    suspend fun loadGiftFeed(userId: Int) {
-        giftFeed = db.getGiftFeedByMemberId(userId)
-        withContext(Dispatchers.Main) {
-            val giftArray = unloadResultSet(giftFeed)
-            friendsFeedAdapter = FriendsFeedAdapter(giftArray)
-            rvFriendsFeed.adapter = friendsFeedAdapter
         }
     }
 
