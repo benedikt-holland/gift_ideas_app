@@ -46,6 +46,7 @@ class ProfileFeedAdapter(private var profileFeed: ArrayList<ArrayList<String>> =
 }
 
 //View holder for gift cards on profile page
+@Suppress("SENSELESS_COMPARISON")
 class ProfileFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     var db: DbConnector = DbHolder.getInstance().db
     var user: ResultSet = LoginHolder.getInstance().user
@@ -66,21 +67,13 @@ class ProfileFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             tvGiftMemberCount.text = profileList[10] + " " + itemView.context.getString(R.string.members)
             tvVotes.text = profileList[11]
             //Highlight gift if joined
-            var colorYellow = ContextCompat.getColor(itemView.context, R.color.primary)
-            var colorGrey= ContextCompat.getColor(itemView.context, R.color.card_grey)
-            if (profileList[12]!="0"){
+            val colorYellow = ContextCompat.getColor(itemView.context, R.color.primary)
+            val colorGrey= ContextCompat.getColor(itemView.context, R.color.card_grey)
+            if (profileList[12]!=null){
                 cvGift.getBackground().setTint(colorYellow)
             }else{
                 cvGift.getBackground().setTint(colorGrey)
             }
-            /*
-            cvGift.setCardBackgroundColor(if (profileList[12]!="0") {
-                Color.argb(255, 255, 193, 7)
-            } else {
-                Color.argb(255, 211, 211, 211)
-            })
-            */
-
         }
         //Register vote buttons
         val btnDownvote = itemView.findViewById(R.id.btnDownvote) as ImageButton
