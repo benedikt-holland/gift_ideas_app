@@ -62,8 +62,9 @@ class ProfileSettingsActivity : AppCompatActivity() {
         binding.tvDateOfBirth.text = user.getString("date_of_birth")
         binding.etEmail.setText(user.getString("email"))
 
-        val ivProfilepicture = binding.ivProfilepicture
 
+
+        val ivProfilepicture = binding.ivProfilepicture
 
         val viewModelJob = SupervisorJob()
         val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
@@ -89,12 +90,16 @@ class ProfileSettingsActivity : AppCompatActivity() {
         spinnerProfilePrivacy()
         spinnerPostPrivacy()
 
+        binding.spProfilePrivacy.setSelection(user.getInt("profile_privacy"))
+
         getButtonClick()
 
         setDate()
     }
 
     private fun getButtonClick(){
+
+        //Function to delete own profile
         val tvDeleteAccount = findViewById<TextView>(R.id.tvDeleteAccount)
         tvDeleteAccount.setOnClickListener {
             val builder = AlertDialog.Builder(this@ProfileSettingsActivity)
@@ -127,6 +132,7 @@ class ProfileSettingsActivity : AppCompatActivity() {
         }
 
 
+        //Function to logout and remove data for autologin
         val tvLogout = findViewById<TextView>(R.id.tvLogout)
         tvLogout.setOnClickListener {
             val pref = getSharedPreferences("com.example.geschenkapp", MODE_PRIVATE)
@@ -138,6 +144,8 @@ class ProfileSettingsActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+
+        //Function to choose a picture from storage
         val ivProfilepicture = findViewById<ImageView>(R.id.ivProfilepicture)
         ivProfilepicture.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
@@ -150,6 +158,8 @@ class ProfileSettingsActivity : AppCompatActivity() {
             startActivityForResult(intent, 3)
         }
 
+
+        //Function to save changed data
         val btnSave = findViewById<Button>(R.id.btnSave)
         btnSave.setOnClickListener {
 

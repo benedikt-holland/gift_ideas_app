@@ -6,10 +6,10 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.SupervisorJob
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.ByteArrayOutputStream
 
 //Connector for setting profile picture
-@Suppress("DEPRECATION")
 class ImageConnector : ViewModel() {
     private val viewModelJob = SupervisorJob()
 
@@ -44,7 +44,7 @@ class ImageConnector : ViewModel() {
             .addFormDataPart(
                 "file",
                 "$userId.png",
-                RequestBody.create("image/png".toMediaType(), byteArray)
+                byteArray.toRequestBody("image/png".toMediaType(), 0, byteArray.size)
             ).build()
 
         val client: OkHttpClient = OkHttpClient().newBuilder().build()
