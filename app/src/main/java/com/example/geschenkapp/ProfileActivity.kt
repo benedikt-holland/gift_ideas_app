@@ -64,12 +64,11 @@ class ProfileActivity : AppCompatActivity() {
         //Show settings button for personal profile and add friend button for stranger profile
         val btnSettings: ImageButton = findViewById(R.id.btnSettings)
         val btnAddFriend: ImageButton = findViewById(R.id.btnAddFriend)
+        val fabAddGift: FloatingActionButton = findViewById(R.id.fabAddGift)
         if (friendUserId == userId) {
-            //tabArray = initTabArray.slice(1..3).toTypedArray()
             btnSettings.visibility = View.VISIBLE
             btnAddFriend.visibility = View.GONE
         } else {
-            //tabArray = initTabArray.slice(0..2).toTypedArray()
             btnSettings.visibility = View.GONE
             btnAddFriend.visibility = View.VISIBLE
         }
@@ -81,8 +80,7 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         //Listener for add Gift button
-        val btnAddGift: FloatingActionButton = findViewById(R.id.fabAddGift)
-        btnAddGift.setOnClickListener {
+        fabAddGift.setOnClickListener {
             val intent = Intent(this, GiftpageActivity::class.java)
             val b2 = Bundle()
             b2.putInt("profileUserId", friendUserId)
@@ -123,10 +121,10 @@ class ProfileActivity : AppCompatActivity() {
                             tvDateofbirth.visibility = View.INVISIBLE
                             println("User privacy settings hides date of birth")
                         }
-                        if (isFriend || profileUser.getInt("profile_privacy") == 0) {
-                            btnAddGift.visibility = View.VISIBLE
+                        if ((userId!=friendUserId) && (isFriend || profileUser.getInt("profile_privacy") == 0)) {
+                            fabAddGift.visibility = View.VISIBLE
                         } else {
-                            btnAddGift.visibility = View.GONE
+                            fabAddGift.visibility = View.GONE
                         }
                     }
                 } catch (e: Exception) {
