@@ -293,4 +293,11 @@ class ProfileActivity : AppCompatActivity() {
             }
         }
     }
+
+
+    //Call main activity
+    override fun onBackPressed() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+    }
 }
