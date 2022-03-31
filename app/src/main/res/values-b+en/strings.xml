@@ -11,10 +11,10 @@
     <string name="tab_home">Home</string>
     <string name="tab_profile">Profile</string>
     <string name="tab_notifications">Notifications</string>
-    <string name="title_activity_profile">ProfileActivity</string>
-    <string name="title_activity_profile_settings">ProfileSettingsActivity</string>
-    <string name="title_activity_notification">NotificationActivity</string>
-    <string name="title_activity_giftpage">GiftPageActivity</string>
+    <string name="title_activity_profile">Profile</string>
+    <string name="title_activity_profile_settings">Profile Settings</string>
+    <string name="title_activity_notification">Notifications</string>
+    <string name="title_activity_giftpage">Gift</string>
 
     <!-- Strings used for fragments for navigation -->
 

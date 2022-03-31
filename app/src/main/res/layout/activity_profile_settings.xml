@@ -192,12 +192,10 @@
             android:id="@+id/tvProfilePrivacyDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
             android:layout_marginTop="20dp"
             android:gravity="center"
             android:text="@string/profile_privacy"
             android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@id/vSeparator6"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/vSeparator4" />
 
@@ -209,52 +207,18 @@
             android:layout_marginEnd="10dp"
             android:gravity="end"
             android:textAlignment="viewEnd"
-            app:layout_constraintBottom_toTopOf="@+id/vSeparator6"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/vSeparator4" />
-
-        <View
-            android:id="@+id/vSeparator6"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="20dp"
-            android:background="@android:color/darker_gray"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvProfilePrivacyDescription" />
-
-        <TextView
-            android:id="@+id/tvPostPrivacyDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:text="@string/gift_privacy"
-            android:textSize="20sp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/vSeparator6" />
-
-        <Spinner
-            android:id="@+id/spPostPrivacy"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:gravity="start"
-            android:textAlignment="viewStart"
-            app:layout_constraintBottom_toTopOf="@id/vSeparator7"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvPostPrivacyDescription" />
 
         <View
             android:id="@+id/vSeparator7"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:background="@android:color/darker_gray"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/spPostPrivacy" />
+            app:layout_constraintTop_toBottomOf="@+id/tvProfilePrivacyDescription" />
 
         <TextView
             android:id="@+id/tvLogout"

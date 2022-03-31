@@ -24,6 +24,8 @@ class NotificationActivity : AppCompatActivity() {
     private lateinit var rvNotifications: RecyclerView
     private lateinit var notificationsAdapter: NotificationFeedAdapter
     private lateinit var binding: ActivityMainBinding
+    private val viewModelJob = SupervisorJob()
+    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         user = LoginHolder.getInstance().user
@@ -44,9 +46,6 @@ class NotificationActivity : AppCompatActivity() {
         rvNotifications.layoutManager = LinearLayoutManager(rvNotifications.context)
         rvNotifications.setHasFixedSize(true)
 
-
-        val viewModelJob = SupervisorJob()
-        val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
         uiScope.launch(Dispatchers.IO) {
             loadNotifications(user.getInt("id"))
             setNotificationNumber()
@@ -58,8 +57,6 @@ class NotificationActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         useBottomNavBar()
-        val viewModelJob = SupervisorJob()
-        val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
         uiScope.launch(Dispatchers.IO) {
             loadNotifications(user.getInt("id"))
             setNotificationNumber()
@@ -94,8 +91,6 @@ class NotificationActivity : AppCompatActivity() {
                 true
             }
             R.id.actionRemove -> {
-                val viewModelJob = SupervisorJob()
-                val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
                 uiScope.launch(Dispatchers.IO) {
                     db.removeAllNotifications(user.getInt("id"))
                 }

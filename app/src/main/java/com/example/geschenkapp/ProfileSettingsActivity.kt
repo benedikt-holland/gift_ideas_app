@@ -11,6 +11,8 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Looper
 import android.provider.MediaStore
+import android.view.Menu
+import android.view.MenuInflater
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
@@ -27,6 +29,7 @@ import java.util.*
 @Suppress("DEPRECATION")
 class ProfileSettingsActivity : AppCompatActivity() {
 
+    @Suppress("unused")
     lateinit var uiModeManager: UiModeManager
     lateinit var user: ResultSet
     lateinit var db: DbConnector
@@ -41,7 +44,6 @@ class ProfileSettingsActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.apply {
             title = resources.getString(R.string.title_activity_profile_settings)
-            setHomeButtonEnabled(true)
             setDisplayHomeAsUpEnabled(true)
             setDisplayShowHomeEnabled(true)
         }
@@ -88,7 +90,6 @@ class ProfileSettingsActivity : AppCompatActivity() {
 
 
         spinnerProfilePrivacy()
-        spinnerPostPrivacy()
 
         binding.spProfilePrivacy.setSelection(user.getInt("profile_privacy"))
 
@@ -267,21 +268,6 @@ class ProfileSettingsActivity : AppCompatActivity() {
         }
     }
 
-    private fun spinnerPostPrivacy() {
-        val spPostPrivacy: Spinner = findViewById(R.id.spPostPrivacy)
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter.createFromResource(
-            this,
-            R.array.post_privacy_array,
-            android.R.layout.simple_spinner_item
-        ).also { adapter ->
-            // Specify the layout to use when the list of choices appears
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            // Apply the adapter to the spinner
-            spPostPrivacy.adapter = adapter
-        }
-    }
-
     @SuppressLint("SetTextI18n")
     private fun setDate(){
         val c = Calendar.getInstance()
@@ -308,5 +294,11 @@ class ProfileSettingsActivity : AppCompatActivity() {
             }, year, month, day)
             dpd.show()
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.toolbar_menu, menu)
+        return true
     }
 }

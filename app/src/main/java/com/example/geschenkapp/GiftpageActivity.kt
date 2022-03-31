@@ -345,13 +345,13 @@ class GiftpageActivity  : AppCompatActivity() {
     }
 
     //Call profile activity with userId
-    override fun onBackPressed() {
+    /*override fun onBackPressed() {
         val intent = Intent(this, ProfileActivity::class.java)
         val b = Bundle()
         b.putInt("id", profileUserId)
         intent.putExtras(b)
         startActivity(intent)
-    }
+    }*/
 
     //Set spinner data
     private fun spinnerPostPrivacy(){
