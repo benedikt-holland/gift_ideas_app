@@ -98,6 +98,20 @@ class ProfileSettingsActivity : AppCompatActivity() {
         setDate()
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        setSupportActionBar(findViewById(R.id.toolbar))
+        //Initiate Actionbar with back button
+        supportActionBar?.apply {
+            title = resources.getString(R.string.title_activity_profile_settings)
+            // show back button on toolbar
+            // on back button press, it will navigate to parent activity
+            setDisplayHomeAsUpEnabled(true)
+            setDisplayShowHomeEnabled(true)
+        }
+    }
+
     private fun getButtonClick(){
 
         //Function to delete own profile
