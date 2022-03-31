@@ -40,6 +40,11 @@ class ProfileSettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile_settings)
+        //Check internet connection
+        if (!checkForInternet(this)) {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+        }
 
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.apply {

@@ -35,6 +35,11 @@ class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
+        //Check internet connection
+        if (!com.example.geschenkapp.checkForInternet(this)) {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+        }
 
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         val view = binding.root

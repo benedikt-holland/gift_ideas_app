@@ -34,6 +34,11 @@ class ProfileActivity : AppCompatActivity() {
     //Overwrite activity content with new user data when resuming
     override fun onResume() {
         super.onResume()
+        //Check internet connection
+        if (!checkForInternet(this)) {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+        }
 
         setContentView(R.layout.activity_profile)
         setSupportActionBar(findViewById(R.id.toolbar))

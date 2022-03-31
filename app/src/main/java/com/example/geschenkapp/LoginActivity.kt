@@ -134,20 +134,6 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkForInternet(context: Context): Boolean {
-        // register activity with the connectivity manager service
-        val connectivityManager =
-            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-
-        val network = connectivityManager.activeNetwork ?: return false
-        val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
-        return when {
-            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
-            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
-            else -> false
-        }
-    }
-
     private fun login() {
         val email = binding.tfEmail.editText?.text.toString()
         if (email == "") {
