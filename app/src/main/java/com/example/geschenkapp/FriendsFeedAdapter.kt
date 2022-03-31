@@ -13,6 +13,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 //Adapter for friends feed recyclerview on home screen
+@Suppress("SENSELESS_COMPARISON")
 class FriendsFeedAdapter(private var friendsList: ArrayList<ArrayList<String>> = ArrayList()) : RecyclerView.Adapter<FriendsFeedAdapter.FriendsFeedViewHolder>(), Filterable {
 
     private var friendsFilterList = friendsList
@@ -51,7 +52,7 @@ class FriendsFeedAdapter(private var friendsList: ArrayList<ArrayList<String>> =
                 } else {
                     //Assemble full name
                     for (row in friendsList) {
-                        val name = row[2] + " " + row[3]
+                        val name = row[2] + if(row[3]!=null) {" " + row[3]} else ""
                         //Check for first name, last name and combination
                         if (row[2].lowercase(Locale.ROOT).contains(charSearch.lowercase(Locale.ROOT)) || (row[3].lowercase(Locale.ROOT).contains(charSearch.lowercase(Locale.ROOT))) ||
                             name.lowercase(Locale.ROOT).contains(charSearch.lowercase(Locale.ROOT))) {

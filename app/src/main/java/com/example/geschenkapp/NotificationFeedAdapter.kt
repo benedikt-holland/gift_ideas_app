@@ -57,6 +57,7 @@ class NotificationFeedAdapter(private var notificationFeed: ArrayList<ArrayList<
 }
 
 //View holder for gift cards on profile page
+@Suppress("SENSELESS_COMPARISON")
 class NotificationFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     var db: DbConnector = DbHolder.getInstance().db
     var user: ResultSet = LoginHolder.getInstance().user
@@ -64,7 +65,7 @@ class NotificationFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
         //Set text view content
         if (notificationsList.isNotEmpty()) {
             //Add last name if exists
-            val name = notificationsList[2] + (" " + notificationsList[3])
+            val name = notificationsList[2] + if(notificationsList[3]!=null) {" " + notificationsList[3]} else ""
             val giftUsername: String = notificationsList[7] + " " + notificationsList[8]
             val tvNotification: TextView = itemView.findViewById(R.id.tvNotification)
             val tvNotificationText: TextView = itemView.findViewById(R.id.tvNotificationText)

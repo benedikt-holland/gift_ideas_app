@@ -63,7 +63,7 @@ class ProfileFeedViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
             tvGiftName.text = profileList[1]
             tvGiftPrice.text = profileList[2] + itemView.context.getString(R.string.currency)
-            tvGiftOwner.text = profileList[8] + " " + profileList[9]
+            tvGiftOwner.text = profileList[8] + if(profileList[9]!=null) {" " + profileList[9]} else ""
             tvGiftMemberCount.text = profileList[10] + " " + itemView.context.getString(R.string.members)
             tvVotes.text = profileList[11]
             //Highlight gift if joined
