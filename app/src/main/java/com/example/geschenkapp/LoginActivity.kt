@@ -52,7 +52,7 @@ class LoginActivity : AppCompatActivity() {
         val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
         uiScope.launch(Dispatchers.IO) {
             connectToDatabase()
-            if (email != null && password != null){
+            if (dbConnected && email != null && password != null){
                 login()
             }
         }
