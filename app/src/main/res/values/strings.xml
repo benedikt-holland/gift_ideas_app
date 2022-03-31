@@ -96,8 +96,8 @@
     <!--profile privacy array-->
     <string name="profile_privacy_public">öffentlich</string>
     <string name="profile_privacy_hide_feed">Feed verstecken</string>
-    <string name="profile_privacy_name_and_profile_picture">Name und Profilbild</string>
-    <string name="profile_privacy_name">Nur Name</string>
+    <string name="profile_privacy_name_and_profile_picture">Nur Name und Profilbild anzeigen</string>
+    <string name="profile_privacy_name">Nur Name anzeigen</string>
     <string name="profile_privacy_hidden">unsichtbar</string>
 
     <!--post privacy array-->

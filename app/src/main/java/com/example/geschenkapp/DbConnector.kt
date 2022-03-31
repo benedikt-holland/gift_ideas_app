@@ -66,6 +66,7 @@ class DbConnector : ViewModel() {
     //Search user in search bar with keywords
     //Returns user_id, first_name, last_name
     //Only returns users without privacy status 4 or friends
+    //Privacy status 4 users can only be found by typing their exact email
     fun searchUser(userId: Int, keywords: String): ResultSet {
         val query = "SELECT id, first_name, last_name FROM users AS u " +
                 "WHERE (profile_privacy <> 4 OR EXISTS( " +
@@ -73,7 +74,8 @@ class DbConnector : ViewModel() {
                 "AND (CONCAT(first_name, ' ', last_name) LIKE CONCAT('$keywords', '%') " +
                 "OR first_name LIKE CONCAT('$keywords', '%') " +
                 "OR last_name LIKE CONCAT('$keywords', '%') " +
-                "OR email LIKE CONCAT('$keywords', '%'));"
+                "OR email LIKE CONCAT('$keywords', '%')) " +
+                "OR email='$keywords';"
         val statement = connection.prepareStatement(query)
         return statement.executeQuery()
 

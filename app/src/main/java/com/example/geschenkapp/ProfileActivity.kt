@@ -162,36 +162,41 @@ class ProfileActivity : AppCompatActivity() {
                     }
                 }
 
-                //Load recyclerview with gift feed
-                loadGiftFeed(userId, friendUserId)
+                //Only load gift feed if profile is public or profile user is friends with user
+                if (profileUser.getInt("profile_privacy") == 0 || isFriend) {
+                    loadGiftFeed(userId, friendUserId)
+                }
                 setNotificationNumber(userId)
 
-                //Load profile picture
-                try {
-                    val inputStream = assets.open("config.properties")
-                    val props = Properties()
-                    props.load(inputStream)
+                //Only load profile picture if profile privacy is 2 or below
+                if (profileUser.getInt("profile_privacy") < 3) {
+                    try {
+                        val inputStream = assets.open("config.properties")
+                        val props = Properties()
+                        props.load(inputStream)
 
-                    //
-                    val profilePictureFileName = profileUser.getString("profile_picture")
-                    //
+                        //
+                        val profilePictureFileName = profileUser.getString("profile_picture")
+                        //
 
 
-                    val auth = props.getProperty("API_AUTH", "")
-                    val downloadUri = props.getProperty("API_DOWNLOAD", "") + profilePictureFileName
-                    inputStream.close()
+                        val auth = props.getProperty("API_AUTH", "")
+                        val downloadUri =
+                            props.getProperty("API_DOWNLOAD", "") + profilePictureFileName
+                        inputStream.close()
 
-                    val imageConnector = ImageConnector()
-                    val profilePicture = imageConnector.getImage(downloadUri, auth)
-                    withContext(Dispatchers.Main) {
-                        ivProfilepicture.setImageBitmap(profilePicture)
+                        val imageConnector = ImageConnector()
+                        val profilePicture = imageConnector.getImage(downloadUri, auth)
+                        withContext(Dispatchers.Main) {
+                            ivProfilepicture.setImageBitmap(profilePicture)
+                        }
+                    } catch (e: FileNotFoundException) {
+                        System.err.println("Missing config.properties file in app/src/main/assets/ containing database credentials")
+                    } catch (e: NullPointerException) {
+                        println("User has no profile picture")
+                    } catch (e: Exception) {
+                        e.printStackTrace()
                     }
-                } catch (e: FileNotFoundException) {
-                    System.err.println("Missing config.properties file in app/src/main/assets/ containing database credentials")
-                } catch (e: NullPointerException) {
-                    println("User has no profile picture")
-                } catch (e: Exception) {
-                    e.printStackTrace()
                 }
             }
         } catch (e: SQLException) {

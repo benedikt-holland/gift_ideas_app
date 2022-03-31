@@ -31,13 +31,13 @@
     <string name="first_name">Firstname</string>
     <string name="last_name">Lastname</string>
     <string name="date_of_birth">Date of Birth</string>
-    <string name="profile_privacy">Privacy</string>
+    <string name="profile_privacy">Profile privacy</string>
     <string name="gift_privacy">Post Visibility</string>
     <string name="default_date_of_birth">2000–01–01</string>
     <string name="default_email">firstname@lastname.com</string>
     <string name="default_firstname">Hans</string>
     <string name="default_lastname">Müller</string>
-    <string name="upload_picture"><u>Edit Profilepicture</u></string>
+    <string name="upload_picture"><u>Edit profilepicture</u></string>
     <string name="saved">Saved</string>
     <string name="email_duplicate">The entered E-Mail already exists. Please enter another E-Mail.</string>
     <string name="email_invalid">Please enter a valid email</string>
@@ -97,9 +97,9 @@
     <!--profile privacy array-->
     <string name="profile_privacy_public">public</string>
     <string name="profile_privacy_hide_feed">hide feed</string>
-    <string name="profile_privacy_name_and_profile_picture">name and profile picture</string>
-    <string name="profile_privacy_name">only name</string>
-    <string name="profile_privacy_hidden">hide everything</string>
+    <string name="profile_privacy_name_and_profile_picture">only show name and profile picture</string>
+    <string name="profile_privacy_name">only show name</string>
+    <string name="profile_privacy_hidden">invisible</string>
 
     <!--post privacy array-->
     <string name="post_privacy_public">public</string>
