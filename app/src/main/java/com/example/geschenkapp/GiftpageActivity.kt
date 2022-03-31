@@ -248,6 +248,7 @@ class GiftpageActivity  : AppCompatActivity() {
         val spPrivacy: Spinner = findViewById(R.id.spGiftpagePostPrivacy)
         val tvMemberCount: TextView = findViewById(R.id.tvMemberCount)
         val tvDeleteGift: TextView = findViewById(R.id.tvDeleteGift)
+        val tvOwner: TextView = findViewById(R.id.tvOwner)
 
         //Member buttons not needed for owner
         findViewById<Button?>(R.id.btnJoin).visibility = View.GONE
@@ -258,7 +259,7 @@ class GiftpageActivity  : AppCompatActivity() {
         tvDeleteGift.visibility = if (giftId != null) {
             View.VISIBLE
         } else {
-            tvName.text = user.getString("first_name") + " " + user.getString("last_name")
+            tvOwner.text = user.getString("first_name") + " " + user.getString("last_name")
             View.GONE
         }
 
@@ -266,12 +267,12 @@ class GiftpageActivity  : AppCompatActivity() {
             val userId = user.getInt("id")
             //Get post privacy setting from spinner and convert to id
             //Default Privacy 0
-            val profilePrivacyArray: Array<String> =
-                resources.getStringArray(R.array.profile_privacy_array)
+            val postPrivacyArray: Array<String> =
+                resources.getStringArray(R.array.post_privacy_array)
             var postPrivacy = 0
             try {
-                for (i in profilePrivacyArray.indices) {
-                    if (profilePrivacyArray[i].contains(spPrivacy.selectedItem.toString())) {
+                for (i in postPrivacyArray.indices) {
+                    if (postPrivacyArray[i].contains(spPrivacy.selectedItem.toString())) {
                         postPrivacy = i
                     }
                 }

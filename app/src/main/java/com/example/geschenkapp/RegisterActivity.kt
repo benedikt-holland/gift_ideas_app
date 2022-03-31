@@ -19,6 +19,7 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.util.Patterns
 import android.widget.TextView
 import java.util.*
 
@@ -125,6 +126,18 @@ class RegisterActivity : AppCompatActivity() {
                         return@launch
                     }
 
+                    //Check if email is valid
+                    if (!email.isValidEmail()) {
+                        Looper.prepare()
+                        Toast.makeText(
+                            this@RegisterActivity,
+                            R.string.email_invalid,
+                            Toast.LENGTH_LONG
+                        ).show()
+                        Looper.loop()
+                        return@launch
+                    }
+
 
                     val tempUser = db.createUser(firstName, lastName, dateOfBirth, email, password)
                     tempUser.next()
@@ -157,4 +170,7 @@ class RegisterActivity : AppCompatActivity() {
             else -> false
         }
     }
+
+    //Function to check for valid email
+    fun CharSequence?.isValidEmail() = !isNullOrEmpty() && Patterns.EMAIL_ADDRESS.matcher(this).matches()
 }

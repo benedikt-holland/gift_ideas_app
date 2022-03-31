@@ -39,6 +39,7 @@
     <string name="upload_picture"><u>Profilbild ändern</u></string>
     <string name="saved">Gespeichert</string>
     <string name="email_duplicate">Eingegebene Email existiert bereits. Bitte geben Sie eine andere ein.</string>
+    <string name="email_invalid">Bitte geben sie eine valide Email ein</string>
     <string name="empty_string">Felder dürfen nicht leer sein</string>
     <string name="successful_save">Gespeichert</string>
     <string name="logout"><u>Ausloggen</u></string>

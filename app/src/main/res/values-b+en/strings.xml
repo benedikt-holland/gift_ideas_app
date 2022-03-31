@@ -40,6 +40,7 @@
     <string name="upload_picture"><u>Edit Profilepicture</u></string>
     <string name="saved">Saved</string>
     <string name="email_duplicate">The entered E-Mail already exists. Please enter another E-Mail.</string>
+    <string name="email_invalid">Please enter a valid email</string>
     <string name="empty_string">fields must not be empty</string>
     <string name="successful_save">Saved</string>
     <string name="logout"><u>Logout</u></string>

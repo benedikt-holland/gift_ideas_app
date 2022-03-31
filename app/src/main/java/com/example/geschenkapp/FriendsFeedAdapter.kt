@@ -54,7 +54,7 @@ class FriendsFeedAdapter(private var friendsList: ArrayList<ArrayList<String>> =
                     for (row in friendsList) {
                         val name = row[2] + if(row[3]!=null) {" " + row[3]} else ""
                         //Check for first name, last name and combination
-                        if (row[2].lowercase(Locale.ROOT).contains(charSearch.lowercase(Locale.ROOT)) || (row[3].lowercase(Locale.ROOT).contains(charSearch.lowercase(Locale.ROOT))) ||
+                        if (row[2].lowercase(Locale.ROOT).contains(charSearch.lowercase(Locale.ROOT)) || (row[3]!=null) && (row[3].lowercase(Locale.ROOT).contains(charSearch.lowercase(Locale.ROOT))) ||
                             name.lowercase(Locale.ROOT).contains(charSearch.lowercase(Locale.ROOT))) {
                             resultList.add(row)
                         }
@@ -66,11 +66,13 @@ class FriendsFeedAdapter(private var friendsList: ArrayList<ArrayList<String>> =
                 return filterResults
             }
 
-            @SuppressLint("NotifyDataSetChanged")
             @Suppress("UNCHECKED_CAST")
+            @SuppressLint("NotifyDataSetChanged")
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                friendsFilterList = results?.values as ArrayList<ArrayList<String>>
-                notifyDataSetChanged()
+                if (results?.values != null) {
+                    friendsFilterList = results.values as ArrayList<ArrayList<String>>
+                    notifyDataSetChanged()
+                }
             }
 
         }
@@ -83,7 +85,7 @@ class FriendsFeedAdapter(private var friendsList: ArrayList<ArrayList<String>> =
             val tvFeedDateofbirth: TextView = itemView.findViewById(R.id.tvFeedDateofbirth)
             val tvCountGifts: TextView = itemView.findViewById(R.id.tvCountGifts)
             val tvDaysRemaining: TextView = itemView.findViewById(R.id.tvDaysRemaining)
-            tvName.text = friendsList[2] + " " + friendsList[3]
+            tvName.text = friendsList[2] + if(friendsList[3]!=null) {" " + friendsList[3]} else ""
             tvFeedDateofbirth.text = friendsList[4]
             tvCountGifts.text = friendsList[6]
             tvDaysRemaining.text = friendsList[7] + " " + itemView.context.getString(R.string.remaining_days)

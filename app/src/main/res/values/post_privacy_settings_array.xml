@@ -3,7 +3,6 @@
     <string-array name="post_privacy_array">
         <item>@string/post_privacy_public</item>
         <item>@string/post_privacy_friends</item>
-        <item>@string/post_privacy_hidden_members</item>
         <item>@string/post_privacy_hidden</item>
     </string-array>
 </resources>

@@ -106,8 +106,9 @@ class DbConnector : ViewModel() {
                 "LEFT JOIN likes AS l ON g.id=l.gift_id " +
                 "LEFT JOIN members AS m ON g.id=m.gift_id " +
                 "WHERE m.user_id = $memberId AND " +
-                "(post_privacy=0 OR post_privacy=1 OR post_privacy=2 AND EXISTS( " +
-                "SELECT * FROM friends WHERE user_id=$memberId AND friend_id=g.owner_id)) " +
+                "(post_privacy=0 OR post_privacy=1 OR post_privacy=2 AND " +
+                "(g.owner_id = $memberId OR EXISTS( " +
+                "SELECT * FROM friends WHERE user_id=$memberId AND friend_id=g.owner_id))) " +
                 "GROUP BY g.id " +
                 "ORDER BY g.is_closed DESC, likes DESC;"
         val statement = connection.prepareStatement(query)
@@ -131,8 +132,9 @@ class DbConnector : ViewModel() {
                 "LEFT JOIN users AS o ON g.owner_id=o.id " +
                 "LEFT JOIN likes AS l ON g.id=l.gift_id " +
                 "WHERE g.user_id =$userId AND " +
-                "(post_privacy=0 OR post_privacy=1 OR post_privacy=2 AND EXISTS( " +
-                "SELECT * FROM friends WHERE user_id=$currentUserId AND friend_id=g.owner_id)) " +
+                "(post_privacy=0 OR post_privacy=1 OR post_privacy=2 AND " +
+                "(g.owner_id = $currentUserId OR EXISTS( " +
+                "SELECT * FROM friends WHERE user_id=$currentUserId AND friend_id=g.owner_id))) " +
                 "GROUP BY g.id " +
                 "ORDER BY g.is_closed DESC, likes DESC;"
         val statement = connection.prepareStatement(query)
