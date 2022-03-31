@@ -1,7 +1,10 @@
 package com.example.geschenkapp
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import java.sql.ResultSet
@@ -31,6 +34,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //Check internet connection
+        if (!checkForInternet(this)) {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+        }
 
         //Get user data and database connector
         user = LoginHolder.getInstance().user
@@ -205,4 +213,19 @@ fun unloadResultSet(resultSet: ResultSet): ArrayList<ArrayList<String>> {
         resultSetArray.add(row)
     }
     return resultSetArray
+}
+
+//Helper function to check internet connection
+fun checkForInternet(context: Context): Boolean {
+    // register activity with the connectivity manager service
+    val connectivityManager =
+        context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+    val network = connectivityManager.activeNetwork ?: return false
+    val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
+    return when {
+        activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+        activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+        else -> false
+    }
 }

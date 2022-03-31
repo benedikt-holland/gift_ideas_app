@@ -23,6 +23,11 @@ class GiftpageActivity  : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //Check internet connection
+        if (!checkForInternet(this)) {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+        }
         setContentView(R.layout.activity_giftpage)
 
         //Set up action bar

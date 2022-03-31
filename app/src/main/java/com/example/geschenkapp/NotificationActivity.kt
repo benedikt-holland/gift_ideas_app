@@ -28,6 +28,11 @@ class NotificationActivity : AppCompatActivity() {
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //Check internet connection
+        if (!checkForInternet(this)) {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+        }
         user = LoginHolder.getInstance().user
         db = DbHolder.getInstance().db
         binding = ActivityMainBinding.inflate(layoutInflater)
